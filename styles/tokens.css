@@ -1,0 +1,117 @@
+/* ==========================================================================
+   cleva. — design tokens
+   Source de vérité des couleurs. Les valeurs oklch sont données en commentaire ;
+   les hex sont utilisés pour la compatibilité (opacité Tailwind, vieux navigateurs).
+
+   Deux rampes sœurs : même courbe de clarté, même dérive de teinte,
+   seul le chroma change. Elles se lisent comme une seule famille.
+   ========================================================================== */
+
+:root {
+  /* --- brick : accent ------------------------------------------------------
+     Ancrée sur brick-700 = #BA5944. Arc de chroma culminant AU 700,
+     donc aucun cran ne dépasse la couleur de marque en saturation.        */
+  --brick-50:  #FEF9F6; /* oklch(98.5% 0.007 53.4) */
+  --brick-100: #F6F0ED; /* oklch(95.9% 0.008 48.7) */
+  --brick-200: #F5E0D7; /* oklch(92.1% 0.026 44.7) */
+  --brick-300: #F4CDBD; /* oklch(87.7% 0.049 43.5) */
+  --brick-400: #F3B8A2; /* oklch(83.1% 0.075 41.4) */
+  --brick-500: #EEA188; /* oklch(77.9% 0.099 38.7) */
+  --brick-600: #D87D65; /* oklch(68.3% 0.119 35.7) */
+  --brick-700: #BA5944; /* oklch(57.9% 0.130 33.6)  ← couleur de marque */
+  --brick-800: #964434; /* oklch(49.0% 0.114 32.6) */
+  --brick-900: #79382D; /* oklch(42.4% 0.093 31.2) */
+  --brick-950: #421D17; /* oklch(28.2% 0.059 30.7) */
+
+  /* --- lin : neutre chaud --------------------------------------------------
+     Même teinte que brick, chroma plafonné à 0.020. Ne jamais utiliser
+     un gris froid (slate, zinc) : ça casserait l'accord avec le crème.   */
+  --lin-50:  #FCF9F8; /* oklch(98.4% 0.004) */
+  --lin-100: #F6F0ED; /* oklch(95.9% 0.008 48.7) */
+  --lin-200: #EBE3E0; /* oklch(92.1% 0.010 41.9) */
+  --lin-300: #DFD4D0; /* oklch(87.8% 0.013 41.2) */
+  --lin-400: #D3C4BF; /* oklch(83.1% 0.018 39.4) */
+  --lin-500: #C3B3AE; /* oklch(77.9% 0.020 38.1) */
+  --lin-600: #A59591; /* oklch(68.3% 0.020 34.3) */
+  --lin-700: #857673; /* oklch(57.9% 0.019 31.1) */
+  --lin-800: #6A5D5A; /* oklch(49.0% 0.018 33.1) */
+  --lin-900: #564B49; /* oklch(42.3% 0.015 30.0) */
+  --lin-950: #2F2826; /* oklch(28.4% 0.011 36.5) */
+
+  /* --- tokens sémantiques --------------------------------------------------
+     Convention shadcn : chaque surface est déclarée avec le texte qui va
+     dessus. C'est ce qui empêche structurellement les bugs de contraste.
+     Ratios mesurés (formule WCAG) indiqués en commentaire.               */
+  --background:          #FFFFFF;
+  --foreground:          var(--lin-950);  /* 14.46 · AAA */
+  --muted-foreground:    var(--lin-800);  /*  6.31 · AA  */
+
+  --surface:             var(--lin-100);  /* cartes, bandes alternées */
+  --surface-foreground:  var(--lin-950);  /* 12.81 · AAA */
+
+  --surface-accent:      var(--brick-200); /* 1.27 vs blanc — visible comme bande */
+  --surface-accent-fg:   var(--brick-950);
+
+  --border:              var(--lin-200);
+  --border-strong:       var(--lin-300);
+  --line-strong:         var(--lin-300); /* alias, cf. classe Tailwind border-line-strong */
+
+  --primary:             var(--brick-700);
+  --primary-foreground:  #FFFFFF;         /*  4.56 · AA — limite basse, cf. règles */
+  --primary-hover:       var(--brick-800); /* 6.62 — le hover ASSOMBRIT, jamais l'inverse */
+
+  --accent-text:         var(--brick-800); /* 6.62 sur blanc · AA */
+  --ring:                var(--brick-700);
+
+  /* Section sombre (bandes inversées) */
+  --inverse:             var(--lin-950);
+  --inverse-foreground:  #FFFFFF;
+  --inverse-muted:       var(--lin-400);
+  --inverse-accent:      var(--brick-400);
+}
+
+/* ==========================================================================
+   RÈGLES ISSUES DES MESURES — ne pas contourner sans recalculer
+
+   1. Le seuil AA (4,5:1 avec du blanc) tombe à ~58,2 % de clarté OKLCH.
+      #BC5944 = 4,516 passe ; #BD5944 = 4,491 échoue.
+      brick-700 est calé à 57,9 % pour garder une marge de 0,06.
+
+   2. Le :hover d'un bouton doit ASSOMBRIR (brick-800). L'éclaircir
+      repasserait sous 4,5.
+
+   3. Les surfaces (lin-100, brick-100) ne contrastent qu'à 1,13 avec le
+      blanc : une bordure lin-200 est OBLIGATOIRE pour qu'une carte existe.
+
+   4. lin-700 en texte sur blanc = 4,34 → échoue. Pour du texte secondaire,
+      descendre à lin-800 (6,31).
+   ========================================================================== */
+
+/* Réglages de base */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+::selection {
+  background: var(--brick-200);
+  color: var(--brick-950);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Marcellus n'a qu'une graisse : elle ne doit jamais être appelée en gras,
+   sinon le navigateur synthétise un faux gras et le dessin se dégrade.
+   Toute la hiérarchie passe par DM Sans. */
+.font-display {
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}

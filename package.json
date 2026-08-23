@@ -1,0 +1,16 @@
+{
+  "name": "cleva-site",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build:html": "node scripts/build-html.js",
+    "build:css": "tailwindcss -i ./styles/tailwind.src.css -o ./styles/tailwind.css --minify",
+    "build": "npm run build:html && npm run build:css",
+    "dev": "npm run build && (node scripts/build-html.js --watch & tailwindcss -i ./styles/tailwind.src.css -o ./styles/tailwind.css --watch & browser-sync start --server --port 4173 --files \"*.html, legal/*.html, styles/*.css, scripts/main.js\")",
+    "start": "npm run dev"
+  },
+  "devDependencies": {
+    "browser-sync": "^3.0.4",
+    "tailwindcss": "^3.4.19"
+  }
+}

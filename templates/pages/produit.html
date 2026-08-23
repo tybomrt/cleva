@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Le produit — cleva.</title>
+  <meta name="description" content="Ce que contient la boîte cleva., comment se joue l'escape game pendant le repas, et combien de boîtes prévoir pour votre mariage." />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Le produit — cleva." />
+  <meta property="og:description" content="Une boîte d'énigmes et un cadenas par table. Calculez combien il vous en faut." />
+  <meta property="og:url" content="https://www.cleva-games.fr/produit.html" />
+
+<!--#include "partials/head-assets.html" -->
+</head>
+<body class="font-sans text-ink bg-background antialiased">
+
+<!--#include "partials/header.html" cta_href="https://buy.stripe.com/bJe28qfBWgFi2Dw6xW8k800" -->
+
+  <main id="contenu" class="pb-24 sm:pb-0">
+
+    <!-- ================= Intro / Achat ================= -->
+    <section id="intro-produit" class="flex flex-col lg:flex-row px-2 sm:px-[18px] pt-2 pb-2 sm:pt-[18px] sm:pb-[18px] gap-2 sm:gap-[18px]">
+
+      <!-- Galerie : 65%, sticky tant que la colonne de droite n'est pas entièrement défilée -->
+      <!-- TODO : remplacer par de vraies photos produit (coffre, cadenas, boîte en situation) -->
+      <div class="reveal-on-load lg:w-[65%]">
+        <div class="relative overflow-hidden rounded-2xl sm:rounded-3xl h-[60vh] lg:sticky lg:top-[18px] lg:h-[calc(100vh-36px)]">
+          <img src="/assets/images/hero.webp" alt="La boîte cleva. posée sur une table de mariage" class="absolute inset-0 h-full w-full object-cover" />
+
+          <!-- Miniatures centrées, flèches précédent/suivant aux extrémités -->
+          <div class="absolute inset-x-4 bottom-6 flex items-center justify-between gap-3">
+            <button type="button" aria-label="Photo précédente" class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-background/80 backdrop-blur-lg text-ink hover:bg-background transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            </button>
+
+            <div class="grid grid-cols-4 gap-3 w-64">
+              <button type="button" aria-label="Voir la photo 1" class="overflow-hidden rounded-xl aspect-square border-2 border-primary">
+                <img src="/assets/images/hero.webp" alt="" class="h-full w-full object-cover" />
+              </button>
+              <div class="flex aspect-square items-center justify-center rounded-xl bg-background/80 backdrop-blur-lg px-1 text-center text-sm text-ink-soft">Photo à venir</div>
+              <div class="flex aspect-square items-center justify-center rounded-xl bg-background/80 backdrop-blur-lg px-1 text-center text-sm text-ink-soft">Photo à venir</div>
+              <div class="flex aspect-square items-center justify-center rounded-xl bg-background/80 backdrop-blur-lg px-1 text-center text-sm text-ink-soft">Photo à venir</div>
+            </div>
+
+            <button type="button" aria-label="Photo suivante" class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-background/80 backdrop-blur-lg text-ink hover:bg-background transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Infos + achat : 35% -->
+      <div class="reveal-on-load reveal-on-load-1 lg:w-[35%] px-8 pb-6 pt-10 sm:pb-6 lg:pt-32">
+        <p class="font-label uppercase tracking-[0.16em] text-sm text-accent-text">
+          Précommande — livraison <span data-livraison></span>
+        </p>
+        <h1 class="font-display text-display-lg mt-4">cleva.</h1>
+        <p class="mt-4 text-2xl text-ink-soft">
+          Les alliances ont disparu. Heureusement, les invités sont restés pour vous aider.
+        </p>
+
+        <hr class="mt-6 h-px border-0 bg-[repeating-linear-gradient(to_right,var(--lin-300)_0_5px,transparent_5px_9px)]" />
+
+        <div class="mt-6">
+          <p class="text-base text-ink-soft">Comptez une boîte par table de 6 à 10 invités.</p>
+          <div class="mt-6 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <div class="inline-flex items-center rounded-xl border border-line-strong bg-background">
+                <button type="button" id="qte-moins" aria-label="Retirer une table"
+                        class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-lg leading-none disabled:opacity-30 disabled:cursor-not-allowed">−</button>
+                <input id="qte-tables" type="number" inputmode="numeric" min="1" max="100" step="1" value="1"
+                       class="w-6 border-0 bg-transparent p-0 text-center text-base tabular-nums focus:outline-none" />
+                <button type="button" id="qte-plus" aria-label="Ajouter une table"
+                        class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-lg leading-none">+</button>
+              </div>
+              <span id="qte-custom-titre" class="font-sans text-xl">table</span>
+            </div>
+            <span id="qte-custom-price" class="font-sans font-bold text-3xl">30&nbsp;€</span>
+          </div>
+        </div>
+
+        <a href="https://buy.stripe.com/bJe28qfBWgFi2Dw6xW8k800" class="mt-8 flex w-full items-center justify-center rounded-2xl bg-primary px-10 py-5 text-lg font-semibold text-white hover:bg-primary-hover transition-colors">
+          Précommander
+        </a>
+
+        <details class="group accordion mt-8 py-6">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4">
+            <span class="font-sans text-base font-semibold">Qu'est-ce qui est inclus&nbsp;?</span>
+            <span class="shrink-0 inline-flex transition-transform group-open:rotate-90"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <ul class="mt-5 space-y-2 text-[1rem] text-ink-soft list-none p-0 m-0">
+              <li class="flex gap-3"><span aria-hidden="true" class="text-primary">—</span><span>Le jeu d'énigmes complet, prêt à jouer</span></li>
+              <li class="flex gap-3"><span aria-hidden="true" class="text-primary">—</span><span>Le cadenas qui verrouille votre coffre</span></li>
+              <li class="flex gap-3"><span aria-hidden="true" class="text-primary">—</span><span>Les instructions, à poser sur la table</span></li>
+            </ul>
+            <p class="mt-4 text-[1rem] text-ink-soft">
+              Le coffre (valise, malle, joli coffret…) et les cadeaux dedans restent à votre charge.
+            </p>
+          </div>
+        </details>
+
+        <hr class="h-px border-0 bg-[repeating-linear-gradient(to_right,var(--lin-300)_0_5px,transparent_5px_9px)]" />
+
+        <details class="group accordion py-6">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4">
+            <span class="font-sans text-base font-semibold">Tarifs</span>
+            <span class="shrink-0 inline-flex transition-transform group-open:rotate-90"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <dl class="mt-5 space-y-2 text-[1rem]">
+              <div class="flex justify-between gap-4">
+                <dt class="text-ink-soft">1 à 4 tables</dt>
+                <dd class="font-medium">30&nbsp;€ / boîte</dd>
+              </div>
+              <div class="flex justify-between gap-4">
+                <dt class="text-ink-soft">5 à 7 tables</dt>
+                <dd class="font-medium">28&nbsp;€ / boîte</dd>
+              </div>
+              <div class="flex justify-between gap-4">
+                <dt class="text-ink-soft">8 tables et plus</dt>
+                <dd class="font-medium">25&nbsp;€ / boîte</dd>
+              </div>
+            </dl>
+          </div>
+        </details>
+
+        <hr class="h-px border-0 bg-[repeating-linear-gradient(to_right,var(--lin-300)_0_5px,transparent_5px_9px)]" />
+
+        <details class="group accordion py-6">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4">
+            <span class="font-sans text-base font-semibold">Détails de commande</span>
+            <span class="shrink-0 inline-flex transition-transform group-open:rotate-90"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <dl class="mt-5 space-y-2 text-[1rem]">
+              <div class="flex justify-between gap-4">
+                <dt class="text-ink-soft">Livraison estimée</dt>
+                <dd class="font-medium" data-livraison></dd>
+              </div>
+              <div class="flex justify-between gap-4">
+                <dt class="text-ink-soft">Zone de livraison</dt>
+                <dd class="font-medium">France métropolitaine</dd>
+              </div>
+              <div class="flex justify-between gap-4">
+                <dt class="text-ink-soft">Rétractation</dt>
+                <dd class="font-medium text-right">14 jours après réception</dd>
+              </div>
+            </dl>
+            <p class="mt-4 text-[1rem] text-ink-soft">
+              Paiement sécurisé par Stripe.
+              <a href="/legal/cgv.html" class="text-accent-text underline underline-offset-4">Conditions générales de vente</a>.
+            </p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ================= Difficulté ================= -->
+    <section class="reveal bg-surface">
+      <div class="px-5 sm:px-20 py-28 sm:py-36 text-center">
+        <p class="font-display text-display-md max-w-[24ch] mx-auto">
+          Difficile&nbsp;?<br />
+          Disons que le champagne aide<br />
+          autant qu'il complique.
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= La mécanique ================= -->
+    <section id="mecanique" class="reveal bg-background border-t border-line">
+      <div class="px-5 sm:px-20 py-16 sm:py-20">
+        <h2 class="font-display text-display-md">Ce qu'il y a dans la boîte</h2>
+
+        <div class="mt-10 grid gap-8 sm:grid-cols-3">
+          <div>
+            <h3 class="font-sans font-semibold text-2xl">100&nbsp;% clé en main</h3>
+            <p class="mt-2 text-ink-soft">Vous déposez la boîte, le jeu se lance tout seul. Aucun animateur.</p>
+          </div>
+          <div>
+            <h3 class="font-sans font-semibold text-2xl">Pensé pour la déco</h3>
+            <p class="mt-2 text-ink-soft">Sobre et élégante, la boîte s'intègre à une table dressée sans jurer.</p>
+          </div>
+          <div>
+            <h3 class="font-sans font-semibold text-2xl">Collaboratif ou compétitif</h3>
+            <p class="mt-2 text-ink-soft">Chaque table joue de son côté — ou vous lancez un concours de rapidité.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<!--#include "partials/notify.html" padding="px-5 sm:px-20" -->
+
+  </main>
+
+  <!-- ============ Barre d'achat collante (mobile) ============ -->
+  <div id="buybar" class="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-background/95 backdrop-blur sm:hidden">
+    <div class="flex items-center justify-between gap-4 px-5 py-3">
+      <div>
+        <p class="font-sans font-bold text-xl leading-none">25&nbsp;€ <span class="text-sm font-medium text-ink-soft">la boîte</span></p>
+        <p class="text-sm text-ink-soft mt-0.5">Livraison <span data-livraison></span></p>
+      </div>
+      <a href="https://buy.stripe.com/bJe28qfBWgFi2Dw6xW8k800" class="shrink-0 rounded bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-hover transition-colors">
+        Précommander
+      </a>
+    </div>
+  </div>
+
+<!--#include "partials/footer.html" padding="px-5 sm:px-20" -->
+
+  <script src="/scripts/main.js"></script>
+</body>
+</html>

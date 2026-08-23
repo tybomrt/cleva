@@ -1,0 +1,140 @@
+/* ==========================================================================
+   cleva. — overrides custom
+   Tailwind gère le reste via les classes utilitaires.
+   Les couleurs et tokens vivent dans /styles/tokens.css
+   ========================================================================== */
+
+/* Marcellus n'existe qu'en une seule graisse (400). Si une classe font-bold
+   traîne sur un titre, le navigateur fabrique un faux gras qui abîme le
+   dessin des lettres. On verrouille. */
+.font-display,
+.font-label {
+  font-weight: 400 !important;
+  font-synthesis-weight: none;
+}
+
+/* Marcellus est une display : très bien en grand, faible en petit.
+   Elle est utilisée à partir de 24px partout dans le site. */
+
+/* Les <details> natifs : on retire le triangle par défaut pour garder
+   notre propre indicateur (le + qui pivote). */
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details > summary::marker {
+  content: '';
+}
+
+/* Le champ number du sélecteur de tables : on masque les flèches natives,
+   on a nos propres boutons − / + plus confortables au doigt. */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Ancres : compense la hauteur du header collant lors d'un saut vers #id */
+:target {
+  scroll-margin-top: 5rem;
+}
+
+/* Transitions de page natives : le header (logo + nav) reste visuellement en
+   place d'une page à l'autre au lieu de disparaître puis réapparaître.
+   Zéro JS, zéro dépendance — API navigateur (Chrome/Edge/Safari récents ;
+   dégrade en navigation classique ailleurs). Désactivé si l'utilisateur a
+   demandé moins de mouvement. */
+@media not (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+#nav-logo {
+  view-transition-name: nav-logo;
+}
+#nav-menu {
+  view-transition-name: nav-menu;
+}
+
+/* Animations d'apparition de page.
+
+   Deux familles :
+   - .reveal-on-load : contenu visible dès le chargement (hero, intro) —
+     entre en fondu + léger glissement dès que la page est prête.
+   - .reveal : contenu plus bas dans la page — entre de la même façon,
+     mais déclenché par IntersectionObserver quand il approche du viewport
+     (cf. initReveal() dans main.js).
+
+   Les deux respectent prefers-reduced-motion via la règle globale plus bas
+   (animation-duration: 0.01ms), donc pas de garde supplémentaire nécessaire
+   ici — juste s'assurer que le contenu reste visible sans JS (progressive
+   enhancement : .reveal démarre visible, JS ajoute la classe qui l'anime). */
+@media not (prefers-reduced-motion: reduce) {
+  @keyframes cleva-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .reveal-on-load {
+    animation: cleva-reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .reveal-on-load-1 { animation-delay: 0.08s; }
+  .reveal-on-load-2 { animation-delay: 0.16s; }
+  .reveal-on-load-3 { animation-delay: 0.24s; }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Respect des préférences système : pas d'animation si l'utilisateur
+   a demandé à en être dispensé. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Impression : on allège, on déplie les FAQ, on montre les URL des liens. */
+@media print {
+  #site-header,
+  #buybar,
+  #notify-form {
+    display: none !important;
+  }
+  details {
+    open: true;
+  }
+  details > * {
+    display: block !important;
+  }
+  a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.85em;
+    color: #6a5d5a;
+  }
+}
