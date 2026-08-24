@@ -42,7 +42,7 @@
   <main id="contenu">
 
     <!-- ================= Hero ================= -->
-    <section id="hero" class="h-[95vh] flex flex-col px-2 sm:px-[18px] pt-2 pb-2 sm:pt-[18px] sm:pb-[18px]">
+    <section id="hero" class="h-[80vh] sm:h-[95vh] flex flex-col px-2 sm:px-[18px] pt-2 pb-2 sm:pt-[18px] sm:pb-[18px]">
 
       <!-- TODO : remplacer par la photo définitive du produit en situation quand elle
            sera prête (mains sur le cadenas, nappe, tenue de mariage). -->
@@ -52,24 +52,17 @@
 
         <!-- Titre : en haut sur mobile, centré verticalement sur desktop -->
         <div class="absolute top-40 left-6 right-6 sm:top-0 sm:bottom-0 sm:left-20 sm:right-20 sm:flex sm:flex-col sm:justify-center">
-          <h1 class="reveal-on-load font-display text-display-lg leading-[1.05] text-white">
-            Un coffre.<br />
-            Quelques énigmes.<br />
-            Une table entière sur le coup.
+          <h1 class="reveal-on-load font-display text-display-lg leading-[1.05] text-white max-w-[21ch] lg:max-w-[32ch]">
+            Le jeu d'enquête qui réunit<br class="hidden lg:block" />
+            les invités à votre mariage
           </h1>
-          <p class="reveal-on-load reveal-on-load-1 mt-5 max-w-[46ch] text-[1.75rem] font-medium text-white/90">
-            <span class="relative inline-block">L'escape game
-              <span class="absolute left-0 top-full mt-1 w-full -z-10 text-primary" aria-hidden="true">
-                <svg viewBox="0 0 1340 176" fill="none" xmlns="http://www.w3.org/2000/svg" class="block w-full h-auto">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M1010.25 0.704656C821.859 2.70544 767.994 4.00699 663.466 9.0877C555.143 14.3529 477.621 19.6308 354.618 30.1149C326.104 32.5453 295.572 34.8518 259.779 37.2789C128.294 46.1944 102.708 48.5701 60.2027 55.8066C39.1425 59.3928 20.9291 61.8746 10.721 62.5511C1.64526 63.1517 0 63.53 0 65.0152C0 66.3277 14.5154 67.4776 22.4548 66.7936C25.3 66.5493 33.0084 65.9503 39.5853 65.4642C46.1623 64.9773 60.6356 63.6706 71.7484 62.5603C97.9168 59.9446 110.481 59.1198 155.455 57.0651C231.06 53.6111 288.175 50.292 358.33 45.2753C384.184 43.4261 418.512 40.9713 434.614 39.8197C556.738 31.0845 705.913 23.2953 797.067 20.8952C907.684 17.9813 1251.09 15.4051 1245.29 17.5314C1242.99 18.3747 1203.69 24.6466 1180.14 27.9304C1158.5 30.9472 1122.35 35.2983 1077.88 40.2384C1056.78 42.582 1027.84 45.8254 1013.55 47.4462C959.874 53.5362 942.195 55.4249 911.699 58.3305C771.211 71.7142 678.412 83.3768 549.246 103.88C472.471 116.067 409.543 130.057 339.317 150.553C299.39 162.205 295.5 164.275 299.43 171.777C301.987 176.658 322.133 177.291 362.766 173.765C437.022 167.323 506.802 162.326 574.4 158.611C616.8 156.281 622.417 155.89 665.528 152.273C681.63 150.922 709.464 148.948 727.38 147.886L759.956 145.956L716.659 145.196C651.051 144.042 580.671 144.112 557.493 145.354C480.757 149.465 439.019 152.629 370.844 159.502C354.595 161.141 340.886 162.341 340.379 162.169C335.497 160.506 444.775 135.379 496.906 126.178C614.587 105.406 735.773 89.9082 922.008 71.8111C939.017 70.1582 973.16 66.5425 997.88 63.7768C1022.6 61.0103 1061.57 56.6549 1084.47 54.0964C1172.64 44.2509 1198.91 40.5838 1283.64 26.2919C1337.9 17.138 1338.19 17.0597 1339.67 11.0396C1341.3 4.42063 1336.95 1.41738 1324.5 0.558937C1312.66 -0.257381 1091.14 -0.154627 1010.25 0.704656ZM763.471 145.288C764.496 145.49 765.981 145.482 766.769 145.271C767.558 145.061 766.718 144.896 764.904 144.905C763.09 144.914 762.445 145.087 763.471 145.288Z" fill="currentColor"/>
-                </svg>
-              </span>
-            </span> à jouer pendant le repas de votre mariage.
+          <p class="reveal-on-load reveal-on-load-1 mt-5 max-w-[46ch] text-[1.25rem] sm:text-[1.75rem] font-medium text-white/90">
+            Enfermez les dragées dans un coffre et laissez-les résoudre les énigmes pour les récupérer.
           </p>
         </div>
 
         <!-- CTA : toujours en bas à droite -->
-        <a href="/produit.html" class="reveal-on-load reveal-on-load-2 absolute bottom-20 left-6 right-6 sm:left-auto sm:right-20 sm:w-max inline-flex items-center justify-center rounded-2xl bg-primary px-12 py-5 text-lg font-semibold text-white hover:bg-primary-hover transition-colors">
+        <a href="/produit.html" class="reveal-on-load reveal-on-load-2 absolute bottom-6 sm:bottom-20 left-6 right-6 sm:left-auto sm:right-20 sm:w-max inline-flex items-center justify-center rounded-2xl bg-primary px-8 py-3.5 sm:px-12 sm:py-5 text-base sm:text-lg font-semibold text-white hover:bg-primary-hover transition-colors">
           Précommander
         </a>
       </div>
