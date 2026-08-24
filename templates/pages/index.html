@@ -25,16 +25,19 @@
     <!-- ================= Hero ================= -->
     <section id="hero" class="h-[90vh] sm:h-[95vh] flex flex-col px-2 sm:px-[18px] pt-2 pb-2 sm:pt-[18px] sm:pb-[18px]">
 
-      <!-- TODO : remplacer par la photo définitive du produit en situation quand elle
-           sera prête (mains sur le cadenas, nappe, tenue de mariage). -->
       <div class="relative overflow-hidden rounded-2xl sm:rounded-3xl flex-1">
-        <img src="/assets/images/hero.webp" alt="Table de mariage dressée, avec le coffre cleva. posé dessus" class="absolute inset-0 h-full w-full object-cover" />
+        <!-- Deux recadrages distincts : sur mobile la boîte est sous le texte,
+             sur desktop elle reste dans le tiers droit, dégagé par le texte
+             (limité à 60% de largeur, cf. plus bas). -->
+        <img src="/assets/images/hero-mobile.webp" alt="Table de mariage dressée, avec le coffre cleva. posé dessus" class="absolute inset-0 h-full w-full object-cover block lg:hidden" />
+        <img src="/assets/images/hero-desktop.webp" alt="Table de mariage dressée, avec le coffre cleva. posé dessus" class="absolute inset-0 h-full w-full object-cover object-right hidden lg:block" />
         <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/30 to-black/80"></div>
 
-        <!-- Titre : en haut sur mobile, centré verticalement sur desktop -->
-        <div class="absolute top-40 left-6 right-6 sm:top-0 sm:bottom-0 sm:left-20 sm:right-20 sm:flex sm:flex-col sm:justify-center">
+        <!-- Titre : en haut sur mobile, centré verticalement sur desktop (à partir de lg,
+             en phase avec le passage à la photo desktop ci-dessus). -->
+        <div class="absolute top-40 left-6 right-6 lg:top-0 lg:bottom-0 lg:left-20 lg:right-20 lg:max-w-[48%] lg:flex lg:flex-col lg:justify-center">
           <h1 class="reveal-on-load font-display text-display-lg leading-[1.05] text-white max-w-[21ch] lg:max-w-[32ch]">
-            Le jeu d'enquête qui réunit<br class="hidden lg:block" />
+            Le jeu d'enquête qui réunit<br class="hidden 2xl:block" />
             les invités à votre mariage
           </h1>
           <p class="reveal-on-load reveal-on-load-1 mt-5 max-w-[46ch] text-[1.25rem] sm:text-[1.75rem] font-medium text-white/90">
@@ -43,7 +46,7 @@
         </div>
 
         <!-- CTA : toujours en bas à droite -->
-        <div class="reveal-on-load reveal-on-load-2 absolute bottom-6 sm:bottom-20 left-6 right-6 sm:left-auto sm:right-20 sm:w-max flex flex-col items-center sm:items-end gap-3">
+        <div class="reveal-on-load reveal-on-load-2 absolute bottom-6 lg:bottom-20 left-6 right-6 lg:left-auto lg:right-20 lg:w-max flex flex-col items-center lg:items-end gap-3">
           <p class="text-left text-sm sm:text-base font-medium text-white/90">
             À partir de
             <span class="hero-price">
@@ -51,7 +54,7 @@
               <span>2,50&nbsp;€ par invité</span>
             </span>
           </p>
-          <a href="/produit.html" class="w-full sm:w-max inline-flex items-center justify-center rounded-2xl bg-primary px-8 py-3.5 sm:px-12 sm:py-5 text-base sm:text-lg font-semibold text-white hover:bg-primary-hover transition-colors">
+          <a href="/produit.html" class="w-full lg:w-max inline-flex items-center justify-center rounded-2xl bg-primary px-8 py-3.5 sm:px-12 sm:py-5 text-base sm:text-lg font-semibold text-white hover:bg-primary-hover transition-colors">
             Précommander
           </a>
         </div>

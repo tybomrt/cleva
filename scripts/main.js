@@ -367,11 +367,71 @@
     });
   }
 
+  /* ------------------------------------------------------------------------
+     8. Hero desktop : recadrage dynamique pour garder la boîte visible
+
+     hero-desktop.webp est affichée en object-fit: cover sur une hauteur
+     fixe ; en dessous d'une certaine largeur, l'image dépasse et se fait
+     rogner horizontalement. Plutôt qu'un object-position fixe, on ajuste
+     dynamiquement au resize : on rogne d'abord à droite de la boîte (zone
+     sans intérêt), et seulement une fois cette marge épuisée, on commence
+     à rogner à gauche — pour que la boîte reste toujours entièrement
+     visible, quelle que soit la largeur de fenêtre.
+
+     Les deux constantes ci-dessous sont la position (en fraction de la
+     largeur de hero-desktop.webp, 2228px) du bord gauche et du bord droit
+     de la boîte sur la photo, mesurée une fois pour toutes sur le fichier
+     actuel. À refaire si la photo change.
+     ---------------------------------------------------------------------- */
+  var HERO_BOX_RIGHT_FRAC = 1926 / 2228;
+
+  function initHeroDesktopCrop() {
+    var img = document.querySelector('#hero img[src*="hero-desktop"]');
+    if (!img) return;
+
+    function update() {
+      var rect = img.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+
+      var containerAspect = rect.width / rect.height;
+      var imageAspect = img.naturalWidth / img.naturalHeight;
+
+      if (!imageAspect || containerAspect >= imageAspect) {
+        img.style.objectPosition = '50% 50%';
+        return;
+      }
+
+      var visibleFraction = containerAspect / imageAspect;
+      var position;
+      if (visibleFraction >= HERO_BOX_RIGHT_FRAC) {
+        position = 0;
+      } else {
+        position = (HERO_BOX_RIGHT_FRAC - visibleFraction) / (1 - visibleFraction);
+        position = Math.max(0, Math.min(1, position));
+      }
+      img.style.objectPosition = (position * 100) + '% 50%';
+    }
+
+    var resizeTimer = null;
+    function onResize() {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(update, 100);
+    }
+
+    if (img.complete) {
+      update();
+    } else {
+      img.addEventListener('load', update, { once: true });
+    }
+    window.addEventListener('resize', onResize);
+  }
+
   /* ---------------------------------------------------------------------- */
   function init() {
     remplirTextes();
     initSelecteur();
     initQuantite();
+    initHeroDesktopCrop();
     initNotify();
     initBuybar();
     initReveal();
