@@ -524,9 +524,9 @@
 
       function goTo(index) {
         var next = (index + cards.length) % cards.length;
-        // "block: center" pour que la page scrolle aussi verticalement
-        // jusqu'à la card à chaque changement, pas seulement horizontalement.
-        cards[next].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'center' });
+        // "block: nearest" pour ne défiler qu'horizontalement dans le
+        // track, sans jamais faire bouger la page verticalement.
+        cards[next].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
         setActive(next);
       }
 
