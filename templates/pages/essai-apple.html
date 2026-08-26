@@ -90,26 +90,21 @@
   <main id="contenu">
 
     <!-- ================= Hero ================= -->
-    <!-- La card image prend 100% de la hauteur disponible sous le header,
-         sans marge (plein cadre). Tout le texte du hero (titre, sous-titre,
-         CTA, prix) est superposé et centré sur cette image, avec un voile
-         dégradé derrière pour la lisibilité. Au scroll, la card est
-         épinglée (sticky) pendant qu'elle :
-         1) rétrécit jusqu'à une taille cible (et regagne des coins arrondis)
-         2) reste à cette taille (palier) le temps que le wrapper finisse de défiler
-         3) se détache et disparaît avec le scroll classique, comme n'importe
-            quel contenu normal.
-         Le texte s'estompe (opacity) pendant le rétrécissement plutôt que
-         de se déformer avec l'image. Script dédié plus bas dans la page
-         (local à cette page d'essai, pas main.js). -->
-    <section id="hero-shrink-wrapper" class="relative">
-      <div id="hero-shrink-frame" class="sticky relative overflow-hidden">
-        <img src="/assets/images/hero-mobile.webp" alt="Table de mariage dressée, avec le coffre cleva. posé dessus" class="hero-shrink-img absolute inset-0 h-full w-full object-cover block lg:hidden" />
-        <img src="/assets/images/hero-desktop.webp" alt="Table de mariage dressée, avec le coffre cleva. posé dessus" class="hero-shrink-img absolute inset-0 h-full w-full object-cover object-right hidden lg:block" />
+    <!-- Card statique (pas de scroll ni de sticky, contrairement à
+         l'itération précédente) : image plein format dans une card
+         (marges haut/bas/gauche/droite, coins arrondis), hauteur proche
+         du plein écran, comme le traitement du vrai site. Tout le texte
+         du hero (titre, sous-titre, CTA, prix) est superposé et centré
+         sur cette image, avec un voile dégradé derrière pour la
+         lisibilité. -->
+    <section class="px-2 sm:px-[18px] pt-2 pb-2 sm:pt-[18px] sm:pb-[18px]">
+      <div class="relative h-[90vh] sm:h-[95vh] w-full overflow-hidden rounded-2xl sm:rounded-3xl">
+        <img src="/assets/images/hero-mobile.webp" alt="Table de mariage dressée, avec le coffre cleva. posé dessus" class="absolute inset-0 h-full w-full object-cover block lg:hidden" />
+        <img src="/assets/images/hero-desktop.webp" alt="Table de mariage dressée, avec le coffre cleva. posé dessus" class="absolute inset-0 h-full w-full object-cover object-right hidden lg:block" />
 
         <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-black/10"></div>
 
-        <div id="hero-shrink-text" class="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-6">
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <div class="reveal-on-load">
             <h1 class="font-display text-display-lg leading-[1.05] max-w-[18ch] mx-auto text-white">
               L'escape game qui réunit les invités à votre mariage
@@ -435,67 +430,6 @@
 
   <script src="/scripts/main.js"></script>
   <script>
-    // Effet "photo qui rapetisse au scroll" — la card prend par défaut toute
-    // la hauteur autorisée (comme sur le vrai site), épinglée (sticky) pendant
-    // qu'elle rétrécit jusqu'à une taille cible, reste à cette taille (palier)
-    // le temps que le wrapper finisse de défiler, puis se détache et disparaît
-    // avec le scroll classique. Local à cette page d'essai, hors de main.js.
-    (function () {
-      var wrapper = document.getElementById('hero-shrink-wrapper');
-      var frame = document.getElementById('hero-shrink-frame');
-      var heroText = document.getElementById('hero-shrink-text');
-      var headerBar = document.getElementById('site-header-bar');
-      if (!wrapper || !frame) return;
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-      var SHRINK_RANGE = 600; // px de scroll pour l'animation de rétrécissement
-      var HOLD_RANGE = 400;   // px de scroll pendant lesquels la taille reste fixe (palier)
-      var START_RADIUS = 0;   // plein cadre par défaut, sans marge
-      var END_RADIUS = 32;    // redevient une card une fois rétrécie
-      var startW, startH, endW, endH;
-
-      function measure() {
-        var headerHeight = headerBar ? headerBar.getBoundingClientRect().height : 0;
-        frame.style.top = headerHeight + 'px';
-
-        // Taille par défaut : plein cadre, largeur de l'écran, hauteur =
-        // tout l'espace disponible sous le header (pas de vh arbitraire
-        // ni de marge).
-        startW = window.innerWidth;
-        startH = window.innerHeight - headerHeight;
-
-        endW = Math.min(window.innerWidth * 0.8, 600);
-        endH = window.innerHeight * 0.45;
-
-        wrapper.style.height = (startH + SHRINK_RANGE + HOLD_RANGE) + 'px';
-        update();
-      }
-
-      function update() {
-        var scrolled = Math.max(0, -wrapper.getBoundingClientRect().top);
-        var progress = Math.min(1, scrolled / SHRINK_RANGE);
-
-        var w = startW + (endW - startW) * progress;
-        var h = startH + (endH - startH) * progress;
-        var r = START_RADIUS + (END_RADIUS - START_RADIUS) * progress;
-
-        frame.style.width = w + 'px';
-        frame.style.height = h + 'px';
-        frame.style.borderRadius = r + 'px';
-
-        // Le texte s'estompe pendant le rétrécissement plutôt que de se
-        // déformer avec l'image (il est dans le même cadre overflow-hidden).
-        if (heroText) {
-          heroText.style.opacity = String(1 - progress);
-          heroText.style.pointerEvents = progress > 0.05 ? 'none' : '';
-        }
-      }
-
-      window.addEventListener('scroll', update, { passive: true });
-      window.addEventListener('resize', measure);
-      measure();
-    })();
-
     // Carousel "Comment ça se passe" — même logique que le "Highlights
     // Gallery" d'Apple : indicateurs (point/rectangle qui se remplit) +
     // auto-défilement avec play/pause. Le scroll manuel (swipe/drag) met
