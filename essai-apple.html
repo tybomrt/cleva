@@ -37,29 +37,15 @@
   .bg-primary {
     border-radius: 9999px !important;
   }
-  /* Largeur de contenu unique pour TOUTE la page : 1260px max, centré, avec
-     un padding latéral fixe (au lieu du clamp() en vw qui laissait le
-     contenu s'étirer indéfiniment sur les très grands écrans). */
+  /* Largeur de contenu unique pour TOUTE la page : 1260px, sans exception.
+     Un seul système de padding (calc, en vw) pour tout le monde — texte,
+     titres, cards du carousel — au lieu de mélanger max-width+padding
+     fixe en rem (qui décale le contenu de son propre padding en plus du
+     max-width) et calc en vw (utilisé par le track) : les deux ne peuvent
+     jamais tomber pile au même endroit. Ici, une seule formule : la même
+     que celle du track, donc n'importe quel bloc en .content-max tombe
+     exactement sur le bord des cards, à toutes les largeurs. */
   .content-max {
-    max-width: 1260px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-  @media (min-width: 640px) {
-    .content-max {
-      padding-left: 2.5rem;
-      padding-right: 2.5rem;
-    }
-  }
-  /* Aligne un bloc de texte (ex. le titre au-dessus du carousel) sur le
-     bord gauche réel des cards du track : .content-max a un padding
-     interne en plus de son max-width, alors que les cards du track n'en
-     ont pas (elles font exactement min(1260px, 92vw), flush). Même
-     formule de calc que le padding du track, pour un alignement pixel
-     parfait à toutes les largeurs. */
-  .track-align {
     padding-left: calc((100vw - min(1260px, 92vw)) / 2);
     padding-right: calc((100vw - min(1260px, 92vw)) / 2);
   }
@@ -184,7 +170,7 @@
          temps restant) + bouton play/pause pour l'auto-défilement. Script
          dédié plus bas, local à cet essai. -->
     <section id="mecanique-teaser" class="reveal py-24 sm:py-32">
-      <div class="track-align">
+      <div class="content-max">
         <h2 class="font-display text-display-md max-w-[22ch]">Comment ça se passe&nbsp;?</h2>
       </div>
 
