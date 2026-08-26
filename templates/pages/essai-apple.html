@@ -47,6 +47,16 @@
       padding-right: 2.5rem;
     }
   }
+  /* Aligne un bloc de texte (ex. le titre au-dessus du carousel) sur le
+     bord gauche réel des cards du track : .content-max a un padding
+     interne en plus de son max-width, alors que les cards du track n'en
+     ont pas (elles font exactement min(1260px, 92vw), flush). Même
+     formule de calc que le padding du track, pour un alignement pixel
+     parfait à toutes les largeurs. */
+  .track-align {
+    padding-left: calc((100vw - min(1260px, 92vw)) / 2);
+    padding-right: calc((100vw - min(1260px, 92vw)) / 2);
+  }
   /* Carousel "Comment ça se passe" : piste sans barre de défilement visible.
      Indicateurs : un point = une card ; la card active devient un rectangle
      dont le fond (span interne) se remplit pour montrer le temps restant
@@ -168,7 +178,7 @@
          temps restant) + bouton play/pause pour l'auto-défilement. Script
          dédié plus bas, local à cet essai. -->
     <section id="mecanique-teaser" class="reveal py-24 sm:py-32">
-      <div class="content-max">
+      <div class="track-align">
         <h2 class="font-display text-display-md max-w-[22ch]">Comment ça se passe&nbsp;?</h2>
       </div>
 
