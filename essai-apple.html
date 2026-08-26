@@ -126,7 +126,7 @@
          avec un voile dégradé derrière pour la lisibilité. -->
     <section id="hero" class="px-2 sm:px-[18px] pt-2 pb-2 sm:pt-[18px] sm:pb-[18px]">
       <div id="hero-card" class="relative h-[90vh] sm:h-[95vh] w-full overflow-hidden rounded-2xl sm:rounded-3xl">
-        <video src="/assets/videos/02.mp4" poster="/assets/images/hero-desktop.webp" autoplay muted loop playsinline class="absolute inset-0 h-full w-full object-cover object-right sm:object-center"></video>
+        <video src="/assets/videos/02.mp4" poster="/assets/images/hero-desktop.webp" autoplay muted loop playsinline class="absolute inset-0 h-full w-full object-cover object-right"></video>
 
         <!-- Voile uniforme (pas un dégradé) : le texte est centré au milieu
              de la card, donc un dégradé plus sombre en haut/bas seulement
@@ -260,15 +260,24 @@
     </section>
 
     <!-- ================= Avis ================= -->
+    <!-- Carousel (même mécanique que "Comment ça se passe ?") uniquement
+         sur mobile ; grille à 3 colonnes conservée à partir de sm. Deux
+         blocs de contenu distincts (sm:hidden / hidden sm:grid) plutôt
+         qu'un seul réutilisé en CSS, les deux mises en page étant
+         structurellement différentes (scroll horizontal plein cadre vs
+         grille contenue). -->
     <section id="avis" class="reveal bg-ink py-24 sm:py-32">
       <div class="content-max">
         <h2 class="font-display text-display-md text-white">Ce qu'ils en disent</h2>
         <p class="mt-2 text-[1rem] text-white/50">
           <a href="https://www.trustpilot.com/review/cleva-games.fr" target="_blank" rel="noopener" class="underline underline-offset-4 hover:text-white transition-colors">Avis vérifiés sur Trustpilot</a>
         </p>
+      </div>
 
-        <div class="mt-16 grid gap-6 sm:grid-cols-3 sm:gap-6">
-          <div class="rounded-3xl bg-white/[0.06] p-8 sm:p-10 flex flex-col gap-4">
+      <!-- Mobile : carousel plein cadre -->
+      <div id="avis-carousel" class="sm:hidden mt-12">
+        <div id="avis-track" class="flex gap-6 overflow-x-auto snap-x snap-mandatory" style="scrollbar-width:none; padding-left:calc((100vw - min(1260px, 92vw)) / 2); padding-right:calc((100vw - min(1260px, 92vw)) / 2);">
+          <div data-avis-card class="snap-center shrink-0 rounded-3xl bg-white/[0.06] p-8 py-14 flex flex-col items-center text-center gap-4" style="width:min(1260px, 92vw);">
             <div class="flex gap-1 text-primary" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
@@ -276,15 +285,14 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
             </div>
-            <p class="font-sans font-semibold text-lg text-white">Excellent escape game&nbsp;!</p>
-            <p class="text-[1rem] text-white/60">
+            <p class="font-sans font-semibold text-2xl text-white max-w-[24ch]">Excellent escape game&nbsp;!</p>
+            <p class="text-lg text-white/60 max-w-[42ch]">
               Une super expérience du début à la fin&nbsp;! Les énigmes sont variées, bien construites
               et très immersives. L'accueil est top et l'ambiance géniale. Je recommande à 100&nbsp;%&nbsp;!
             </p>
-            <p class="mt-auto text-sm text-white/40">Max</p>
+            <p class="text-sm text-white/40">Max</p>
           </div>
-
-          <div class="rounded-3xl bg-white/[0.06] p-8 sm:p-10 flex flex-col gap-4">
+          <div data-avis-card class="snap-center shrink-0 rounded-3xl bg-white/[0.06] p-8 py-14 flex flex-col items-center text-center gap-4" style="width:min(1260px, 92vw);">
             <div class="flex gap-1 text-primary" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
@@ -292,17 +300,16 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
             </div>
-            <p class="font-sans font-semibold text-lg text-white">Superbe expérience&nbsp;!</p>
-            <p class="text-[1rem] text-white/60">
+            <p class="font-sans font-semibold text-2xl text-white max-w-[24ch]">Superbe expérience&nbsp;!</p>
+            <p class="text-lg text-white/60 max-w-[42ch]">
               Nous avons eu le plaisir de découvrir ce magnifique jeu lors du repas de mariage. Entre
               un verre de vin et un arancini, il a su parfaitement stimuler nos méninges&nbsp;! Ce jeu
               crée une vraie synergie entre les joueurs et offre une interaction incroyable. Un moment
               ludique, convivial et mémorable. Je recommande&nbsp;!!!
             </p>
-            <p class="mt-auto text-sm text-white/40">Mathis</p>
+            <p class="text-sm text-white/40">Mathis</p>
           </div>
-
-          <div class="rounded-3xl bg-white/[0.06] p-8 sm:p-10 flex flex-col gap-4">
+          <div data-avis-card class="snap-center shrink-0 rounded-3xl bg-white/[0.06] p-8 py-14 flex flex-col items-center text-center gap-4" style="width:min(1260px, 92vw);">
             <div class="flex gap-1 text-primary" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
@@ -310,14 +317,86 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
             </div>
-            <p class="font-sans font-semibold text-lg text-white">Une animation de mariage originale et conviviale&nbsp;!</p>
-            <p class="text-[1rem] text-white/60">
+            <p class="font-sans font-semibold text-2xl text-white max-w-[24ch]">Une animation de mariage originale et conviviale&nbsp;!</p>
+            <p class="text-lg text-white/60 max-w-[42ch]">
               L'activité favorise la cohésion, l'entraide et crée une ambiance chaleureuse entre les
               invités. J'ai trouvé l'idée innovante et ludique pour découvrir les cadeaux des mariés
               tout en s'amusant. Un excellent moment que j'ai pris beaucoup de plaisir à partager&nbsp;!
             </p>
-            <p class="mt-auto text-sm text-white/40">Marian</p>
+            <p class="text-sm text-white/40">Marian</p>
           </div>
+        </div>
+
+        <div class="mt-8 content-max flex items-center justify-center gap-4">
+          <div class="flex items-center gap-2">
+            <button type="button" data-avis-dot aria-label="Aller à l'avis 1" class="relative h-2 w-2 rounded-full bg-white/20 overflow-hidden p-0 border-0 cursor-pointer transition-[width] duration-300">
+              <span data-avis-fill class="absolute inset-y-0 left-0 w-0 bg-white"></span>
+            </button>
+            <button type="button" data-avis-dot aria-label="Aller à l'avis 2" class="relative h-2 w-2 rounded-full bg-white/20 overflow-hidden p-0 border-0 cursor-pointer transition-[width] duration-300">
+              <span data-avis-fill class="absolute inset-y-0 left-0 w-0 bg-white"></span>
+            </button>
+            <button type="button" data-avis-dot aria-label="Aller à l'avis 3" class="relative h-2 w-2 rounded-full bg-white/20 overflow-hidden p-0 border-0 cursor-pointer transition-[width] duration-300">
+              <span data-avis-fill class="absolute inset-y-0 left-0 w-0 bg-white"></span>
+            </button>
+          </div>
+          <button type="button" id="avis-playpause" aria-label="Mettre en pause le défilement" class="flex h-8 w-8 items-center justify-center rounded-full text-white/60 hover:bg-white/10 transition-colors">
+            <svg data-icon="pause" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+            <svg data-icon="play" class="hidden" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Desktop (sm+) : grille à 3 colonnes -->
+      <div class="hidden sm:grid content-max mt-16 gap-6 sm:grid-cols-3 sm:gap-6">
+        <div class="rounded-3xl bg-white/[0.06] p-8 sm:p-10 flex flex-col gap-4">
+          <div class="flex gap-1 text-primary" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+          </div>
+          <p class="font-sans font-semibold text-lg text-white">Excellent escape game&nbsp;!</p>
+          <p class="text-[1rem] text-white/60">
+            Une super expérience du début à la fin&nbsp;! Les énigmes sont variées, bien construites
+            et très immersives. L'accueil est top et l'ambiance géniale. Je recommande à 100&nbsp;%&nbsp;!
+          </p>
+          <p class="mt-auto text-sm text-white/40">Max</p>
+        </div>
+
+        <div class="rounded-3xl bg-white/[0.06] p-8 sm:p-10 flex flex-col gap-4">
+          <div class="flex gap-1 text-primary" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+          </div>
+          <p class="font-sans font-semibold text-lg text-white">Superbe expérience&nbsp;!</p>
+          <p class="text-[1rem] text-white/60">
+            Nous avons eu le plaisir de découvrir ce magnifique jeu lors du repas de mariage. Entre
+            un verre de vin et un arancini, il a su parfaitement stimuler nos méninges&nbsp;! Ce jeu
+            crée une vraie synergie entre les joueurs et offre une interaction incroyable. Un moment
+            ludique, convivial et mémorable. Je recommande&nbsp;!!!
+          </p>
+          <p class="mt-auto text-sm text-white/40">Mathis</p>
+        </div>
+
+        <div class="rounded-3xl bg-white/[0.06] p-8 sm:p-10 flex flex-col gap-4">
+          <div class="flex gap-1 text-primary" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+          </div>
+          <p class="font-sans font-semibold text-lg text-white">Une animation de mariage originale et conviviale&nbsp;!</p>
+          <p class="text-[1rem] text-white/60">
+            L'activité favorise la cohésion, l'entraide et crée une ambiance chaleureuse entre les
+            invités. J'ai trouvé l'idée innovante et ludique pour découvrir les cadeaux des mariés
+            tout en s'amusant. Un excellent moment que j'ai pris beaucoup de plaisir à partager&nbsp;!
+          </p>
+          <p class="mt-auto text-sm text-white/40">Marian</p>
         </div>
       </div>
     </section>
@@ -549,17 +628,19 @@
       resize();
     })();
 
-    // Carousel "Comment ça se passe" — même logique que le "Highlights
-    // Gallery" d'Apple : indicateurs (point/rectangle qui se remplit) +
-    // auto-défilement avec play/pause. Le scroll manuel (swipe/drag) met
-    // aussi à jour l'indicateur actif. Local à cet essai.
-    (function () {
-      var section = document.getElementById('mecanique-teaser');
-      var track = document.getElementById('mecanique-track');
-      var cards = document.querySelectorAll('[data-mecanique-card]');
-      var dots = document.querySelectorAll('[data-mecanique-dot]');
-      var fills = document.querySelectorAll('[data-mecanique-fill]');
-      var playPauseBtn = document.getElementById('mecanique-playpause');
+    // Carousel façon "Highlights Gallery" Apple — indicateurs
+    // (point/rectangle qui se remplit) + auto-défilement avec play/pause,
+    // le scroll manuel (swipe/drag) met aussi à jour l'indicateur actif.
+    // Fonction réutilisée pour "Comment ça se passe ?" et pour le
+    // carousel mobile de "Ce qu'ils en disent" (même mécanique, deux
+    // instances indépendantes). Local à cet essai.
+    function initCarousel(sectionId, trackId, cardAttr, dotAttr, fillAttr, playPauseId) {
+      var section = document.getElementById(sectionId);
+      var track = document.getElementById(trackId);
+      var cards = document.querySelectorAll('[' + cardAttr + ']');
+      var dots = document.querySelectorAll('[' + dotAttr + ']');
+      var fills = document.querySelectorAll('[' + fillAttr + ']');
+      var playPauseBtn = document.getElementById(playPauseId);
       if (!section || !track || !cards.length || !dots.length || !playPauseBtn) return;
 
       var DURATION = 7000;   // ms avant de passer à la card suivante (allongé)
@@ -657,7 +738,10 @@
       } else {
         pause();
       }
-    })();
+    }
+
+    initCarousel('mecanique-teaser', 'mecanique-track', 'data-mecanique-card', 'data-mecanique-dot', 'data-mecanique-fill', 'mecanique-playpause');
+    initCarousel('avis-carousel', 'avis-track', 'data-avis-card', 'data-avis-dot', 'data-avis-fill', 'avis-playpause');
   </script>
 </body>
 </html>
