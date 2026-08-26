@@ -495,14 +495,15 @@
     // auto-défilement avec play/pause. Le scroll manuel (swipe/drag) met
     // aussi à jour l'indicateur actif. Local à cet essai.
     (function () {
+      var section = document.getElementById('mecanique-teaser');
       var track = document.getElementById('mecanique-track');
       var cards = document.querySelectorAll('[data-mecanique-card]');
       var dots = document.querySelectorAll('[data-mecanique-dot]');
       var fills = document.querySelectorAll('[data-mecanique-fill]');
       var playPauseBtn = document.getElementById('mecanique-playpause');
-      if (!track || !cards.length || !dots.length || !playPauseBtn) return;
+      if (!section || !track || !cards.length || !dots.length || !playPauseBtn) return;
 
-      var DURATION = 4000;   // ms avant de passer à la card suivante
+      var DURATION = 7000;   // ms avant de passer à la card suivante (allongé)
       var TICK = 50;         // ms entre deux mises à jour de la barre — setInterval
                               // plutôt que requestAnimationFrame, plus fiable si l'onglet
                               // n'a pas le focus (rAF peut être suspendu en arrière-plan).
@@ -523,7 +524,9 @@
 
       function goTo(index) {
         var next = (index + cards.length) % cards.length;
-        cards[next].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        // "block: center" pour que la page scrolle aussi verticalement
+        // jusqu'à la card à chaque changement, pas seulement horizontalement.
+        cards[next].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'center' });
         setActive(next);
       }
 
@@ -565,7 +568,7 @@
       });
 
       if ('IntersectionObserver' in window) {
-        var observer = new IntersectionObserver(function (entries) {
+        var cardObserver = new IntersectionObserver(function (entries) {
           entries.forEach(function (entry) {
             if (entry.isIntersecting && entry.intersectionRatio > 0.6) {
               var idx = Array.prototype.indexOf.call(cards, entry.target);
@@ -573,11 +576,24 @@
             }
           });
         }, { root: track, threshold: [0.6] });
-        cards.forEach(function (card) { observer.observe(card); });
+        cards.forEach(function (card) { cardObserver.observe(card); });
       }
 
       setActive(0);
-      if (!reducedMotion) { play(); } else { pause(); }
+
+      // Aucun défilement tant que le carousel n'est pas visible à l'écran :
+      // l'auto-défilement démarre/s'arrête en fonction du scroll vertical
+      // de la page, pas au chargement.
+      if ('IntersectionObserver' in window && !reducedMotion) {
+        var visibilityObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) { play(); } else { pause(); }
+          });
+        }, { threshold: 0.5 });
+        visibilityObserver.observe(section);
+      } else {
+        pause();
+      }
     })();
   </script>
 </body>
