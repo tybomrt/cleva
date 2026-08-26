@@ -47,15 +47,15 @@
       padding-right: 2.5rem;
     }
   }
-  /* La section "Pas encore décidé ?" (partial partagé) devient une bande noire
-     plein cadre au lieu d'une card insérée dans la page. */
+  /* La section "Pas encore décidé ?" (partial partagé) devient une bande
+     plein cadre au lieu d'une card insérée dans la page. Le fond (bg-ink)
+     vient déjà du partial partagé, on ne touche qu'au radius/padding. */
   #notify {
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
   #notify > div {
     border-radius: 0 !important;
-    background-color: #000 !important;
   }
   /* Carousel "Comment ça se passe" : piste sans barre de défilement visible.
      Indicateurs : un point = une card ; la card active devient un rectangle
@@ -236,7 +236,7 @@
     </section>
 
     <!-- ================= Avis ================= -->
-    <section id="avis" class="reveal bg-black py-24 sm:py-32">
+    <section id="avis" class="reveal bg-ink py-24 sm:py-32">
       <div class="content-max">
         <h2 class="text-center font-display text-display-md text-white">Ce qu'ils en disent</h2>
         <p class="mt-2 text-center text-[1rem] text-white/50">
