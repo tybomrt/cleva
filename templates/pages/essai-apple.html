@@ -90,15 +90,17 @@
   <main id="contenu">
 
     <!-- ================= Hero ================= -->
-    <!-- Card statique (pas de scroll ni de sticky, contrairement à
-         l'itération précédente) : image plein format dans une card
-         (marges haut/bas/gauche/droite, coins arrondis), hauteur proche
-         du plein écran, comme le traitement du vrai site. Tout le texte
-         du hero (titre, sous-titre, CTA, prix) est superposé et centré
-         sur cette image, avec un voile dégradé derrière pour la
-         lisibilité. -->
-    <section class="px-2 sm:px-[18px] pt-2 pb-2 sm:pt-[18px] sm:pb-[18px]">
-      <div class="relative h-[90vh] sm:h-[95vh] w-full overflow-hidden rounded-2xl sm:rounded-3xl">
+    <!-- Card statique (pas de scroll ni de sticky) : image plein format
+         dans une card (marges haut/bas/gauche/droite, coins arrondis).
+         h-[90vh]/[95vh] sert de repli ; un petit script (plus bas, pas de
+         scroll/sticky, juste un calcul de taille) ajuste la hauteur pour
+         que la card + le header pill occupent exactement 100% de l'écran,
+         quelle que soit la hauteur réelle du header (qui varie avec le
+         bandeau "Version d'essai"). Tout le texte du hero (titre,
+         sous-titre, CTA, prix) est superposé et centré sur cette image,
+         avec un voile dégradé derrière pour la lisibilité. -->
+    <section id="hero" class="px-2 sm:px-[18px] pt-2 pb-2 sm:pt-[18px] sm:pb-[18px]">
+      <div id="hero-card" class="relative h-[90vh] sm:h-[95vh] w-full overflow-hidden rounded-2xl sm:rounded-3xl">
         <img src="/assets/images/hero-mobile.webp" alt="Table de mariage dressée, avec le coffre cleva. posé dessus" class="absolute inset-0 h-full w-full object-cover block lg:hidden" />
         <img src="/assets/images/hero-desktop.webp" alt="Table de mariage dressée, avec le coffre cleva. posé dessus" class="absolute inset-0 h-full w-full object-cover object-right hidden lg:block" />
 
@@ -430,6 +432,33 @@
 
   <script src="/scripts/main.js"></script>
   <script>
+    // Ajuste la hauteur de la card du hero pour que header + card
+    // occupent exactement 100% de l'écran (pas de scroll ni de sticky :
+    // juste un calcul de taille, recalculé au resize). h-[90vh]/[95vh]
+    // reste le repli si le JS est indisponible.
+    (function () {
+      var section = document.getElementById('hero');
+      var card = document.getElementById('hero-card');
+      var headerBar = document.getElementById('site-header-bar');
+      if (!section || !card) return;
+
+      function resize() {
+        // Si la fenêtre reporte une hauteur nulle/aberrante (ex. tout début
+        // du chargement), on garde le repli CSS (h-[90vh]/[95vh]) plutôt
+        // que d'appliquer une hauteur négative ou absurde.
+        if (!window.innerHeight) return;
+        var headerHeight = headerBar ? headerBar.getBoundingClientRect().height : 0;
+        var cs = getComputedStyle(section);
+        var padTop = parseFloat(cs.paddingTop) || 0;
+        var padBottom = parseFloat(cs.paddingBottom) || 0;
+        var h = window.innerHeight - headerHeight - padTop - padBottom;
+        if (h > 0) card.style.height = h + 'px';
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+    })();
+
     // Carousel "Comment ça se passe" — même logique que le "Highlights
     // Gallery" d'Apple : indicateurs (point/rectangle qui se remplit) +
     // auto-défilement avec play/pause. Le scroll manuel (swipe/drag) met
