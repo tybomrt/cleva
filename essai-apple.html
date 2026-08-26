@@ -56,15 +56,34 @@
     padding-left: calc((100vw - min(630px, 92vw)) / 2);
     padding-right: calc((100vw - min(630px, 92vw)) / 2);
   }
-  /* Carousel "Comment ça se passe" : piste sans barre de défilement visible.
-     Indicateurs : un point = une card ; la card active devient un rectangle
-     dont le fond (span interne) se remplit pour montrer le temps restant
-     avant le passage à la suivante. */
-  #mecanique-track::-webkit-scrollbar {
+  /* Carousels "Comment ça se passe" et "Ce qu'ils en disent" : piste sans
+     barre de défilement visible. Indicateurs : un point = une card ; la
+     card active devient un rectangle dont le fond (span interne) se
+     remplit pour montrer le temps restant avant le passage à la suivante. */
+  #mecanique-track::-webkit-scrollbar,
+  #avis-track::-webkit-scrollbar {
     display: none;
   }
-  [data-mecanique-dot].is-active {
+  [data-mecanique-dot].is-active,
+  [data-avis-dot].is-active {
     width: 32px !important;
+  }
+  /* Carousel de "Ce qu'ils en disent" : affiché en dessous de 640px
+     (mobile) et à partir de 1080px ; la grille à 3 colonnes prend le
+     relais uniquement entre les deux. */
+  #avis-carousel {
+    display: block;
+  }
+  #avis-grid {
+    display: none;
+  }
+  @media (min-width: 640px) and (max-width: 1079px) {
+    #avis-carousel {
+      display: none;
+    }
+    #avis-grid {
+      display: grid;
+    }
   }
   /* Header pill : masqué à l'arrivée sur la page, apparaît en fondu après
      un court délai (script plus bas), en même temps que le prix du hero.
@@ -274,8 +293,10 @@
         </p>
       </div>
 
-      <!-- Mobile : carousel plein cadre -->
-      <div id="avis-carousel" class="sm:hidden mt-12">
+      <!-- Carousel plein cadre : affiché en dessous de 640px (mobile) et à
+           partir de 1080px ; masqué entre les deux (la grille prend le
+           relais dans cette plage, cf. #avis-grid plus bas). -->
+      <div id="avis-carousel" class="mt-12">
         <div id="avis-track" class="flex gap-6 overflow-x-auto snap-x snap-mandatory" style="scrollbar-width:none; padding-left:calc((100vw - min(1260px, 92vw)) / 2); padding-right:calc((100vw - min(1260px, 92vw)) / 2);">
           <div data-avis-card class="snap-center shrink-0 rounded-3xl bg-white/[0.06] p-8 py-14 flex flex-col items-center text-center gap-4" style="width:min(1260px, 92vw);">
             <div class="flex gap-1 text-primary" aria-hidden="true">
@@ -346,8 +367,11 @@
         </div>
       </div>
 
-      <!-- Desktop (sm+) : grille à 3 colonnes -->
-      <div class="hidden sm:grid content-max mt-16 gap-6 sm:grid-cols-3 sm:gap-6">
+      <!-- Grille à 3 colonnes, uniquement entre 640 et 1079px : en dessous
+           (mobile) et à partir de 1080px, c'est le carousel ci-dessus qui
+           s'affiche (cf. règles #avis-carousel/#avis-grid dans le <style>
+           du <head>). -->
+      <div id="avis-grid" class="content-max mt-16 gap-6 grid-cols-3">
         <div class="rounded-3xl bg-white/[0.06] p-8 sm:p-10 flex flex-col gap-4">
           <div class="flex gap-1 text-primary" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
