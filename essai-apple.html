@@ -66,6 +66,22 @@
   [data-mecanique-dot].is-active {
     width: 32px !important;
   }
+  /* Header pill : masqué à l'arrivée sur la page, apparaît en fondu après
+     un court délai (script plus bas), en même temps que le prix du hero.
+     Mécanisme dédié (pas .reveal-on-load) pour garantir qu'il reste
+     masqué même si prefers-reduced-motion est actif : sans repli, le
+     .reveal-on-load partagé n'applique alors AUCUNE règle et le header
+     resterait visible en permanence, jamais masqué. Ici, le JS gère
+     lui-même le cas reduced-motion (apparition immédiate, sans anim). */
+  #site-header-bar header {
+    opacity: 0;
+    transform: translateY(-12px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  #site-header-bar header.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 </style>
 </head>
 <body class="font-sans text-ink bg-background antialiased">
@@ -77,12 +93,13 @@
      lui-même est une pill (rounded-full, détachée du haut par un
      padding), en verre dépoli façon Apple : fond blanc translucide,
      backdrop-blur + saturate poussés, liseré et reflet clair en haut pour
-     l'effet vitre. Masqué à l'arrivée, apparaît en fondu (reveal-on-load)
-     en même temps que le prix du hero ("À partir de...", même délai
-     reveal-on-load-2), pas dès le chargement de la page. -->
+     l'effet vitre. Masqué tant que le prix du hero ("À partir de...") est
+     visible à l'écran, apparaît en fondu au scroll dès qu'il sort du
+     champ de vision (IntersectionObserver, script plus bas — pas
+     .reveal-on-load, cf. commentaire dans le <style> du <head>). -->
 <div id="site-header-bar" class="fixed inset-x-0 top-0 z-50">
   <div class="content-max-half pt-3 pb-3 sm:pt-4 sm:pb-4">
-    <header class="reveal-on-load reveal-on-load-2 rounded-full bg-white/70 backdrop-blur-xl backdrop-saturate-150 border border-white/60 shadow-[0_8px_32px_rgba(47,40,38,0.12),inset_0_1px_0_rgba(255,255,255,0.8)]">
+    <header class="rounded-full bg-white/70 backdrop-blur-xl backdrop-saturate-150 border border-white/60 shadow-[0_8px_32px_rgba(47,40,38,0.12),inset_0_1px_0_rgba(255,255,255,0.8)]">
       <div class="h-[56px] sm:h-[68px] px-5 sm:px-8 flex items-center justify-between gap-3">
         <a href="/index.html" class="shrink-0 font-display text-xl leading-none text-ink">cleva.</a>
 
@@ -126,7 +143,7 @@
               <a href="/produit.html" class="inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-base sm:text-lg font-semibold text-white hover:bg-primary-hover transition-colors">
                 Précommander
               </a>
-              <p class="text-lg sm:text-xl text-white/80">
+              <p id="hero-price-line" class="text-lg sm:text-xl text-white/80">
                 À partir de
                 <span class="hero-price text-white font-semibold">
                   <span>25&nbsp;€ par table</span>
@@ -476,6 +493,31 @@
 
   <script src="/scripts/main.js"></script>
   <script>
+    // Le header pill est masqué tant que la ligne de prix du hero
+    // ("À partir de...") est visible à l'écran, et apparaît en fondu dès
+    // qu'elle sort du champ de vision au scroll (IntersectionObserver).
+    // Mécanisme dédié (pas .reveal-on-load, cf. commentaire CSS dans le
+    // <head>) pour rester fiable même avec prefers-reduced-motion : dans
+    // ce cas, on affiche directement le header en permanence plutôt que
+    // de le faire dépendre du scroll sans transition visible.
+    (function () {
+      var header = document.querySelector('#site-header-bar header');
+      var priceLine = document.getElementById('hero-price-line');
+      if (!header || !priceLine) return;
+      var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reducedMotion || !('IntersectionObserver' in window)) {
+        header.classList.add('is-visible');
+        return;
+      }
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          header.classList.toggle('is-visible', !entry.isIntersecting);
+        });
+      }, { threshold: 0 });
+      observer.observe(priceLine);
+    })();
+
     // Ajuste la hauteur de la card du hero pour occuper exactement 100% de
     // l'écran (pas de scroll ni de sticky : juste un calcul de taille,
     // recalculé au resize). Le header est en position fixed et flotte
