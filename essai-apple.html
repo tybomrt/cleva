@@ -80,9 +80,17 @@
   <main id="contenu">
 
     <!-- ================= Hero ================= -->
-    <!-- Deux blocs distincts, façon Apple : texte centré sur fond plein d'abord,
-         grande photo plein cadre ensuite — plus de texte en superposition sur la
-         photo, plus de dégradé de lisibilité à gérer. -->
+    <!-- Photo d'abord, plein écran, épinglée (sticky) puis rapetissée au scroll —
+         façon Apple. Le wrapper est plus haut que l'écran pour donner de la place
+         au scroll pendant lequel l'effet se joue ; script dédié plus bas dans la
+         page (local à cet essai, pas dans main.js). -->
+    <section id="hero-shrink-wrapper" class="relative h-[170vh]">
+      <div class="sticky top-0 z-10 h-screen overflow-hidden">
+        <img src="/assets/images/hero-mobile.webp" alt="Table de mariage dressée, avec le coffre cleva. posé dessus" class="hero-shrink-img absolute inset-0 h-full w-full object-cover origin-top block lg:hidden" />
+        <img src="/assets/images/hero-desktop.webp" alt="Table de mariage dressée, avec le coffre cleva. posé dessus" class="hero-shrink-img absolute inset-0 h-full w-full object-cover object-right origin-top hidden lg:block" />
+      </div>
+    </section>
+
     <section class="reveal-on-load pt-20 sm:pt-28 pb-12 sm:pb-16 px-6 text-center">
       <h1 class="font-display text-display-lg leading-[1.05] max-w-[18ch] mx-auto">
         L'escape game qui réunit les invités à votre mariage
@@ -101,13 +109,6 @@
             <span>2,50&nbsp;€ par invité</span>
           </span>
         </p>
-      </div>
-    </section>
-
-    <section id="hero" class="reveal-on-load reveal-on-load-3 h-[60vh] sm:h-[85vh] px-2 sm:px-[18px] pb-2 sm:pb-[18px]">
-      <div class="relative overflow-hidden rounded-2xl sm:rounded-3xl h-full">
-        <img src="/assets/images/hero-mobile.webp" alt="Table de mariage dressée, avec le coffre cleva. posé dessus" class="absolute inset-0 h-full w-full object-cover block lg:hidden" />
-        <img src="/assets/images/hero-desktop.webp" alt="Table de mariage dressée, avec le coffre cleva. posé dessus" class="absolute inset-0 h-full w-full object-cover object-right hidden lg:block" />
       </div>
     </section>
 
@@ -417,5 +418,37 @@
 
 
   <script src="/scripts/main.js"></script>
+  <script>
+    // Effet "photo qui rapetisse au scroll" — local à cette page d'essai,
+    // volontairement hors de main.js.
+    (function () {
+      var wrapper = document.getElementById('hero-shrink-wrapper');
+      var images = document.querySelectorAll('.hero-shrink-img');
+      if (!wrapper || !images.length) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var MIN_SCALE = 0.82;
+      var MAX_RADIUS = 32;
+
+      function update() {
+        var scrollable = wrapper.offsetHeight - window.innerHeight;
+        if (scrollable <= 0) return;
+        var progress = -wrapper.getBoundingClientRect().top / scrollable;
+        progress = Math.max(0, Math.min(1, progress));
+
+        var scale = 1 - progress * (1 - MIN_SCALE);
+        var radius = progress * MAX_RADIUS;
+
+        images.forEach(function (img) {
+          img.style.transform = 'scale(' + scale + ')';
+          img.style.borderRadius = radius + 'px';
+        });
+      }
+
+      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      update();
+    })();
+  </script>
 </body>
 </html>
