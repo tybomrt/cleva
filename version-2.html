@@ -151,7 +151,13 @@
          avec un voile dégradé derrière pour la lisibilité. -->
     <section id="hero" class="px-2 sm:px-[18px] pt-2 pb-2 sm:pt-[18px] sm:pb-[18px]">
       <div id="hero-card" class="relative h-[90vh] sm:h-[95vh] w-full overflow-hidden rounded-2xl sm:rounded-3xl">
-        <video src="/assets/videos/02.mp4" poster="/assets/images/hero-desktop.webp" autoplay muted loop playsinline class="absolute inset-0 h-full w-full object-cover object-right"></video>
+        <!-- L'attribut poster natif remplace l'image par la vidéo d'un
+             coup sec dès qu'elle a assez de données pour jouer — ça
+             saccade visiblement à l'arrivée sur la page. À la place, une
+             image posée par-dessus la vidéo (déjà en train de jouer en
+             dessous) s'efface en fondu une fois la lecture démarrée. -->
+        <video id="hero-video" src="/assets/videos/02.mp4" autoplay muted loop playsinline class="absolute inset-0 h-full w-full object-cover object-right"></video>
+        <img id="hero-poster" src="/assets/images/hero-desktop.webp" alt="" class="absolute inset-0 h-full w-full object-cover object-right transition-opacity duration-700" />
 
         <!-- Voile uniforme (pas un dégradé) : le texte est centré au milieu
              de la card, donc un dégradé plus sombre en haut/bas seulement
@@ -624,7 +630,18 @@
         return;
       }
 
+      // Reflète l'état par défaut en CSS (masqué) : le tout premier appel
+      // de l'observer, juste après avoir commencé à observer, renvoie
+      // l'état déjà en place (le prix est visible au chargement) — sans
+      // ce garde-fou, ça rejoue quand même l'animation de sortie, qui
+      // démarre son propre keyframe "from" (opacity:1, visible) et fait
+      // donc flasher la pill avant de la cacher, alors qu'elle était déjà
+      // invisible.
+      var currentlyVisible = false;
+
       function setVisible(visible) {
+        if (visible === currentlyVisible) return;
+        currentlyVisible = visible;
         // Redémarre le keyframe à chaque fois (reflow forcé) pour que la
         // pill vienne toujours du bas à l'entrée et reparte toujours vers
         // le haut à la sortie, même après plusieurs allers-retours.
@@ -639,6 +656,27 @@
         });
       }, { threshold: 0 });
       observer.observe(priceLine);
+    })();
+
+    // Efface en fondu l'image posée sur la vidéo du hero dès que celle-ci
+    // a démarré sa lecture (au lieu du remplacement natif instantané de
+    // l'attribut poster, visible et disgracieux à l'arrivée sur la page).
+    (function () {
+      var video = document.getElementById('hero-video');
+      var poster = document.getElementById('hero-poster');
+      if (!video || !poster) return;
+
+      function hidePoster() {
+        poster.style.opacity = '0';
+      }
+
+      // HAVE_FUTURE_DATA (3) ou plus : la vidéo peut déjà être en train de
+      // jouer au moment où ce script s'exécute (cache, connexion rapide).
+      if (video.readyState >= 3) {
+        hidePoster();
+      } else {
+        video.addEventListener('playing', hidePoster, { once: true });
+      }
     })();
 
     // Ajuste la hauteur de la card du hero pour occuper exactement 100% de
