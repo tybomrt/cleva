@@ -524,9 +524,13 @@
 
       function goTo(index) {
         var next = (index + cards.length) % cards.length;
-        // "block: nearest" pour ne défiler qu'horizontalement dans le
-        // track, sans jamais faire bouger la page verticalement.
-        cards[next].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        // On déplace uniquement le scroll horizontal du track lui-même
+        // (scrollLeft), jamais scrollIntoView : cette méthode peut faire
+        // bouger des ancêtres (donc la page) selon le navigateur, même
+        // avec block:'nearest'. Ici, aucune chance que le site bouge.
+        var card = cards[next];
+        var targetLeft = card.offsetLeft - (track.clientWidth - card.clientWidth) / 2;
+        track.scrollTo({ left: targetLeft, behavior: 'smooth' });
         setActive(next);
       }
 
