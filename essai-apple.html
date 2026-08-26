@@ -96,39 +96,47 @@
   <main id="contenu">
 
     <!-- ================= Hero ================= -->
-    <!-- Par défaut : une card (comme sur le vrai site) qui prend toute la
-         hauteur autorisée, avec une marge haut/bas/gauche/droite. Au scroll,
-         cette card est épinglée (sticky) pendant qu'elle :
-         1) rétrécit jusqu'à une taille cible
+    <!-- La card image prend 100% de la hauteur disponible sous le header,
+         sans marge (plein cadre). Tout le texte du hero (titre, sous-titre,
+         CTA, prix) est superposé et centré sur cette image, avec un voile
+         dégradé derrière pour la lisibilité. Au scroll, la card est
+         épinglée (sticky) pendant qu'elle :
+         1) rétrécit jusqu'à une taille cible (et regagne des coins arrondis)
          2) reste à cette taille (palier) le temps que le wrapper finisse de défiler
          3) se détache et disparaît avec le scroll classique, comme n'importe
             quel contenu normal.
-         Script dédié plus bas dans la page (local à cet essai, pas main.js). -->
-    <section id="hero-shrink-wrapper" class="relative px-2 sm:px-[18px] pt-2 pb-2 sm:pt-[18px] sm:pb-[18px]">
-      <div id="hero-shrink-frame" class="sticky relative h-[90vh] sm:h-[95vh] w-full mx-auto overflow-hidden rounded-2xl sm:rounded-3xl">
+         Le texte s'estompe (opacity) pendant le rétrécissement plutôt que
+         de se déformer avec l'image. Script dédié plus bas dans la page
+         (local à cette page d'essai, pas main.js). -->
+    <section id="hero-shrink-wrapper" class="relative">
+      <div id="hero-shrink-frame" class="sticky relative overflow-hidden">
         <img src="/assets/images/hero-mobile.webp" alt="Table de mariage dressée, avec le coffre cleva. posé dessus" class="hero-shrink-img absolute inset-0 h-full w-full object-cover block lg:hidden" />
         <img src="/assets/images/hero-desktop.webp" alt="Table de mariage dressée, avec le coffre cleva. posé dessus" class="hero-shrink-img absolute inset-0 h-full w-full object-cover object-right hidden lg:block" />
-      </div>
-    </section>
 
-    <section class="reveal-on-load content-max pt-12 sm:pt-16 pb-12 sm:pb-16 text-center">
-      <h1 class="font-display text-display-lg leading-[1.05] max-w-[18ch] mx-auto">
-        L'escape game qui réunit les invités à votre mariage
-      </h1>
-      <p class="reveal-on-load reveal-on-load-1 mt-6 max-w-[46ch] mx-auto text-[1.25rem] sm:text-[1.75rem] font-medium text-ink-soft">
-        Enfermez <span class="text-ink font-semibold">les cadeaux</span> pour vos invités dans un coffre et laissez-les résoudre les <span class="text-ink font-semibold">énigmes</span> pour les récupérer.
-      </p>
-      <div class="reveal-on-load reveal-on-load-2 mt-8 flex flex-col items-center gap-4">
-        <a href="/produit.html" class="inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-base sm:text-lg font-semibold text-white hover:bg-primary-hover transition-colors">
-          Précommander
-        </a>
-        <p class="text-lg sm:text-xl text-ink-soft">
-          À partir de
-          <span class="hero-price text-ink font-semibold">
-            <span>25&nbsp;€ par table</span>
-            <span>2,50&nbsp;€ par invité</span>
-          </span>
-        </p>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-black/10"></div>
+
+        <div id="hero-shrink-text" class="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-6">
+          <div class="reveal-on-load">
+            <h1 class="font-display text-display-lg leading-[1.05] max-w-[18ch] mx-auto text-white">
+              L'escape game qui réunit les invités à votre mariage
+            </h1>
+            <p class="reveal-on-load reveal-on-load-1 mt-6 max-w-[46ch] mx-auto text-[1.25rem] sm:text-[1.75rem] font-medium text-white/80">
+              Enfermez <span class="text-white font-semibold">les cadeaux</span> pour vos invités dans un coffre et laissez-les résoudre les <span class="text-white font-semibold">énigmes</span> pour les récupérer.
+            </p>
+            <div class="reveal-on-load reveal-on-load-2 mt-8 flex flex-col items-center gap-4">
+              <a href="/produit.html" class="inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-base sm:text-lg font-semibold text-white hover:bg-primary-hover transition-colors">
+                Précommander
+              </a>
+              <p class="text-lg sm:text-xl text-white/80">
+                À partir de
+                <span class="hero-price text-white font-semibold">
+                  <span>25&nbsp;€ par table</span>
+                  <span>2,50&nbsp;€ par invité</span>
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -477,27 +485,26 @@
     (function () {
       var wrapper = document.getElementById('hero-shrink-wrapper');
       var frame = document.getElementById('hero-shrink-frame');
+      var heroText = document.getElementById('hero-shrink-text');
       var headerBar = document.getElementById('site-header-bar');
       if (!wrapper || !frame) return;
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
       var SHRINK_RANGE = 600; // px de scroll pour l'animation de rétrécissement
       var HOLD_RANGE = 400;   // px de scroll pendant lesquels la taille reste fixe (palier)
+      var START_RADIUS = 0;   // plein cadre par défaut, sans marge
+      var END_RADIUS = 32;    // redevient une card une fois rétrécie
       var startW, startH, endW, endH;
 
       function measure() {
-        // Décolle temporairement les overrides pour lire la taille "naturelle"
-        // (celle donnée par les classes h-[90vh] sm:h-[95vh] w-full), qu'on
-        // soit au premier chargement ou après un resize en plein scroll.
-        frame.style.width = '';
-        frame.style.height = '';
-        var rect = frame.getBoundingClientRect();
-        startW = rect.width;
-        startH = rect.height;
+        var headerHeight = headerBar ? headerBar.getBoundingClientRect().height : 0;
+        frame.style.top = headerHeight + 'px';
 
-        // La card doit s'épingler juste sous la barre de header (sticky elle
-        // aussi), pas sous le haut de l'écran.
-        frame.style.top = (headerBar ? headerBar.getBoundingClientRect().height : 0) + 'px';
+        // Taille par défaut : plein cadre, largeur de l'écran, hauteur =
+        // tout l'espace disponible sous le header (pas de vh arbitraire
+        // ni de marge).
+        startW = window.innerWidth;
+        startH = window.innerHeight - headerHeight;
 
         endW = Math.min(window.innerWidth * 0.8, 600);
         endH = window.innerHeight * 0.45;
@@ -512,9 +519,18 @@
 
         var w = startW + (endW - startW) * progress;
         var h = startH + (endH - startH) * progress;
+        var r = START_RADIUS + (END_RADIUS - START_RADIUS) * progress;
 
         frame.style.width = w + 'px';
         frame.style.height = h + 'px';
+        frame.style.borderRadius = r + 'px';
+
+        // Le texte s'estompe pendant le rétrécissement plutôt que de se
+        // déformer avec l'image (il est dans le même cadre overflow-hidden).
+        if (heroText) {
+          heroText.style.opacity = String(1 - progress);
+          heroText.style.pointerEvents = progress > 0.05 ? 'none' : '';
+        }
       }
 
       window.addEventListener('scroll', update, { passive: true });
