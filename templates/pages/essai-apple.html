@@ -142,41 +142,33 @@
     </section>
 
     <!-- ================= Comment ça se passe ================= -->
+    <!-- Style "Découvrez Final Cut Pro" : petites pills au-dessus du titre,
+         gros titre centré, puis une grille de phrases courtes en gras — sans
+         images, comme sur la page Apple de référence. -->
     <section id="mecanique-teaser" class="reveal px-[clamp(1.25rem,8vw,7.5rem)] py-24 sm:py-32">
-      <h2 class="text-center font-display text-display-md">Comment ça se passe&nbsp;?</h2>
+      <div class="flex flex-wrap justify-center gap-2">
+        <span class="rounded-full border border-line-strong px-4 py-2 text-sm font-medium text-ink-soft">Sous clé</span>
+        <span class="rounded-full border border-line-strong px-4 py-2 text-sm font-medium text-ink-soft">Sur la table</span>
+        <span class="rounded-full border border-line-strong px-4 py-2 text-sm font-medium text-ink-soft">En jeu</span>
+      </div>
 
-      <ol class="mt-16 grid gap-8 sm:grid-cols-3 list-none p-0 m-0">
-        <li>
-          <div class="aspect-[9/10] overflow-hidden rounded-2xl">
-            <img src="/assets/images/Product.webp" alt="" class="h-full w-full object-cover" />
-          </div>
-          <h3 class="mt-8 font-sans font-semibold text-2xl">Mettez les cadeaux sous clé</h3>
-          <p class="mt-2 text-ink-soft">
-            Vous placez les cadeaux que vous faites à vos invités dans un coffre*, que vous fermez
-            grâce au <span class="text-ink font-semibold">cadenas fourni</span> avec les boîtes de jeu.
-          </p>
-          <p class="mt-2 text-sm text-ink-soft">*Cadeaux et coffres non fournis</p>
-        </li>
-        <li>
-          <div class="aspect-[9/10] overflow-hidden rounded-2xl">
-            <img src="/assets/images/hero.webp" alt="" class="h-full w-full object-cover" />
-          </div>
-          <h3 class="mt-8 font-sans font-semibold text-2xl">Posez les boîtes et coffres sur les tables</h3>
-          <p class="mt-2 text-ink-soft">
-            Aucune installation et animation à prévoir&nbsp;: <span class="text-ink font-semibold">le jeu est autoporteur</span>.
-          </p>
-        </li>
-        <li>
-          <div class="aspect-[9/10] overflow-hidden rounded-2xl">
-            <img src="/assets/images/hero.webp" alt="" class="h-full w-full object-cover object-[75%_50%]" />
-          </div>
-          <h3 class="mt-8 font-sans font-semibold text-2xl">Faites danser les neurones de vos invités</h3>
-          <p class="mt-2 text-ink-soft">
-            Chaque table joue à son rythme, ou bien à votre top départ, pour mettre un peu de
-            <span class="text-ink font-semibold">compétition</span> dans la salle.
-          </p>
-        </li>
-      </ol>
+      <h2 class="mt-8 text-center font-display text-display-md max-w-[22ch] mx-auto">Comment ça se passe&nbsp;?</h2>
+
+      <div class="mt-16 grid gap-10 sm:gap-14 sm:grid-cols-3">
+        <p class="text-2xl sm:text-[1.75rem] font-semibold leading-snug">
+          Mettez les cadeaux sous clé. Vous les placez dans un coffre*, que vous fermez avec le
+          <span class="text-primary">cadenas fourni</span> avec la boîte.
+        </p>
+        <p class="text-2xl sm:text-[1.75rem] font-semibold leading-snug">
+          Posez les boîtes sur les tables. Aucune installation ni animation à prévoir&nbsp;:
+          <span class="text-primary">le jeu est autoporteur</span>.
+        </p>
+        <p class="text-2xl sm:text-[1.75rem] font-semibold leading-snug">
+          Chaque table joue à son rythme, ou bien à votre top départ, pour mettre un peu de
+          <span class="text-primary">compétition</span> dans la salle.
+        </p>
+      </div>
+      <p class="mt-8 text-sm text-ink-soft text-center">*Cadeaux et coffres non fournis</p>
     </section>
 
     <!-- ================= Avis ================= -->
