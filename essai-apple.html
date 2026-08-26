@@ -37,6 +37,22 @@
   .bg-primary {
     border-radius: 9999px !important;
   }
+  /* Largeur de contenu unique pour TOUTE la page : 1260px max, centré, avec
+     un padding latéral fixe (au lieu du clamp() en vw qui laissait le
+     contenu s'étirer indéfiniment sur les très grands écrans). */
+  .content-max {
+    max-width: 1260px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  @media (min-width: 640px) {
+    .content-max {
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+    }
+  }
   /* La section "Pas encore décidé ?" (partial partagé) devient une bande noire
      plein cadre au lieu d'une card insérée dans la page. */
   #notify {
@@ -70,7 +86,7 @@
     Version d'essai — inspirée d'Apple
   </div>
   <header class="bg-background/95 backdrop-blur-sm border-b border-line">
-    <div class="px-4 sm:px-8 h-[56px] sm:h-[68px] flex items-center justify-between gap-3">
+    <div class="content-max h-[56px] sm:h-[68px] flex items-center justify-between gap-3">
       <a href="/index.html" class="shrink-0 font-display text-xl leading-none text-ink">cleva.</a>
 
       <nav class="hidden md:flex flex-wrap justify-center gap-2">
@@ -105,7 +121,7 @@
       </div>
     </section>
 
-    <section class="reveal-on-load pt-12 sm:pt-16 pb-12 sm:pb-16 px-6 text-center">
+    <section class="reveal-on-load content-max pt-12 sm:pt-16 pb-12 sm:pb-16 text-center">
       <h1 class="font-display text-display-lg leading-[1.05] max-w-[18ch] mx-auto">
         L'escape game qui réunit les invités à votre mariage
       </h1>
@@ -128,7 +144,7 @@
 
     <!-- ================= Citation ================= -->
     <section class="reveal bg-background">
-      <div class="px-[clamp(1.25rem,8vw,7.5rem)] py-32 sm:py-48 text-center">
+      <div class="content-max py-32 sm:py-48 text-center">
         <p class="font-sans text-[1.25rem] font-bold uppercase tracking-[0.16em] text-primary">Le scénario</p>
         <p class="mt-4 font-display text-display-md max-w-[24ch] mx-auto">
           Les alliances ont disparu.<br />
@@ -138,7 +154,7 @@
     </section>
 
     <!-- ================= Deux cards ================= -->
-    <section id="deux-cards" class="reveal px-[clamp(1.25rem,8vw,10rem)] py-16 sm:py-24">
+    <section id="deux-cards" class="reveal content-max py-16 sm:py-24">
       <div class="flex flex-col xl:flex-row gap-10 sm:gap-16 items-center">
         <div class="w-full xl:w-1/2 flex flex-col items-center xl:items-start text-center xl:text-left">
           <h2 class="font-display text-display-md max-w-[30ch]">La conversation s'essouffle ?<br />cleva. entre en jeu.</h2>
@@ -168,7 +184,7 @@
          temps restant) + bouton play/pause pour l'auto-défilement. Script
          dédié plus bas, local à cet essai. -->
     <section id="mecanique-teaser" class="reveal py-24 sm:py-32">
-      <div class="px-[clamp(1.25rem,8vw,7.5rem)]">
+      <div class="content-max">
         <h2 class="text-center font-display text-display-md max-w-[22ch] mx-auto">Comment ça se passe&nbsp;?</h2>
       </div>
 
@@ -204,7 +220,7 @@
         </div>
       </div>
 
-      <div class="mt-8 px-[clamp(1.25rem,8vw,7.5rem)] flex items-center justify-center gap-4">
+      <div class="mt-8 content-max flex items-center justify-center gap-4">
         <div class="flex items-center gap-2">
           <button type="button" data-mecanique-dot aria-label="Aller à l'étape 1" class="relative h-2 w-2 rounded-full bg-line-strong overflow-hidden p-0 border-0 cursor-pointer transition-[width] duration-300">
             <span data-mecanique-fill class="absolute inset-y-0 left-0 w-0 bg-ink"></span>
@@ -222,12 +238,12 @@
         </button>
       </div>
 
-      <p class="mt-6 px-[clamp(1.25rem,8vw,7.5rem)] text-sm text-ink-soft text-center">*Cadeaux et coffres non fournis</p>
+      <p class="mt-6 content-max text-sm text-ink-soft text-center">*Cadeaux et coffres non fournis</p>
     </section>
 
     <!-- ================= Avis ================= -->
     <section id="avis" class="reveal bg-black py-24 sm:py-32">
-      <div class="px-[clamp(1.25rem,8vw,7.5rem)]">
+      <div class="content-max">
         <h2 class="text-center font-display text-display-md text-white">Ce qu'ils en disent</h2>
         <p class="mt-2 text-center text-[1rem] text-white/50">
           <a href="https://www.trustpilot.com/review/cleva-games.fr" target="_blank" rel="noopener" class="underline underline-offset-4 hover:text-white transition-colors">Avis vérifiés sur Trustpilot</a>
@@ -289,7 +305,7 @@
     </section>
 
     <!-- ================= Preuve / légitimité ================= -->
-    <section id="preuve" class="reveal px-[clamp(1.25rem,8vw,7.5rem)] py-24 sm:py-32">
+    <section id="preuve" class="reveal content-max py-24 sm:py-32">
       <div class="flex flex-col xl:flex-row gap-10 sm:gap-16">
         <figure class="relative h-[60vh] xl:h-[70vh] w-full xl:w-1/2 overflow-hidden rounded-2xl sm:rounded-3xl order-2">
           <img src="/assets/images/hero.webp" alt="" class="h-full w-full object-cover" />
@@ -337,7 +353,7 @@
     </section>
 
     <!-- ================= FAQ ================= -->
-    <section id="faq" class="reveal px-[clamp(1.25rem,8vw,7.5rem)] py-24 sm:py-32">
+    <section id="faq" class="reveal content-max py-24 sm:py-32">
       <h2 class="text-center font-display text-display-md">Questions fréquentes</h2>
       <p class="mt-2 text-center text-[1rem] text-ink-soft">
         Si votre question n'est pas là, écrivez-moi à contact@cleva-games.fr
@@ -420,7 +436,7 @@
     </section>
 
     <!-- ================= Pas encore décidé ================= -->
-    <section id="notify" class="reveal px-[clamp(1.25rem,8vw,7.5rem)] py-16 sm:py-24">
+    <section id="notify" class="reveal content-max py-16 sm:py-24">
       <div class="rounded-2xl sm:rounded-3xl bg-ink text-white flex flex-col items-center justify-center text-center px-6 sm:px-20 py-16 sm:py-20">
         <h2 class="font-display text-display-md max-w-[24ch] text-white">Pas encore décidé&nbsp;?</h2>
         <p class="mt-8 max-w-[42ch] text-[1.25rem] font-medium text-lin-400">
@@ -443,7 +459,7 @@
   </main>
 
   <footer id="footer">
-    <div class="px-[clamp(1.25rem,8vw,7.5rem)] py-10">
+    <div class="content-max py-10">
       <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-8">
         <div>
           <p class="font-display text-2xl leading-none">cleva.</p>
