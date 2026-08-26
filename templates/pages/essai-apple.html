@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cleva. — version d'essai (inspirée d'Apple)</title>
+  <meta name="description" content="Un escape game à jouer pendant le repas de mariage. Une boîte par table, vos invités doivent forcer le coffre pour libérer leurs cadeaux. 25 € la boîte, précommande ouverte." />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="cleva. — l'escape game à jouer pendant votre mariage" />
+  <meta property="og:description" content="Une boîte par table, vos invités doivent forcer le coffre pour libérer leurs cadeaux. 25 € la boîte, précommande ouverte." />
+  <meta property="og:url" content="https://www.cleva-games.fr/" />
+  <!-- TODO : déposer une image 1200×630 dans /assets/images/ et décommenter
+  <meta property="og:image" content="https://www.cleva-games.fr/assets/images/og.jpg" /> -->
+  <meta name="twitter:card" content="summary_large_image" />
+
+<!--#include "partials/head-assets.html" -->
+</head>
+<body class="font-sans text-ink bg-background antialiased">
+
+<!-- Bandeau d'identification de la page d'essai — à retirer si les changements sont
+     reportés dans la vraie home. -->
+<div class="bg-ink text-white text-center text-xs sm:text-sm py-2 px-20 sm:px-4">
+  Version d'essai — inspirée d'Apple
+</div>
+
+<!--#include "partials/header.html" cta_href="/produit.html" -->
+
+  <main id="contenu">
+
+    <!-- ================= Hero ================= -->
+    <section id="hero" class="h-[90vh] sm:h-[95vh] flex flex-col px-2 sm:px-[18px] pt-2 pb-2 sm:pt-[18px] sm:pb-[18px]">
+
+      <div class="relative overflow-hidden rounded-2xl sm:rounded-3xl flex-1">
+        <!-- Deux recadrages distincts : sur mobile la boîte est sous le texte,
+             sur desktop elle reste dans le tiers droit, dégagé par le texte
+             (limité à 60% de largeur, cf. plus bas). -->
+        <img src="/assets/images/hero-mobile.webp" alt="Table de mariage dressée, avec le coffre cleva. posé dessus" class="absolute inset-0 h-full w-full object-cover block lg:hidden" />
+        <img src="/assets/images/hero-desktop.webp" alt="Table de mariage dressée, avec le coffre cleva. posé dessus" class="absolute inset-0 h-full w-full object-cover object-right hidden lg:block" />
+        <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/30 to-black/80"></div>
+
+        <!-- Titre : en haut sur mobile, centré verticalement sur desktop (à partir de lg,
+             en phase avec le passage à la photo desktop ci-dessus). -->
+        <div class="absolute top-40 left-6 right-6 lg:top-0 lg:bottom-0 lg:left-20 lg:right-20 lg:max-w-[48%] lg:flex lg:flex-col lg:justify-center">
+          <h1 class="reveal-on-load font-display text-display-lg leading-[1.05] text-white max-w-[21ch] lg:max-w-[32ch]">
+            L'escape game qui réunit<br class="hidden 2xl:block" />
+            les invités à votre mariage
+          </h1>
+          <p class="reveal-on-load reveal-on-load-1 mt-5 max-w-[46ch] text-[1.25rem] sm:text-[1.75rem] font-medium text-white/90">
+            Enfermez les cadeaux pour vos invités dans un coffre et laissez-les résoudre les énigmes pour les récupérer.
+          </p>
+        </div>
+
+        <!-- CTA : toujours en bas à droite -->
+        <div class="reveal-on-load reveal-on-load-2 absolute bottom-6 lg:bottom-20 left-6 right-6 lg:left-auto lg:right-20 lg:w-max flex flex-col items-center lg:items-end gap-3">
+          <p class="text-left text-sm sm:text-base font-medium text-white/90">
+            À partir de
+            <span class="hero-price">
+              <span>25&nbsp;€ par table</span>
+              <span>2,50&nbsp;€ par invité</span>
+            </span>
+          </p>
+          <a href="/produit.html" class="w-full lg:w-max inline-flex items-center justify-center rounded-2xl bg-primary px-8 py-3.5 sm:px-12 sm:py-5 text-base sm:text-lg font-semibold text-white hover:bg-primary-hover transition-colors">
+            Précommander
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Nav interne (essai) ================= -->
+    <nav class="sticky top-[76px] sm:top-[84px] z-40 bg-background/90 backdrop-blur-sm border-b border-line">
+      <div class="px-[clamp(1.25rem,8vw,7.5rem)] py-3 flex flex-wrap justify-center gap-2">
+        <a href="#mecanique-teaser" class="rounded-full border border-line-strong px-4 py-2 text-sm font-medium text-ink hover:bg-line transition-colors">Comment ça se passe</a>
+        <a href="#avis" class="rounded-full border border-line-strong px-4 py-2 text-sm font-medium text-ink hover:bg-line transition-colors">Avis</a>
+        <a href="#preuve" class="rounded-full border border-line-strong px-4 py-2 text-sm font-medium text-ink hover:bg-line transition-colors">Pourquoi cleva.</a>
+        <a href="#faq" class="rounded-full border border-line-strong px-4 py-2 text-sm font-medium text-ink hover:bg-line transition-colors">FAQ</a>
+      </div>
+    </nav>
+
+    <!-- ================= Citation ================= -->
+    <section class="reveal bg-background">
+      <div class="px-[clamp(1.25rem,8vw,7.5rem)] py-28 sm:py-36 text-center">
+        <p class="font-sans text-[1.25rem] font-bold uppercase tracking-[0.16em] text-primary">Le scénario</p>
+        <p class="mt-4 font-display text-display-md max-w-[24ch] mx-auto">
+          Les alliances ont disparu.<br />
+          Heureusement, vos invités sont sur le coup.
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= Deux cards ================= -->
+    <!-- TODO : contenu à définir -->
+    <section id="deux-cards" class="reveal px-[clamp(1.25rem,8vw,10rem)] pb-2 sm:pb-[18px]">
+      <div class="flex flex-col xl:flex-row gap-2 sm:gap-[18px]">
+        <div class="h-[80vh] w-full xl:w-1/2 rounded-2xl sm:rounded-3xl bg-surface flex flex-col items-center justify-center text-center px-6 sm:px-10">
+          <h2 class="font-display text-display-md max-w-[30ch]">La conversation s'essouffle ?<br />cleva. entre en jeu.</h2>
+          <p class="mt-8 max-w-[42ch] text-[1.25rem] font-medium text-ink-soft">
+            Vos invités ont fait connaissance, refait le monde…<br />
+            Quand l'ambiance retombe, cleva. prend le relais.<br />
+            Sans quitter sa chaise ni abandonner son dessert.
+          </p>
+          <a href="/produit.html" class="mt-10 inline-flex items-center justify-center rounded-2xl bg-primary px-8 py-4 text-base font-semibold text-white hover:bg-primary-hover transition-colors">
+            Précommander
+          </a>
+        </div>
+        <div class="relative h-[80vh] w-full xl:w-1/2 overflow-hidden rounded-2xl sm:rounded-3xl bg-surface flex items-center justify-center p-10 sm:p-16">
+          <img src="/assets/images/Product.webp" alt="La boîte cleva., coffre et cadenas à énigmes" class="max-h-full max-w-full object-contain" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Comment ça se passe ================= -->
+    <section id="mecanique-teaser" class="reveal px-[clamp(1.25rem,8vw,7.5rem)] py-16 sm:py-24">
+      <h2 class="text-center font-display text-display-md">Comment ça se passe&nbsp;?</h2>
+
+      <ol class="mt-16 grid gap-8 sm:grid-cols-3 list-none p-0 m-0">
+        <li>
+          <!-- TODO : remplacer par une vraie photo -->
+          <div class="aspect-[9/10] overflow-hidden rounded-2xl bg-surface">
+            <img src="/assets/images/Product.webp" alt="" class="h-full w-full object-cover" />
+          </div>
+          <h3 class="mt-8 font-sans font-semibold text-2xl">Mettez les cadeaux sous clé</h3>
+          <p class="mt-2 text-ink-soft">
+            Vous placez les cadeaux que vous faites à vos invités dans un coffre*, que vous fermez
+            grâce au cadenas fourni avec les boîtes de jeu.
+          </p>
+          <p class="mt-2 text-sm text-ink-soft">*Cadeaux et coffres non fournis</p>
+        </li>
+        <li>
+          <!-- TODO : remplacer par une vraie photo -->
+          <div class="aspect-[9/10] overflow-hidden rounded-2xl bg-surface">
+            <img src="/assets/images/hero.webp" alt="" class="h-full w-full object-cover" />
+          </div>
+          <h3 class="mt-8 font-sans font-semibold text-2xl">Posez les boîtes sur les tables</h3>
+          <p class="mt-2 text-ink-soft">
+            Aucune installation et animation à prévoir&nbsp;: le jeu est autoporteur.
+          </p>
+        </li>
+        <li>
+          <!-- TODO : remplacer par une vraie photo -->
+          <div class="aspect-[9/10] overflow-hidden rounded-2xl bg-surface">
+            <img src="/assets/images/hero.webp" alt="" class="h-full w-full object-cover object-[75%_50%]" />
+          </div>
+          <h3 class="mt-8 font-sans font-semibold text-2xl">Faites danser les neurones</h3>
+          <p class="mt-2 text-ink-soft">
+            Chaque table joue à son rythme, ou bien à votre top départ, pour mettre un peu de
+            compétition dans la salle.
+          </p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ================= Avis ================= -->
+    <section id="avis" class="reveal bg-ink py-16 sm:py-24">
+      <div class="px-[clamp(1.25rem,8vw,7.5rem)]">
+        <h2 class="text-center font-display text-display-md text-white">Ce qu'ils en disent</h2>
+        <p class="mt-2 text-center text-[1rem] text-white/50">
+          <a href="https://www.trustpilot.com/review/cleva-games.fr" target="_blank" rel="noopener" class="underline underline-offset-4 hover:text-white transition-colors">Avis vérifiés sur Trustpilot</a>
+        </p>
+
+        <div class="mt-16 grid gap-6 sm:grid-cols-3">
+          <div class="rounded-2xl bg-white/5 p-8 flex flex-col gap-4">
+            <div class="flex gap-1 text-primary" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+            </div>
+            <p class="font-sans font-semibold text-lg text-white">Excellent escape game&nbsp;!</p>
+            <p class="text-[1rem] text-white/70">
+              Une super expérience du début à la fin&nbsp;! Les énigmes sont variées, bien construites
+              et très immersives. L'accueil est top et l'ambiance géniale. Je recommande à 100&nbsp;%&nbsp;!
+            </p>
+            <p class="mt-auto text-sm text-white/50">Max</p>
+          </div>
+
+          <div class="rounded-2xl bg-white/5 p-8 flex flex-col gap-4">
+            <div class="flex gap-1 text-primary" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+            </div>
+            <p class="font-sans font-semibold text-lg text-white">Superbe expérience&nbsp;!</p>
+            <p class="text-[1rem] text-white/70">
+              Nous avons eu le plaisir de découvrir ce magnifique jeu lors du repas de mariage. Entre
+              un verre de vin et un arancini, il a su parfaitement stimuler nos méninges&nbsp;! Ce jeu
+              crée une vraie synergie entre les joueurs et offre une interaction incroyable. Un moment
+              ludique, convivial et mémorable. Je recommande&nbsp;!!!
+            </p>
+            <p class="mt-auto text-sm text-white/50">Mathis</p>
+          </div>
+
+          <div class="rounded-2xl bg-white/5 p-8 flex flex-col gap-4">
+            <div class="flex gap-1 text-primary" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+            </div>
+            <p class="font-sans font-semibold text-lg text-white">Une animation de mariage originale et conviviale&nbsp;!</p>
+            <p class="text-[1rem] text-white/70">
+              L'activité favorise la cohésion, l'entraide et crée une ambiance chaleureuse entre les
+              invités. J'ai trouvé l'idée innovante et ludique pour découvrir les cadeaux des mariés
+              tout en s'amusant. Un excellent moment que j'ai pris beaucoup de plaisir à partager&nbsp;!
+            </p>
+            <p class="mt-auto text-sm text-white/50">Marian</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Preuve / légitimité ================= -->
+    <section id="preuve" class="reveal px-[clamp(1.25rem,8vw,7.5rem)] py-16 sm:py-20">
+      <div class="flex flex-col xl:flex-row gap-2 sm:gap-[18px]">
+        <!-- TODO : remplacer par la vidéo d'une vraie partie test.
+             C'est l'élément qui remplace à la fois la démo produit et la preuve sociale. -->
+        <figure class="relative h-[80vh] w-full xl:w-1/2 overflow-hidden rounded-2xl sm:rounded-3xl bg-surface order-2">
+          <img src="/assets/images/hero.webp" alt="" class="h-full w-full object-cover" />
+        </figure>
+
+        <div class="h-auto xl:h-[80vh] w-full xl:w-1/2 overflow-y-auto py-10 sm:py-16 px-2 sm:px-4 flex flex-col justify-center order-1">
+          <h2 class="font-display text-display-md">Inventé le jour de mon propre mariage</h2>
+          <p class="mt-10 text-ink-soft">
+            J'ai été invité à plusieurs mariages, et à chaque fois le même moment de flottement&nbsp;:
+            le repas s'étire, les discours sont passés, et une partie de la salle s'ennuie ferme.
+            Pour le mien, j'ai décidé de régler le problème plutôt que de le subir — j'ai créé un
+            escape game de mariage.
+          </p>
+          <p class="mt-4 text-ink-soft">
+            Pour être sûr que tout le monde joue vraiment le jeu, j'ai enfermé les cadeaux sous
+            clé&nbsp;: pas d'énigmes résolues, pas de cadeaux. Un vrai succès — de quoi avoir envie
+            d'en faire profiter d'autres mariages que le mien.
+          </p>
+          <p class="mt-4 text-ink-soft">
+            Je documente tout ça sur Instagram et TikTok (<strong class="text-ink">@tybocrea</strong>)&nbsp;:
+            des conseils pour organiser son mariage, les coulisses de la fabrication de cleva., et
+            un peu de ma vie aussi.
+          </p>
+          <h3 class="mt-12 font-sans font-semibold text-[1rem]">Rejoignez-moi</h3>
+          <div class="mt-2 flex flex-wrap gap-1 -ml-2">
+            <a href="https://www.instagram.com/tybocrea/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded px-2 py-2 text-sm font-medium text-ink hover:bg-line transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.897 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.897-.419-.419-.687-.824-.897-1.38-.165-.42-.36-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.06-1.17.255-1.814.42-2.234.21-.57.479-.96.897-1.381.419-.419.81-.687 1.379-.897.42-.165 1.051-.36 2.221-.42 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
+              Instagram
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+            <a href="https://www.tiktok.com/@tybocrea" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded px-2 py-2 text-sm font-medium text-ink hover:bg-line transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+              TikTok
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+            <a href="https://www.youtube.com/@tybo_crea" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded px-2 py-2 text-sm font-medium text-ink hover:bg-line transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              YouTube
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FAQ ================= -->
+    <section id="faq" class="reveal px-[clamp(1.25rem,8vw,7.5rem)] py-16 sm:py-20">
+      <h2 class="text-center font-display text-display-md">Questions fréquentes</h2>
+      <p class="mt-2 text-center text-[1rem] text-ink-soft">
+        Si votre question n'est pas là, écrivez-moi à contact@cleva-games.fr
+      </p>
+
+      <div class="mt-16 mx-auto flex max-w-[896px] flex-col gap-5">
+
+        <details class="group accordion rounded-2xl bg-surface p-6">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4">
+            <span class="font-sans text-[1.25rem] font-semibold">Qu'est-ce qui est compris dans la boîte&nbsp;?</span>
+            <span class="shrink-0 inline-flex transition-transform group-open:rotate-90"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+          </summary>
+          <div class="accordion-content pt-4">
+            <p class="text-[1rem] text-ink-soft">
+              Chaque boîte cleva. contient les énigmes du jeu et le cadenas qui verrouille votre coffre.
+              Le coffre — une valise, une malle, un joli coffret… — et les cadeaux qu'il y a dedans,
+              c'est à vous de les prévoir. On vous laisse le champ libre pour assortir ça à votre déco.
+            </p>
+          </div>
+        </details>
+
+        <details class="group accordion rounded-2xl bg-surface p-6">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4">
+            <span class="font-sans text-[1.25rem] font-semibold">Est-ce qu'il y a besoin d'un animateur&nbsp;?</span>
+            <span class="shrink-0 inline-flex transition-transform group-open:rotate-90"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+          </summary>
+          <div class="accordion-content pt-4">
+            <p class="text-[1rem] text-ink-soft">
+              Non, aucun besoin d'animateur — ni de vous stresser avec ça un jour pareil.
+              Vous déposez une boîte sur chaque table, et le jeu se lance tout seul.
+            </p>
+          </div>
+        </details>
+
+        <details class="group accordion rounded-2xl bg-surface p-6">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4">
+            <span class="font-sans text-[1.25rem] font-semibold">C'est difficile&nbsp;?</span>
+            <span class="shrink-0 inline-flex transition-transform group-open:rotate-90"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+          </summary>
+          <div class="accordion-content pt-4">
+            <p class="text-[1rem] text-ink-soft">
+              On ne va pas se mentir : entre le champagne qui coule à flot et la moitié de la salle
+              qui n'a jamais fait d'escape game de sa vie, ce n'est pas le moment de sortir l'énigme
+              la plus tordue de la création. Le niveau est pensé pour un repas de mariage — un mélange
+              d'énigmes logiques et d'observation, assez malin pour être satisfaisant, assez accessible
+              pour se résoudre entre le fromage et le dessert (même après deux coupes de champagne).
+            </p>
+          </div>
+        </details>
+
+        <details class="group accordion rounded-2xl bg-surface p-6">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4">
+            <span class="font-sans text-[1.25rem] font-semibold">Combien de boîtes dois-je commander&nbsp;?</span>
+            <span class="shrink-0 inline-flex transition-transform group-open:rotate-90"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+          </summary>
+          <div class="accordion-content pt-4">
+            <p class="text-[1rem] text-ink-soft">
+              Comptez 1 boîte par table de 6 à 10 invités. Si une table est un peu plus petite ou plus
+              grande, gardez cette fourchette comme repère : l'essentiel, c'est qu'il y en ait une par table.
+            </p>
+          </div>
+        </details>
+
+        <details class="group accordion rounded-2xl bg-surface p-6">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4">
+            <span class="font-sans text-[1.25rem] font-semibold">Mon mariage a lieu avant la livraison, puis-je quand même précommander&nbsp;?</span>
+            <span class="shrink-0 inline-flex transition-transform group-open:rotate-90"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+          </summary>
+          <div class="accordion-content pt-4">
+            <p class="text-[1rem] text-ink-soft">
+              Pour l'instant, aucune livraison n'est possible avant <span data-livraison></span> —
+              impossible donc de garantir une boîte à temps pour un mariage antérieur à cette date.
+              Je travaille sur la conception de la première boîte le plus vite possible : suivez-moi sur
+              Instagram et TikTok (@tybocrea) pour suivre l'avancée du projet en direct.
+            </p>
+          </div>
+        </details>
+
+      </div>
+    </section>
+
+<!--#include "partials/notify.html" padding="px-[clamp(1.25rem,8vw,7.5rem)]" -->
+
+  </main>
+
+<!--#include "partials/footer.html" padding="px-[clamp(1.25rem,8vw,7.5rem)]" -->
+
+  <script src="/scripts/main.js"></script>
+</body>
+</html>
