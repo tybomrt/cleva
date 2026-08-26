@@ -122,7 +122,11 @@
       <div id="hero-card" class="relative h-[90vh] sm:h-[95vh] w-full overflow-hidden rounded-2xl sm:rounded-3xl">
         <video src="/assets/videos/01.mp4" poster="/assets/images/hero-desktop.webp" autoplay muted loop playsinline class="absolute inset-0 h-full w-full object-cover"></video>
 
-        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-black/10"></div>
+        <!-- Voile uniforme (pas un dégradé) : le texte est centré au milieu
+             de la card, donc un dégradé plus sombre en haut/bas seulement
+             laissait le centre trop clair (contraste insuffisant sur une
+             vidéo, contenu plus variable qu'une photo fixe). -->
+        <div class="absolute inset-0 bg-black/45"></div>
 
         <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <div class="reveal-on-load">
