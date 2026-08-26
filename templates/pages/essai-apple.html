@@ -74,36 +74,34 @@
   <main id="contenu">
 
     <!-- ================= Hero ================= -->
-    <section id="hero" class="h-[90vh] sm:h-[95vh] flex flex-col px-2 sm:px-[18px] pt-2 pb-2 sm:pt-[18px] sm:pb-[18px]">
+    <!-- Deux blocs distincts, façon Apple : texte centré sur fond plein d'abord,
+         grande photo plein cadre ensuite — plus de texte en superposition sur la
+         photo, plus de dégradé de lisibilité à gérer. -->
+    <section class="reveal-on-load pt-20 sm:pt-28 pb-12 sm:pb-16 px-6 text-center">
+      <h1 class="font-display text-display-lg leading-[1.05] max-w-[18ch] mx-auto">
+        L'escape game qui réunit les invités à votre mariage
+      </h1>
+      <p class="reveal-on-load reveal-on-load-1 mt-6 max-w-[46ch] mx-auto text-[1.25rem] sm:text-[1.75rem] font-medium text-ink-soft">
+        Enfermez <span class="text-ink font-semibold">les cadeaux</span> pour vos invités dans un coffre et laissez-les résoudre les <span class="text-ink font-semibold">énigmes</span> pour les récupérer.
+      </p>
+      <div class="reveal-on-load reveal-on-load-2 mt-8 flex flex-col sm:flex-row sm:justify-center items-center gap-4">
+        <a href="/produit.html" class="inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-base sm:text-lg font-semibold text-white hover:bg-primary-hover transition-colors">
+          Précommander
+        </a>
+        <p class="text-sm text-ink-soft">
+          À partir de
+          <span class="hero-price text-ink font-semibold">
+            <span>25&nbsp;€ par table</span>
+            <span>2,50&nbsp;€ par invité</span>
+          </span>
+        </p>
+      </div>
+    </section>
 
-      <div class="relative overflow-hidden rounded-2xl sm:rounded-3xl flex-1">
+    <section id="hero" class="reveal-on-load reveal-on-load-3 h-[60vh] sm:h-[85vh] px-2 sm:px-[18px] pb-2 sm:pb-[18px]">
+      <div class="relative overflow-hidden rounded-2xl sm:rounded-3xl h-full">
         <img src="/assets/images/hero-mobile.webp" alt="Table de mariage dressée, avec le coffre cleva. posé dessus" class="absolute inset-0 h-full w-full object-cover block lg:hidden" />
         <img src="/assets/images/hero-desktop.webp" alt="Table de mariage dressée, avec le coffre cleva. posé dessus" class="absolute inset-0 h-full w-full object-cover object-right hidden lg:block" />
-        <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/30 to-black/80"></div>
-
-        <!-- Bloc unique : titre, sous-titre, CTA et prix regroupés — façon Apple, pas
-             de CTA flottant séparé ailleurs dans le cadre. -->
-        <div class="absolute top-40 left-6 right-6 lg:top-0 lg:bottom-0 lg:left-20 lg:right-20 lg:max-w-[48%] lg:flex lg:flex-col lg:justify-center">
-          <h1 class="reveal-on-load font-display text-display-lg leading-[1.05] text-white max-w-[21ch] lg:max-w-[32ch]">
-            L'escape game qui réunit<br class="hidden 2xl:block" />
-            les invités à votre mariage
-          </h1>
-          <p class="reveal-on-load reveal-on-load-1 mt-5 max-w-[46ch] text-[1.25rem] sm:text-[1.75rem] font-medium text-white/60">
-            Enfermez <span class="text-white font-semibold">les cadeaux</span> pour vos invités dans un coffre et laissez-les résoudre les <span class="text-white font-semibold">énigmes</span> pour les récupérer.
-          </p>
-          <div class="reveal-on-load reveal-on-load-2 mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
-            <a href="/produit.html" class="inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-base sm:text-lg font-semibold text-white hover:bg-primary-hover transition-colors">
-              Précommander
-            </a>
-            <p class="text-sm text-white/60">
-              À partir de
-              <span class="hero-price text-white font-semibold">
-                <span>25&nbsp;€ par table</span>
-                <span>2,50&nbsp;€ par invité</span>
-              </span>
-            </p>
-          </div>
-        </div>
       </div>
     </section>
 
