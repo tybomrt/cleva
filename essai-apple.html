@@ -49,6 +49,13 @@
     padding-left: calc((100vw - min(1260px, 92vw)) / 2);
     padding-right: calc((100vw - min(1260px, 92vw)) / 2);
   }
+  /* Header pill : moitié de la largeur de contenu du site (630px = 1260/2),
+     même logique de calc, ne s'applique qu'en dessous de 92vw sur mobile
+     (comme .content-max, inchangé sur petits écrans). */
+  .content-max-half {
+    padding-left: calc((100vw - min(630px, 92vw)) / 2);
+    padding-right: calc((100vw - min(630px, 92vw)) / 2);
+  }
   /* Carousel "Comment ça se passe" : piste sans barre de défilement visible.
      Indicateurs : un point = une card ; la card active devient un rectangle
      dont le fond (span interne) se remplit pour montrer le temps restant
@@ -73,7 +80,7 @@
   <div class="bg-black text-white text-center text-xs sm:text-sm py-2 px-20 sm:px-4">
     Version d'essai — inspirée d'Apple
   </div>
-  <div class="content-max pt-3 pb-3 sm:pt-4 sm:pb-4">
+  <div class="content-max-half pt-3 pb-3 sm:pt-4 sm:pb-4">
     <header class="rounded-full bg-white/70 backdrop-blur-xl backdrop-saturate-150 border border-white/60 shadow-[0_8px_32px_rgba(47,40,38,0.12),inset_0_1px_0_rgba(255,255,255,0.8)]">
       <div class="h-[56px] sm:h-[68px] px-5 sm:px-8 flex items-center justify-between gap-3">
         <a href="/index.html" class="shrink-0 font-display text-xl leading-none text-ink">cleva.</a>
