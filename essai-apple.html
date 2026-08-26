@@ -47,6 +47,16 @@
     border-radius: 0 !important;
     background-color: #000 !important;
   }
+  /* Carousel "Comment ça se passe" : piste sans barre de défilement visible.
+     Indicateurs : un point = une card ; la card active devient un rectangle
+     dont le fond (span interne) se remplit pour montrer le temps restant
+     avant le passage à la suivante. */
+  #mecanique-track::-webkit-scrollbar {
+    display: none;
+  }
+  [data-mecanique-dot].is-active {
+    width: 32px !important;
+  }
 </style>
 </head>
 <body class="font-sans text-ink bg-background antialiased">
@@ -148,33 +158,71 @@
     </section>
 
     <!-- ================= Comment ça se passe ================= -->
-    <!-- Style "Découvrez Final Cut Pro" : petites pills au-dessus du titre,
-         gros titre centré, puis une grille de phrases courtes en gras — sans
-         images, comme sur la page Apple de référence. -->
-    <section id="mecanique-teaser" class="reveal px-[clamp(1.25rem,8vw,7.5rem)] py-24 sm:py-32">
-      <div class="flex flex-wrap justify-center gap-2">
-        <span class="rounded-full border border-line-strong px-4 py-2 text-sm font-medium text-ink-soft">Sous clé</span>
-        <span class="rounded-full border border-line-strong px-4 py-2 text-sm font-medium text-ink-soft">Sur la table</span>
-        <span class="rounded-full border border-line-strong px-4 py-2 text-sm font-medium text-ink-soft">En jeu</span>
+    <!-- Carousel de cards façon "Highlights Gallery" Apple (vérifié dans
+         l'arbre d'accessibilité de la vraie page — shadow DOM fermé côté
+         Apple, mais un tablist + une liste de tabpanels image+légende
+         derrière). Chaque card fait la largeur max du contenu (1260px) et
+         déborde en plein cadre pour laisser dépasser les cards voisines à
+         gauche/droite. Sous le carousel : indicateurs (point = card, la
+         card active devient un rectangle qui se remplit pour montrer le
+         temps restant) + bouton play/pause pour l'auto-défilement. Script
+         dédié plus bas, local à cet essai. -->
+    <section id="mecanique-teaser" class="reveal py-24 sm:py-32">
+      <div class="px-[clamp(1.25rem,8vw,7.5rem)]">
+        <h2 class="text-center font-display text-display-md max-w-[22ch] mx-auto">Comment ça se passe&nbsp;?</h2>
       </div>
 
-      <h2 class="mt-8 text-center font-display text-display-md max-w-[22ch] mx-auto">Comment ça se passe&nbsp;?</h2>
-
-      <div class="mt-16 grid gap-10 sm:gap-14 sm:grid-cols-3">
-        <p class="text-2xl sm:text-[1.75rem] font-semibold leading-snug">
-          Mettez les cadeaux sous clé. Vous les placez dans un coffre*, que vous fermez avec le
-          <span class="text-primary">cadenas fourni</span> avec la boîte.
-        </p>
-        <p class="text-2xl sm:text-[1.75rem] font-semibold leading-snug">
-          Posez les boîtes sur les tables. Aucune installation ni animation à prévoir&nbsp;:
-          <span class="text-primary">le jeu est autoporteur</span>.
-        </p>
-        <p class="text-2xl sm:text-[1.75rem] font-semibold leading-snug">
-          Chaque table joue à son rythme, ou bien à votre top départ, pour mettre un peu de
-          <span class="text-primary">compétition</span> dans la salle.
-        </p>
+      <div class="mt-12">
+        <div id="mecanique-track" class="flex gap-6 overflow-x-auto snap-x snap-mandatory" style="scrollbar-width:none; padding-left:calc((100vw - min(1260px, 92vw)) / 2); padding-right:calc((100vw - min(1260px, 92vw)) / 2);">
+          <div data-mecanique-card class="snap-center shrink-0 rounded-2xl bg-surface px-8 py-10 sm:px-16 sm:py-14 flex flex-col items-center text-center" style="width:min(1260px, 92vw);">
+            <p class="text-2xl sm:text-3xl font-semibold leading-snug max-w-[32ch]">
+              Mettez les cadeaux sous clé. Vous les placez dans un coffre*, que vous fermez avec le
+              <span class="text-primary">cadenas fourni</span> avec la boîte.
+            </p>
+            <div class="mt-8 w-full max-w-[480px] aspect-[4/3] overflow-hidden rounded-2xl">
+              <img src="/assets/images/Product.webp" alt="" class="h-full w-full object-cover" />
+            </div>
+          </div>
+          <div data-mecanique-card class="snap-center shrink-0 rounded-2xl bg-surface px-8 py-10 sm:px-16 sm:py-14 flex flex-col items-center text-center" style="width:min(1260px, 92vw);">
+            <p class="text-2xl sm:text-3xl font-semibold leading-snug max-w-[32ch]">
+              Posez les boîtes sur les tables. Aucune installation ni animation à prévoir&nbsp;:
+              <span class="text-primary">le jeu est autoporteur</span>.
+            </p>
+            <div class="mt-8 w-full max-w-[480px] aspect-[4/3] overflow-hidden rounded-2xl">
+              <img src="/assets/images/hero.webp" alt="" class="h-full w-full object-cover" />
+            </div>
+          </div>
+          <div data-mecanique-card class="snap-center shrink-0 rounded-2xl bg-surface px-8 py-10 sm:px-16 sm:py-14 flex flex-col items-center text-center" style="width:min(1260px, 92vw);">
+            <p class="text-2xl sm:text-3xl font-semibold leading-snug max-w-[32ch]">
+              Chaque table joue à son rythme, ou bien à votre top départ, pour mettre un peu de
+              <span class="text-primary">compétition</span> dans la salle.
+            </p>
+            <div class="mt-8 w-full max-w-[480px] aspect-[4/3] overflow-hidden rounded-2xl">
+              <img src="/assets/images/hero.webp" alt="" class="h-full w-full object-cover object-[75%_50%]" />
+            </div>
+          </div>
+        </div>
       </div>
-      <p class="mt-8 text-sm text-ink-soft text-center">*Cadeaux et coffres non fournis</p>
+
+      <div class="mt-8 px-[clamp(1.25rem,8vw,7.5rem)] flex items-center justify-center gap-4">
+        <div class="flex items-center gap-2">
+          <button type="button" data-mecanique-dot aria-label="Aller à l'étape 1" class="relative h-2 w-2 rounded-full bg-line-strong overflow-hidden p-0 border-0 cursor-pointer transition-[width] duration-300">
+            <span data-mecanique-fill class="absolute inset-y-0 left-0 w-0 bg-ink"></span>
+          </button>
+          <button type="button" data-mecanique-dot aria-label="Aller à l'étape 2" class="relative h-2 w-2 rounded-full bg-line-strong overflow-hidden p-0 border-0 cursor-pointer transition-[width] duration-300">
+            <span data-mecanique-fill class="absolute inset-y-0 left-0 w-0 bg-ink"></span>
+          </button>
+          <button type="button" data-mecanique-dot aria-label="Aller à l'étape 3" class="relative h-2 w-2 rounded-full bg-line-strong overflow-hidden p-0 border-0 cursor-pointer transition-[width] duration-300">
+            <span data-mecanique-fill class="absolute inset-y-0 left-0 w-0 bg-ink"></span>
+          </button>
+        </div>
+        <button type="button" id="mecanique-playpause" aria-label="Mettre en pause le défilement" class="flex h-8 w-8 items-center justify-center rounded-full text-ink-soft hover:bg-line transition-colors">
+          <svg data-icon="pause" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+          <svg data-icon="play" class="hidden" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+
+      <p class="mt-6 px-[clamp(1.25rem,8vw,7.5rem)] text-sm text-ink-soft text-center">*Cadeaux et coffres non fournis</p>
     </section>
 
     <!-- ================= Avis ================= -->
@@ -466,6 +514,96 @@
       window.addEventListener('scroll', update, { passive: true });
       window.addEventListener('resize', measure);
       measure();
+    })();
+
+    // Carousel "Comment ça se passe" — même logique que le "Highlights
+    // Gallery" d'Apple : indicateurs (point/rectangle qui se remplit) +
+    // auto-défilement avec play/pause. Le scroll manuel (swipe/drag) met
+    // aussi à jour l'indicateur actif. Local à cet essai.
+    (function () {
+      var track = document.getElementById('mecanique-track');
+      var cards = document.querySelectorAll('[data-mecanique-card]');
+      var dots = document.querySelectorAll('[data-mecanique-dot]');
+      var fills = document.querySelectorAll('[data-mecanique-fill]');
+      var playPauseBtn = document.getElementById('mecanique-playpause');
+      if (!track || !cards.length || !dots.length || !playPauseBtn) return;
+
+      var DURATION = 4000;   // ms avant de passer à la card suivante
+      var TICK = 50;         // ms entre deux mises à jour de la barre — setInterval
+                              // plutôt que requestAnimationFrame, plus fiable si l'onglet
+                              // n'a pas le focus (rAF peut être suspendu en arrière-plan).
+      var current = 0;
+      var playing = false;
+      var elapsed = 0;
+      var intervalId = null;
+      var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function setActive(index) {
+        current = index;
+        dots.forEach(function (dot, i) {
+          dot.classList.toggle('is-active', i === index);
+          fills[i].style.width = '0%';
+        });
+        elapsed = 0;
+      }
+
+      function goTo(index) {
+        var next = (index + cards.length) % cards.length;
+        cards[next].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        setActive(next);
+      }
+
+      function tick() {
+        elapsed += TICK;
+        var progress = Math.min(1, elapsed / DURATION);
+        fills[current].style.width = (progress * 100) + '%';
+        if (progress >= 1) {
+          goTo(current + 1);
+        }
+      }
+
+      function play() {
+        playing = true;
+        elapsed = 0;
+        playPauseBtn.setAttribute('aria-label', 'Mettre en pause le défilement');
+        playPauseBtn.querySelector('[data-icon="pause"]').classList.remove('hidden');
+        playPauseBtn.querySelector('[data-icon="play"]').classList.add('hidden');
+        intervalId = window.setInterval(tick, TICK);
+      }
+
+      function pause() {
+        playing = false;
+        playPauseBtn.setAttribute('aria-label', 'Reprendre le défilement');
+        playPauseBtn.querySelector('[data-icon="pause"]').classList.add('hidden');
+        playPauseBtn.querySelector('[data-icon="play"]').classList.remove('hidden');
+        if (intervalId) window.clearInterval(intervalId);
+      }
+
+      dots.forEach(function (dot, i) {
+        dot.addEventListener('click', function () {
+          pause();
+          goTo(i);
+        });
+      });
+
+      playPauseBtn.addEventListener('click', function () {
+        if (playing) { pause(); } else { play(); }
+      });
+
+      if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting && entry.intersectionRatio > 0.6) {
+              var idx = Array.prototype.indexOf.call(cards, entry.target);
+              if (idx !== current) setActive(idx);
+            }
+          });
+        }, { root: track, threshold: [0.6] });
+        cards.forEach(function (card) { observer.observe(card); });
+      }
+
+      setActive(0);
+      if (!reducedMotion) { play(); } else { pause(); }
     })();
   </script>
 </body>
