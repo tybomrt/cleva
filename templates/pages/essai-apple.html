@@ -71,10 +71,12 @@
      lui-même est une pill (rounded-full, détachée du haut par un
      padding), en verre dépoli façon Apple : fond blanc translucide,
      backdrop-blur + saturate poussés, liseré et reflet clair en haut pour
-     l'effet vitre. -->
+     l'effet vitre. Masqué à l'arrivée, apparaît en fondu (reveal-on-load)
+     en même temps que le prix du hero ("À partir de...", même délai
+     reveal-on-load-2), pas dès le chargement de la page. -->
 <div id="site-header-bar" class="fixed inset-x-0 top-0 z-50">
   <div class="content-max-half pt-3 pb-3 sm:pt-4 sm:pb-4">
-    <header class="rounded-full bg-white/70 backdrop-blur-xl backdrop-saturate-150 border border-white/60 shadow-[0_8px_32px_rgba(47,40,38,0.12),inset_0_1px_0_rgba(255,255,255,0.8)]">
+    <header class="reveal-on-load reveal-on-load-2 rounded-full bg-white/70 backdrop-blur-xl backdrop-saturate-150 border border-white/60 shadow-[0_8px_32px_rgba(47,40,38,0.12),inset_0_1px_0_rgba(255,255,255,0.8)]">
       <div class="h-[56px] sm:h-[68px] px-5 sm:px-8 flex items-center justify-between gap-3">
         <a href="/index.html" class="shrink-0 font-display text-xl leading-none text-ink">cleva.</a>
 
