@@ -66,11 +66,13 @@
 
 <a href="#contenu" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:bg-ink focus:text-white focus:px-4 focus:py-2 focus:rounded">Aller au contenu</a>
 
-<!-- Bandeau + header, en un seul bloc sticky. Le header lui-même est une
-     pill flottante (rounded-full, détachée du haut par un padding), en
-     verre dépoli façon Apple : fond blanc translucide, backdrop-blur +
-     saturate poussés, liseré et reflet clair en haut pour l'effet vitre. -->
-<div id="site-header-bar" class="sticky top-0 z-50">
+<!-- Bandeau + header, en position fixed (hors du flux) : le hero remonte
+     tout en haut de la page, derrière le header qui flotte par-dessus.
+     Le header lui-même est une pill (rounded-full, détachée du haut par
+     un padding), en verre dépoli façon Apple : fond blanc translucide,
+     backdrop-blur + saturate poussés, liseré et reflet clair en haut pour
+     l'effet vitre. -->
+<div id="site-header-bar" class="fixed inset-x-0 top-0 z-50">
   <div class="bg-black text-white text-center text-xs sm:text-sm py-2 px-20 sm:px-4">
     Version d'essai — inspirée d'Apple
   </div>
@@ -91,14 +93,15 @@
 
     <!-- ================= Hero ================= -->
     <!-- Card statique (pas de scroll ni de sticky) : image plein format
-         dans une card (marges haut/bas/gauche/droite, coins arrondis).
-         h-[90vh]/[95vh] sert de repli ; un petit script (plus bas, pas de
-         scroll/sticky, juste un calcul de taille) ajuste la hauteur pour
-         que la card + le header pill occupent exactement 100% de l'écran,
-         quelle que soit la hauteur réelle du header (qui varie avec le
-         bandeau "Version d'essai"). Tout le texte du hero (titre,
-         sous-titre, CTA, prix) est superposé et centré sur cette image,
-         avec un voile dégradé derrière pour la lisibilité. -->
+         dans une card (marges haut/bas/gauche/droite, coins arrondis), qui
+         remonte tout en haut de la page — le header étant en position
+         fixed, il flotte par-dessus au lieu de pousser ce hero vers le
+         bas. h-[90vh]/[95vh] sert de repli ; un petit script (plus bas,
+         pas de scroll/sticky, juste un calcul de taille) ajuste la
+         hauteur pour que la card occupe exactement 100% de l'écran. Tout
+         le texte du hero (titre, sous-titre, CTA, prix) est superposé et
+         centré sur cette image, avec un voile dégradé derrière pour la
+         lisibilité. -->
     <section id="hero" class="px-2 sm:px-[18px] pt-2 pb-2 sm:pt-[18px] sm:pb-[18px]">
       <div id="hero-card" class="relative h-[90vh] sm:h-[95vh] w-full overflow-hidden rounded-2xl sm:rounded-3xl">
         <img src="/assets/images/hero-mobile.webp" alt="Table de mariage dressée, avec le coffre cleva. posé dessus" class="absolute inset-0 h-full w-full object-cover block lg:hidden" />
@@ -432,14 +435,15 @@
 
   <script src="/scripts/main.js"></script>
   <script>
-    // Ajuste la hauteur de la card du hero pour que header + card
-    // occupent exactement 100% de l'écran (pas de scroll ni de sticky :
-    // juste un calcul de taille, recalculé au resize). h-[90vh]/[95vh]
-    // reste le repli si le JS est indisponible.
+    // Ajuste la hauteur de la card du hero pour occuper exactement 100% de
+    // l'écran (pas de scroll ni de sticky : juste un calcul de taille,
+    // recalculé au resize). Le header est en position fixed et flotte
+    // par-dessus le hero (ne pousse plus le contenu), donc plus besoin de
+    // soustraire sa hauteur ici. h-[90vh]/[95vh] reste le repli CSS si le
+    // JS est indisponible.
     (function () {
       var section = document.getElementById('hero');
       var card = document.getElementById('hero-card');
-      var headerBar = document.getElementById('site-header-bar');
       if (!section || !card) return;
 
       function resize() {
@@ -447,11 +451,10 @@
         // du chargement), on garde le repli CSS (h-[90vh]/[95vh]) plutôt
         // que d'appliquer une hauteur négative ou absurde.
         if (!window.innerHeight) return;
-        var headerHeight = headerBar ? headerBar.getBoundingClientRect().height : 0;
         var cs = getComputedStyle(section);
         var padTop = parseFloat(cs.paddingTop) || 0;
         var padBottom = parseFloat(cs.paddingBottom) || 0;
-        var h = window.innerHeight - headerHeight - padTop - padBottom;
+        var h = window.innerHeight - padTop - padBottom;
         if (h > 0) card.style.height = h + 'px';
       }
 
