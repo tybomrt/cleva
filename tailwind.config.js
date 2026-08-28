@@ -9,7 +9,7 @@
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./index.html', './produit.html', './legal/*.html', './version-2.html', './produit-v2.html'],
+  content: ['./index.html', './produit.html', './legal/*.html'],
   theme: {
     extend: {
       fontFamily: {
