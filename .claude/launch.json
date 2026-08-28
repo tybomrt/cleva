@@ -2,6 +2,12 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "cleva-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["start"],
+      "port": 4173
+    },
+    {
       "name": "cleva-static",
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "4173"],
