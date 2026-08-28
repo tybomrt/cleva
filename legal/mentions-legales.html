@@ -1,15 +1,212 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mentions légales — cleva.</title>
+  <meta name="description" content="Mentions légales du site cleva." />
+  <meta name="robots" content="noindex" />
+
+  <link rel="icon" href="/assets/images/favicon.png" type="image/png" />
+  <link rel="stylesheet" href="/styles/tokens.css" />
   <link rel="stylesheet" href="/styles/main.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Marcellus&family=Marcellus+SC&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles/tailwind.css" />
+
+<!-- Look & feel aligné sur index.html/produit.html : DM Sans partout,
+     largeur de contenu unifiée à 1260px. Cette page reste un fichier
+     statique (comme cgv.html) plutôt qu'un template — pas de logique
+     d'inclusion ici, le logo est simplement référencé en <img> puisque
+     cette page n'a besoin ni de la version blanche (pas de fond sombre)
+     ni de l'animation d'apparition du header (pas de hero à masquer). -->
+<style>
+  .font-display, .font-label {
+    font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.03em;
+  }
+  .text-ink-soft {
+    color: #86868b !important;
+    line-height: 1.6;
+  }
+  .bg-primary {
+    border-radius: 9999px !important;
+  }
+  .content-max {
+    padding-left: calc((100vw - min(1260px, 92vw)) / 2);
+    padding-right: calc((100vw - min(1260px, 92vw)) / 2);
+  }
+  .content-max-half {
+    padding-left: calc((100vw - min(630px, 92vw)) / 2);
+    padding-right: calc((100vw - min(630px, 92vw)) / 2);
+  }
+</style>
 </head>
-<body>
-  <main>
-    <h1>Mentions légales</h1>
-    <!-- contenu à rédiger -->
+<body class="font-sans text-ink bg-background antialiased">
+
+<a href="#contenu" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:bg-ink focus:text-white focus:px-4 focus:py-2 focus:rounded">Aller au contenu</a>
+
+<!-- Header : même pill en verre dépoli que sur index.html/produit.html,
+     mais toujours visible (sticky, pas de fondu au scroll) — pas de hero
+     ici à masquer/révéler derrière. -->
+<div class="sticky top-0 z-50">
+  <div class="content-max-half pt-3 pb-3 sm:pt-4 sm:pb-4">
+    <header class="rounded-full bg-white/70 backdrop-blur-xl backdrop-saturate-150 border border-white/60 shadow-[0_8px_32px_rgba(47,40,38,0.12),inset_0_1px_0_rgba(255,255,255,0.8)]">
+      <div class="h-[56px] sm:h-[68px] px-5 sm:px-8 flex items-center justify-between gap-3">
+        <a href="/index.html" class="shrink-0 flex items-center" aria-label="cleva.">
+          <img src="/assets/images/logo.svg" alt="" class="h-6 w-auto" />
+        </a>
+
+        <a href="/produit.html" class="shrink-0 inline-flex items-center rounded-full bg-primary px-5 sm:px-6 h-[40px] sm:h-[48px] text-sm sm:text-base font-semibold text-white hover:bg-primary-hover transition-colors">
+          Précommander
+        </a>
+      </div>
+    </header>
+  </div>
+</div>
+
+  <main id="contenu">
+
+    <!-- ================= Mentions légales ================= -->
+    <section class="reveal content-max py-24 sm:py-32">
+      <div class="max-w-[720px] mx-auto">
+        <h1 class="font-display text-display-lg">Mentions légales</h1>
+        <p class="mt-4 text-ink-soft">Dernière mise à jour : [DATE À COMPLÉTER LORS DE LA PUBLICATION]</p>
+
+        <div class="mt-16 flex flex-col gap-12">
+
+          <div>
+            <h2 class="font-sans font-semibold text-2xl">Éditeur du site</h2>
+            <p class="mt-3 text-ink-soft">
+              Le site cleva-games.fr est édité par Thibault Martellino, entrepreneur individuel (micro-entreprise).
+            </p>
+            <ul class="mt-5 space-y-2 text-[1rem] text-ink-soft list-none p-0 m-0">
+              <li class="flex gap-3"><span aria-hidden="true" class="text-primary">—</span><span>Adresse&nbsp;: 25 Lotissement les Cazardes, 69520 Grigny-sur-Rhône</span></li>
+              <li class="flex gap-3"><span aria-hidden="true" class="text-primary">—</span><span>SIRET&nbsp;: 929 498 350 00032</span></li>
+              <li class="flex gap-3"><span aria-hidden="true" class="text-primary">—</span><span>RCS&nbsp;: en cours d'immatriculation</span></li>
+              <li class="flex gap-3"><span aria-hidden="true" class="text-primary">—</span><span>TVA non applicable, article 293 B du Code général des impôts</span></li>
+              <li class="flex gap-3"><span aria-hidden="true" class="text-primary">—</span><span>E-mail&nbsp;: <a href="mailto:contact@cleva-games.fr" class="text-accent-text underline underline-offset-4">contact@cleva-games.fr</a></span></li>
+              <li class="flex gap-3"><span aria-hidden="true" class="text-primary">—</span><span>Directeur de la publication&nbsp;: Thibault Martellino</span></li>
+            </ul>
+          </div>
+
+          <div>
+            <h2 class="font-sans font-semibold text-2xl">Hébergement</h2>
+            <p class="mt-3 text-ink-soft">
+              Le site est hébergé par&nbsp;:<br />
+              Vercel Inc. — 340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis —
+              <a href="https://vercel.com" target="_blank" rel="noopener" class="text-accent-text underline underline-offset-4">vercel.com</a>
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-sans font-semibold text-2xl">Propriété intellectuelle</h2>
+            <p class="mt-3 text-ink-soft">
+              L'ensemble des contenus présents sur le site cleva-games.fr (textes, visuels, photographies,
+              illustrations, logo, nom « cleva. ») est protégé au titre du droit d'auteur et reste la
+              propriété exclusive de l'éditeur, sauf mention contraire. Toute reproduction, représentation,
+              modification ou exploitation totale ou partielle de ces contenus, par quelque procédé que ce
+              soit, sans autorisation préalable, est interdite.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-sans font-semibold text-2xl">Médiation de la consommation</h2>
+            <p class="mt-3 text-ink-soft">
+              Conformément aux articles L.616-1 et R.616-1 du Code de la consommation, tout consommateur a
+              le droit de recourir gratuitement à un service de médiation de la consommation en vue de la
+              résolution amiable d'un litige qui l'opposerait à l'éditeur du site.
+            </p>
+            <p class="mt-3 text-ink-soft">
+              Le médiateur de la consommation désigné est&nbsp;:<br />
+              [NOM DU MÉDIATEUR À COMPLÉTER APRÈS ADHÉSION — ex. CM2C] — [Adresse à compléter] — [Site web à compléter]
+            </p>
+            <p class="mt-3 text-ink-soft">
+              Le consommateur peut également recourir à la plateforme de règlement en ligne des litiges mise
+              en place par la Commission européenne, accessible à l'adresse&nbsp;:
+              <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener" class="text-accent-text underline underline-offset-4">ec.europa.eu/consumers/odr</a>.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-sans font-semibold text-2xl">Données personnelles</h2>
+            <p class="mt-3 text-ink-soft">
+              Les informations recueillies via le site (notamment lors d'une précommande ou d'une
+              inscription à la liste d'attente) font l'objet d'un traitement destiné à la gestion des
+              commandes et à la communication avec les clients. Pour plus de détails, voir notre Politique
+              de confidentialité (page à créer si besoin, ou section à intégrer directement dans les CGV —
+              à trancher).
+            </p>
+            <p class="mt-3 text-ink-soft">
+              Conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi
+              Informatique et Libertés, vous disposez d'un droit d'accès, de rectification, d'effacement et
+              d'opposition concernant vos données personnelles. Vous pouvez exercer ces droits en écrivant
+              à&nbsp;: <a href="mailto:contact@cleva-games.fr" class="text-accent-text underline underline-offset-4">contact@cleva-games.fr</a>
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-sans font-semibold text-2xl">Cookies</h2>
+            <p class="mt-3 text-ink-soft">
+              Le site utilise Google Analytics pour mesurer la fréquentation et comprendre comment les
+              visiteurs utilisent le site. Ce service dépose des cookies uniquement après votre accord,
+              recueilli via la bannière affichée lors de votre première visite. Vous pouvez à tout moment
+              refuser ou retirer votre consentement en effaçant les cookies de votre navigateur.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-sans font-semibold text-2xl">Crédits</h2>
+            <p class="mt-3 text-ink-soft">
+              Site conçu et développé par Thibault Martellino.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
   </main>
+
+<!-- Footer : même structure que templates/partials/footer.html, avec le
+     logo en <img> pour la même raison que le header ci-dessus. -->
+  <footer id="footer">
+    <div class="content-max py-10">
+      <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-8">
+        <div>
+          <img src="/assets/images/logo.svg" alt="cleva." class="h-7 w-auto" />
+          <p class="mt-2 text-base text-ink-soft">L'escape game à jouer pendant votre mariage.</p>
+          <a href="mailto:contact@cleva-games.fr" class="mt-3 inline-block text-base text-accent-text underline underline-offset-4">contact@cleva-games.fr</a>
+        </div>
+        <nav class="flex flex-col gap-2 text-base">
+          <a href="/produit.html" class="text-ink-soft hover:text-primary transition-colors">Le produit</a>
+          <a href="/legal/cgv.html" class="text-ink-soft hover:text-primary transition-colors">CGV</a>
+          <a href="/legal/mentions-legales.html" class="text-ink-soft hover:text-primary transition-colors">Mentions légales</a>
+        </nav>
+      </div>
+      <p class="mt-8 text-base text-lin-600">© <span data-annee></span> cleva. — Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <div id="cookie-banner" class="hidden fixed inset-x-0 bottom-0 z-[60] p-4 sm:p-6">
+    <div class="mx-auto max-w-[720px] rounded-2xl bg-ink text-white shadow-[0_8px_32px_rgba(0,0,0,0.25)] p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4">
+      <p class="text-sm text-white/80">
+        On utilise Google Analytics pour comprendre comment vous naviguez sur le site — rien de plus. Vous pouvez refuser sans que ça change votre expérience.
+      </p>
+      <div class="flex gap-3 shrink-0">
+        <button type="button" id="cookie-refuse" class="rounded-full border border-white/30 px-4 py-2 text-sm font-medium text-white hover:bg-white/10 transition-colors">
+          Refuser
+        </button>
+        <button type="button" id="cookie-accept" class="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-hover transition-colors">
+          Accepter
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/scripts/main.js"></script>
+  <script src="/scripts/analytics.js"></script>
 </body>
 </html>

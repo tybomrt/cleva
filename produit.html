@@ -301,7 +301,25 @@
   </footer>
 
 
+  <div id="cookie-banner" class="hidden fixed inset-x-0 bottom-0 z-[60] p-4 sm:p-6">
+    <div class="mx-auto max-w-[720px] rounded-2xl bg-ink text-white shadow-[0_8px_32px_rgba(0,0,0,0.25)] p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4">
+      <p class="text-sm text-white/80">
+        On utilise Google Analytics pour comprendre comment vous naviguez sur le site — rien de plus. Vous pouvez refuser sans que ça change votre expérience.
+      </p>
+      <div class="flex gap-3 shrink-0">
+        <button type="button" id="cookie-refuse" class="rounded-full border border-white/30 px-4 py-2 text-sm font-medium text-white hover:bg-white/10 transition-colors">
+          Refuser
+        </button>
+        <button type="button" id="cookie-accept" class="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-hover transition-colors">
+          Accepter
+        </button>
+      </div>
+    </div>
+  </div>
+
+
   <script src="/scripts/main.js"></script>
+  <script src="/scripts/analytics.js"></script>
   <script>
     // Le header pill est masqué tant que la section intro (galerie + bloc
     // d'achat) est visible à l'écran, et apparaît en fondu dès qu'on l'a
