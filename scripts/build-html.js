@@ -78,14 +78,19 @@ function buildAll() {
 
 if (process.argv.includes('--watch')) {
   buildAll();
-  console.log('watching templates/ for changes...');
-  fs.watch(TEMPLATES_DIR, { recursive: true }, function () {
+  var rebuild = function () {
     try {
       buildAll();
     } catch (err) {
       console.error(err.message);
     }
-  });
+  };
+  console.log('watching templates/ and assets/images/ for changes...');
+  fs.watch(TEMPLATES_DIR, { recursive: true }, rebuild);
+  // Les .svg (ex. le logo) sont inclus tels quels via #include, pas juste
+  // des images statiques référencées par <img>/<link> : une modification
+  // doit donc redéclencher un build HTML comme un changement de template.
+  fs.watch(path.join(ROOT, 'assets', 'images'), { recursive: true }, rebuild);
 } else {
   buildAll();
 }
