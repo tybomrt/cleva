@@ -61,12 +61,19 @@ export default async function handler(req, res) {
     (message ? '\nMessage :\n' + message + '\n' : '');
 
   try {
-    await transporter.sendMail({
+    const notifInfo = await transporter.sendMail({
       from: process.env.SMTP_USER,
       to: contactEmail,
       replyTo: email,
       subject: 'Rétractation — ' + nom,
       text: 'Nouvelle demande de rétractation reçue via le site.\n\n' + recap
+    });
+    console.log('retraction notif email', {
+      to: contactEmail,
+      messageId: notifInfo.messageId,
+      response: notifInfo.response,
+      accepted: notifInfo.accepted,
+      rejected: notifInfo.rejected
     });
 
     await transporter.sendMail({
