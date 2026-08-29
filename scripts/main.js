@@ -383,7 +383,16 @@
       function expand() {
         isExpanding = true;
         var startHeight = details.offsetHeight;
-        var endHeight = summary.offsetHeight + content.offsetHeight + detailsPadding();
+        // Mesure la hauteur réelle de <details> une fois ouvert (height:auto),
+        // plutôt que de la reconstituer en additionnant summary + content +
+        // padding : un margin-collapse entre le premier enfant de
+        // .accordion-content et .accordion-content lui-même (ex. `mt-5` sur
+        // la liste) n'est pas compté dans content.offsetHeight, ce qui sous-
+        // estimait la hauteur finale et provoquait un petit saut visible à
+        // la fin de l'animation, une fois `height` repassé à `auto`.
+        details.style.height = 'auto';
+        var endHeight = details.offsetHeight;
+        details.style.height = startHeight + 'px';
         runAnimation(startHeight, endHeight, true);
       }
 
