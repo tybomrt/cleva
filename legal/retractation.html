@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formulaire de rétractation — cleva.</title>
+  <meta name="description" content="Notifiez votre rétractation en ligne — cleva." />
+  <meta name="robots" content="noindex" />
+
+  <link rel="icon" href="/assets/images/favicon.png" type="image/png" />
+  <link rel="stylesheet" href="/styles/tokens.css" />
+  <link rel="stylesheet" href="/styles/main.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Marcellus&family=Marcellus+SC&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles/tailwind.css" />
+
+<!-- Même gabarit statique que cgv.html / mentions-legales.html (hors
+     système de templates) : logo en <img>, header/footer/bannière cookies
+     dupliqués. -->
+<style>
+  .font-display, .font-label {
+    font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.03em;
+  }
+  .text-ink-soft {
+    color: #86868b !important;
+    line-height: 1.6;
+  }
+  .bg-primary {
+    border-radius: 9999px !important;
+  }
+  .content-max {
+    padding-left: calc((100vw - min(1260px, 92vw)) / 2);
+    padding-right: calc((100vw - min(1260px, 92vw)) / 2);
+  }
+  .content-max-half {
+    padding-left: calc((100vw - min(630px, 92vw)) / 2);
+    padding-right: calc((100vw - min(630px, 92vw)) / 2);
+  }
+</style>
+</head>
+<body class="font-sans text-ink bg-background antialiased">
+
+<a href="#contenu" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:bg-ink focus:text-white focus:px-4 focus:py-2 focus:rounded">Aller au contenu</a>
+
+<div class="sticky top-0 z-50">
+  <div class="content-max-half pt-3 pb-3 sm:pt-4 sm:pb-4">
+    <header class="rounded-full bg-white/70 backdrop-blur-xl backdrop-saturate-150 border border-white/60 shadow-[0_8px_32px_rgba(47,40,38,0.12),inset_0_1px_0_rgba(255,255,255,0.8)]">
+      <div class="h-[56px] sm:h-[68px] px-5 sm:px-8 flex items-center justify-between gap-3">
+        <a href="/index.html" class="shrink-0 flex items-center" aria-label="cleva.">
+          <img src="/assets/images/logo.svg" alt="" class="h-6 w-auto" />
+        </a>
+
+        <a href="/produit.html" class="shrink-0 inline-flex items-center rounded-full bg-primary px-5 sm:px-6 h-[40px] sm:h-[48px] text-sm sm:text-base font-semibold text-white hover:bg-primary-hover transition-colors">
+          Précommander
+        </a>
+      </div>
+    </header>
+  </div>
+</div>
+
+  <main id="contenu">
+
+    <!-- ================= Formulaire de rétractation ================= -->
+    <section class="reveal content-max py-24 sm:py-32">
+      <div class="max-w-[720px] mx-auto">
+        <h1 class="font-display text-display-lg">Formulaire de rétractation</h1>
+        <p class="mt-4 text-ink-soft">
+          Vous disposez de 14 jours après réception de votre boîte pour vous rétracter, sans avoir à vous
+          justifier. Remplissez ce formulaire pour nous notifier votre décision — voir l'article 6 des
+          <a href="/legal/cgv.html" class="text-accent-text underline underline-offset-4">Conditions générales de vente</a>
+          pour le détail de vos droits.
+        </p>
+
+        <form id="retraction-form" class="mt-12 flex flex-col gap-5" novalidate>
+          <div>
+            <label for="retraction-nom" class="block text-sm font-medium text-ink">Nom et prénom *</label>
+            <input id="retraction-nom" name="nom" type="text" required autocomplete="name"
+                   class="mt-2 w-full rounded border border-ink/15 bg-transparent px-4 py-3 text-base text-ink placeholder:text-ink-soft focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" />
+          </div>
+
+          <div>
+            <label for="retraction-email" class="block text-sm font-medium text-ink">Email *</label>
+            <input id="retraction-email" name="email" type="email" required autocomplete="email"
+                   placeholder="vous@exemple.fr"
+                   class="mt-2 w-full rounded border border-ink/15 bg-transparent px-4 py-3 text-base text-ink placeholder:text-ink-soft focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" />
+          </div>
+
+          <div>
+            <label for="retraction-commande" class="block text-sm font-medium text-ink">Date de commande *</label>
+            <input id="retraction-commande" name="commande" type="date" required
+                   class="mt-2 w-full rounded border border-ink/15 bg-transparent px-4 py-3 text-base text-ink focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" />
+          </div>
+
+          <div>
+            <label for="retraction-reception" class="block text-sm font-medium text-ink">Date de réception du produit</label>
+            <input id="retraction-reception" name="reception" type="date"
+                   class="mt-2 w-full rounded border border-ink/15 bg-transparent px-4 py-3 text-base text-ink focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" />
+          </div>
+
+          <div>
+            <label for="retraction-message" class="block text-sm font-medium text-ink">Message (facultatif)</label>
+            <textarea id="retraction-message" name="message" rows="4"
+                      class="mt-2 w-full rounded border border-ink/15 bg-transparent px-4 py-3 text-base text-ink placeholder:text-ink-soft focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"></textarea>
+          </div>
+
+          <!-- Piège à bots, invisible pour un humain -->
+          <div class="hidden" aria-hidden="true">
+            <label for="retraction-website">Ne pas remplir</label>
+            <input id="retraction-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <button type="submit" class="mt-2 self-start rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary-hover transition-colors">
+            Envoyer ma rétractation
+          </button>
+          <p id="retraction-msg" role="status" aria-live="polite" class="text-sm"></p>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="footer">
+    <div class="content-max py-10">
+      <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-8">
+        <div>
+          <img src="/assets/images/logo.svg" alt="cleva." class="h-7 w-auto" />
+          <p class="mt-2 text-base text-ink-soft">L'escape game à jouer pendant votre mariage.</p>
+          <a href="mailto:contact@cleva-games.fr" class="mt-3 inline-block text-base text-accent-text underline underline-offset-4">contact@cleva-games.fr</a>
+        </div>
+        <nav class="flex flex-col gap-2 text-base">
+          <a href="/produit.html" class="text-ink-soft hover:text-primary transition-colors">Le produit</a>
+          <a href="/legal/cgv.html" class="text-ink-soft hover:text-primary transition-colors">CGV</a>
+          <a href="/legal/mentions-legales.html" class="text-ink-soft hover:text-primary transition-colors">Mentions légales</a>
+        </nav>
+      </div>
+      <p class="mt-8 text-base text-lin-600">© <span data-annee></span> cleva. — Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <div id="cookie-banner" class="hidden fixed inset-x-0 bottom-0 z-[60] p-4 sm:p-6">
+    <div class="mx-auto max-w-[720px] rounded-2xl bg-ink text-white shadow-[0_8px_32px_rgba(0,0,0,0.25)] p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4">
+      <p class="text-sm text-white/80">
+        On utilise Google Analytics pour comprendre comment vous naviguez sur le site — rien de plus. Vous pouvez refuser sans que ça change votre expérience.
+      </p>
+      <div class="flex gap-3 shrink-0">
+        <button type="button" id="cookie-refuse" class="rounded-full border border-white/30 px-4 py-2 text-sm font-medium text-white hover:bg-white/10 transition-colors">
+          Refuser
+        </button>
+        <button type="button" id="cookie-accept" class="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-hover transition-colors">
+          Accepter
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/scripts/main.js"></script>
+  <script src="/scripts/analytics.js"></script>
+</body>
+</html>

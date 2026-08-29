@@ -232,6 +232,69 @@
   }
 
   /* ------------------------------------------------------------------------
+     4bis. Formulaire de rétractation (legal/retractation.html)
+     Dépend de /api/retraction.js, qui envoie la notification + l'accusé de
+     réception via le SMTP OVH.
+     ---------------------------------------------------------------------- */
+  function initRetraction() {
+    var form = document.getElementById('retraction-form');
+    if (!form) return;
+
+    var email = document.getElementById('retraction-email');
+    var msg = document.getElementById('retraction-msg');
+    var bouton = form.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
+        msg.textContent = 'Cet email ne semble pas valide.';
+        msg.className = 'text-sm text-primary';
+        email.focus();
+        return;
+      }
+
+      var data = {
+        nom: form.nom.value.trim(),
+        email: email.value.trim(),
+        commande: form.commande.value,
+        reception: form.reception.value,
+        message: form.message.value.trim(),
+        website: form.website.value
+      };
+
+      bouton.disabled = true;
+      bouton.textContent = 'Envoi…';
+      msg.textContent = '';
+
+      fetch('/api/retraction', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+        .then(function (r) {
+          if (!r.ok) throw new Error('http ' + r.status);
+          return r.json();
+        })
+        .then(function () {
+          form.reset();
+          msg.textContent = 'C\'est noté — vous allez recevoir un email de confirmation.';
+          msg.className = 'text-sm text-ink-soft';
+        })
+        .catch(function () {
+          msg.innerHTML =
+            'Impossible d\'envoyer votre demande pour le moment. ' +
+            'Écrivez-nous directement : <a class="text-accent-text underline underline-offset-4" href="mailto:contact@cleva-games.fr">contact@cleva-games.fr</a>';
+          msg.className = 'text-sm text-ink-soft';
+        })
+        .finally(function () {
+          bouton.disabled = false;
+          bouton.textContent = 'Envoyer ma rétractation';
+        });
+    });
+  }
+
+  /* ------------------------------------------------------------------------
      5. Barre d'achat collante — masquée quand le bloc précommande est visible
      ---------------------------------------------------------------------- */
   function initBuybar() {
@@ -433,6 +496,7 @@
     initQuantite();
     initHeroDesktopCrop();
     initNotify();
+    initRetraction();
     initBuybar();
     initReveal();
     initAccordion();

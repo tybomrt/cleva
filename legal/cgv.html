@@ -1,15 +1,301 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CGV — cleva.</title>
+  <meta name="description" content="Conditions générales de vente du site cleva." />
+  <meta name="robots" content="noindex" />
+
+  <link rel="icon" href="/assets/images/favicon.png" type="image/png" />
+  <link rel="stylesheet" href="/styles/tokens.css" />
   <link rel="stylesheet" href="/styles/main.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Marcellus&family=Marcellus+SC&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles/tailwind.css" />
+
+<!-- Look & feel aligné sur index.html/produit.html/mentions-legales.html :
+     DM Sans partout, largeur de contenu unifiée à 1260px. Page statique,
+     hors système de templates — même raison qu'ailleurs (logo en <img>,
+     header/footer/bannière cookies dupliqués). -->
+<style>
+  .font-display, .font-label {
+    font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.03em;
+  }
+  .text-ink-soft {
+    color: #86868b !important;
+    line-height: 1.6;
+  }
+  .bg-primary {
+    border-radius: 9999px !important;
+  }
+  .content-max {
+    padding-left: calc((100vw - min(1260px, 92vw)) / 2);
+    padding-right: calc((100vw - min(1260px, 92vw)) / 2);
+  }
+  .content-max-half {
+    padding-left: calc((100vw - min(630px, 92vw)) / 2);
+    padding-right: calc((100vw - min(630px, 92vw)) / 2);
+  }
+</style>
 </head>
-<body>
-  <main>
-    <h1>Conditions générales de vente</h1>
-    <!-- contenu à rédiger -->
+<body class="font-sans text-ink bg-background antialiased">
+
+<a href="#contenu" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:bg-ink focus:text-white focus:px-4 focus:py-2 focus:rounded">Aller au contenu</a>
+
+<!-- Header : même pill en verre dépoli que sur les autres pages, toujours
+     visible (sticky, pas de fondu au scroll) — pas de hero ici. -->
+<div class="sticky top-0 z-50">
+  <div class="content-max-half pt-3 pb-3 sm:pt-4 sm:pb-4">
+    <header class="rounded-full bg-white/70 backdrop-blur-xl backdrop-saturate-150 border border-white/60 shadow-[0_8px_32px_rgba(47,40,38,0.12),inset_0_1px_0_rgba(255,255,255,0.8)]">
+      <div class="h-[56px] sm:h-[68px] px-5 sm:px-8 flex items-center justify-between gap-3">
+        <a href="/index.html" class="shrink-0 flex items-center" aria-label="cleva.">
+          <img src="/assets/images/logo.svg" alt="" class="h-6 w-auto" />
+        </a>
+
+        <a href="/produit.html" class="shrink-0 inline-flex items-center rounded-full bg-primary px-5 sm:px-6 h-[40px] sm:h-[48px] text-sm sm:text-base font-semibold text-white hover:bg-primary-hover transition-colors">
+          Précommander
+        </a>
+      </div>
+    </header>
+  </div>
+</div>
+
+  <main id="contenu">
+
+    <!-- ================= CGV ================= -->
+    <section class="reveal content-max py-24 sm:py-32">
+      <div class="max-w-[720px] mx-auto">
+        <h1 class="font-display text-display-lg">Conditions Générales de Vente</h1>
+        <p class="mt-4 text-ink-soft">Dernière mise à jour : [DATE À COMPLÉTER LORS DE LA PUBLICATION]</p>
+
+        <div class="mt-16 flex flex-col gap-12">
+
+          <div>
+            <h2 class="font-sans font-semibold text-2xl">Article 1 — Objet et champ d'application</h2>
+            <p class="mt-3 text-ink-soft">
+              Les présentes conditions générales de vente (CGV) régissent les ventes de produits réalisées
+              par Thibault Martellino, entrepreneur individuel (micro-entreprise), SIRET 929 498 350 00032,
+              sur le site cleva-games.fr, à destination de tout consommateur (particulier, non professionnel)
+              résidant en France métropolitaine.
+            </p>
+            <p class="mt-3 text-ink-soft">
+              Toute commande passée sur le site implique l'acceptation sans réserve des présentes CGV.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-sans font-semibold text-2xl">Article 2 — Produit</h2>
+            <p class="mt-3 text-ink-soft">
+              Le site propose à la vente une boîte de jeu « cleva. » : un escape game physique conçu pour
+              être joué pendant le repas d'un mariage, à raison d'une boîte par table. Le contenu de la boîte
+              comprend les énigmes du jeu et le cadenas associé. Le contenant (coffre, valise, malle…) et les
+              éventuels cadeaux à l'intérieur ne sont pas fournis.
+            </p>
+            <p class="mt-3 text-ink-soft">
+              Les caractéristiques essentielles du produit sont présentées sur la page de vente du site.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-sans font-semibold text-2xl">Article 3 — Prix</h2>
+            <p class="mt-3 text-ink-soft">
+              Le prix unitaire d'une boîte est indiqué en euros, toutes taxes comprises (TVA non applicable,
+              article 293 B du Code général des impôts), sur la page de vente. Les frais de livraison, le
+              cas échéant, sont indiqués avant validation de la commande.
+            </p>
+            <p class="mt-3 text-ink-soft">
+              L'éditeur se réserve le droit de modifier ses prix à tout moment ; les produits seront facturés
+              sur la base des tarifs en vigueur au moment de la validation de la commande.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-sans font-semibold text-2xl">Article 4 — Commande et paiement</h2>
+            <p class="mt-3 text-ink-soft">
+              La commande est passée exclusivement en ligne, via le module de paiement sécurisé Stripe. Le
+              client renseigne notamment la date de son mariage, nécessaire à l'organisation de la livraison.
+            </p>
+            <p class="mt-3 text-ink-soft">
+              La validation de la commande vaut acceptation des présentes CGV et engagement de paiement. Un
+              e-mail de confirmation est envoyé au client après validation.
+            </p>
+            <p class="mt-3 text-ink-soft">
+              Le site propose actuellement une précommande : le produit n'est pas encore fabriqué au moment
+              de l'achat. Le client est informé de la date de livraison prévisionnelle avant de valider sa
+              commande (voir article 5).
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-sans font-semibold text-2xl">Article 5 — Livraison</h2>
+            <p class="mt-3 text-ink-soft">
+              La livraison est assurée uniquement en France métropolitaine.
+            </p>
+            <p class="mt-3 text-ink-soft">
+              Date de livraison prévisionnelle : 15 novembre 2026 au plus tard, pour toute commande passée
+              avant cette date.
+            </p>
+            <p class="mt-3 text-ink-soft">
+              Cette date constitue, conformément à l'article L.216-1 du Code de la consommation, l'engagement
+              contractuel de livraison. Le client est informé que, s'agissant d'un produit lié à un événement
+              à date fixe (un mariage), cette date de livraison constitue une condition essentielle du
+              contrat au sens de l'article L.216-2 du Code de la consommation.
+            </p>
+            <p class="mt-3 text-ink-soft">
+              En conséquence, si le produit n'est pas livré à la date convenue&nbsp;:
+            </p>
+            <ul class="mt-5 space-y-2 text-[1rem] text-ink-soft list-none p-0 m-0">
+              <li class="flex gap-3"><span aria-hidden="true" class="text-primary">—</span><span>le client peut mettre en demeure l'éditeur de livrer dans un délai supplémentaire raisonnable&nbsp;;</span></li>
+              <li class="flex gap-3"><span aria-hidden="true" class="text-primary">—</span><span>si la date était une condition essentielle explicitement portée à la connaissance du vendeur (mariage antérieur au 15 novembre 2026, information à fournir par le client lors de la commande), le client peut résoudre le contrat immédiatement, sans mise en demeure préalable, et obtenir le remboursement intégral des sommes versées, dans un délai maximal de quatorze jours suivant la résolution.</span></li>
+            </ul>
+            <p class="mt-5 text-ink-soft">
+              Conformément à l'article L.241-4 du Code de la consommation, tout remboursement dû au titre
+              d'un retard de livraison non exécuté après mise en demeure est majoré de 10&nbsp;% s'il
+              intervient dans les 30 jours suivant la seconde échéance, 20&nbsp;% entre 30 et 60 jours, et
+              50&nbsp;% au-delà de 60 jours.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-sans font-semibold text-2xl">Article 6 — Droit de rétractation</h2>
+            <p class="mt-3 text-ink-soft">
+              Conformément aux articles L.221-18 et suivants du Code de la consommation, le client dispose
+              d'un délai de 14 jours francs à compter de la réception du produit pour exercer son droit de
+              rétractation, sans avoir à justifier de motif ni à payer de pénalité.
+            </p>
+            <p class="mt-3 text-ink-soft">
+              Pour exercer ce droit, le client notifie sa décision par e-mail à
+              <a href="mailto:contact@cleva-games.fr" class="text-accent-text underline underline-offset-4">contact@cleva-games.fr</a>,
+              ou au moyen du
+              <a href="/legal/retractation.html" class="text-accent-text underline underline-offset-4">formulaire de rétractation en ligne</a>.
+            </p>
+            <p class="mt-3 text-ink-soft">
+              Le produit doit être retourné dans son état d'origine, dans un délai de 14 jours suivant la
+              notification de la rétractation. Les frais de retour sont à la charge du client. Le
+              remboursement intervient dans un délai maximal de 14 jours à compter de la réception du produit
+              retourné (ou de la preuve d'expédition), par le même moyen de paiement que celui utilisé lors
+              de la commande.
+            </p>
+            <p class="mt-3 text-ink-soft">
+              Bon à savoir&nbsp;: le délai de rétractation démarre à la réception du produit, et non à la
+              date de la commande. Un client qui précommande longtemps à l'avance conserve donc ses 14 jours
+              pleins à compter de la livraison effective.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-sans font-semibold text-2xl">Article 7 — Garanties légales</h2>
+            <p class="mt-3 text-ink-soft">
+              Tout produit vendu bénéficie de plein droit, et sans frais supplémentaire&nbsp;:
+            </p>
+            <ul class="mt-5 space-y-2 text-[1rem] text-ink-soft list-none p-0 m-0">
+              <li class="flex gap-3"><span aria-hidden="true" class="text-primary">—</span><span>de la garantie légale de conformité (articles L.217-3 et suivants du Code de la consommation), pendant 2 ans à compter de la délivrance du bien&nbsp;;</span></li>
+              <li class="flex gap-3"><span aria-hidden="true" class="text-primary">—</span><span>de la garantie légale contre les vices cachés (articles 1641 et suivants du Code civil), pendant 2 ans à compter de la découverte du vice.</span></li>
+            </ul>
+            <p class="mt-5 text-ink-soft">
+              En cas de non-conformité ou de vice caché, le client peut contacter
+              <a href="mailto:contact@cleva-games.fr" class="text-accent-text underline underline-offset-4">contact@cleva-games.fr</a>
+              pour obtenir réparation, remplacement, ou remboursement selon les conditions prévues par la loi.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-sans font-semibold text-2xl">Article 8 — Responsabilité</h2>
+            <p class="mt-3 text-ink-soft">
+              L'éditeur ne saurait être tenu responsable de l'inexécution du contrat en cas de force majeure,
+              au sens de l'article 1218 du Code civil.
+            </p>
+            <p class="mt-3 text-ink-soft">
+              Le produit étant un jeu conçu pour être animé par les convives eux-mêmes, sans intervention d'un
+              tiers, l'éditeur ne saurait être tenu responsable du déroulement de l'animation le jour de
+              l'événement (organisation de la salle, comportement des invités, etc.).
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-sans font-semibold text-2xl">Article 9 — Médiation de la consommation</h2>
+            <p class="mt-3 text-ink-soft">
+              Conformément à l'article L.616-1 du Code de la consommation, tout client consommateur a le
+              droit de recourir gratuitement à un médiateur de la consommation en cas de litige non résolu
+              directement avec l'éditeur.
+            </p>
+            <p class="mt-3 text-ink-soft">
+              Médiateur désigné&nbsp;: [NOM DU MÉDIATEUR À COMPLÉTER APRÈS ADHÉSION] — [Coordonnées à compléter]
+            </p>
+            <p class="mt-3 text-ink-soft">
+              Plateforme européenne de règlement en ligne des litiges&nbsp;:
+              <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener" class="text-accent-text underline underline-offset-4">ec.europa.eu/consumers/odr</a>
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-sans font-semibold text-2xl">Article 10 — Données personnelles</h2>
+            <p class="mt-3 text-ink-soft">
+              Les données collectées lors de la commande (identité, coordonnées, date de mariage) sont
+              utilisées exclusivement pour le traitement de la commande et la relation client. Voir la
+              section « Données personnelles » des
+              <a href="/legal/mentions-legales.html" class="text-accent-text underline underline-offset-4">Mentions légales</a>
+              pour le détail des droits du client.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-sans font-semibold text-2xl">Article 11 — Droit applicable et litiges</h2>
+            <p class="mt-3 text-ink-soft">
+              Les présentes CGV sont soumises au droit français. En cas de litige, et après tentative de
+              résolution amiable (y compris via le médiateur mentionné à l'article 9), les tribunaux français
+              compétents seront ceux du lieu de résidence du défendeur ou, à l'appréciation du consommateur,
+              tout autre tribunal territorialement compétent en application du Code de procédure civile.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
   </main>
+
+<!-- Footer : même structure que templates/partials/footer.html, avec le
+     logo en <img> pour la même raison que le header ci-dessus. -->
+  <footer id="footer">
+    <div class="content-max py-10">
+      <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-8">
+        <div>
+          <img src="/assets/images/logo.svg" alt="cleva." class="h-7 w-auto" />
+          <p class="mt-2 text-base text-ink-soft">L'escape game à jouer pendant votre mariage.</p>
+          <a href="mailto:contact@cleva-games.fr" class="mt-3 inline-block text-base text-accent-text underline underline-offset-4">contact@cleva-games.fr</a>
+        </div>
+        <nav class="flex flex-col gap-2 text-base">
+          <a href="/produit.html" class="text-ink-soft hover:text-primary transition-colors">Le produit</a>
+          <a href="/legal/cgv.html" class="text-ink-soft hover:text-primary transition-colors">CGV</a>
+          <a href="/legal/mentions-legales.html" class="text-ink-soft hover:text-primary transition-colors">Mentions légales</a>
+        </nav>
+      </div>
+      <p class="mt-8 text-base text-lin-600">© <span data-annee></span> cleva. — Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <div id="cookie-banner" class="hidden fixed inset-x-0 bottom-0 z-[60] p-4 sm:p-6">
+    <div class="mx-auto max-w-[720px] rounded-2xl bg-ink text-white shadow-[0_8px_32px_rgba(0,0,0,0.25)] p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4">
+      <p class="text-sm text-white/80">
+        On utilise Google Analytics pour comprendre comment vous naviguez sur le site — rien de plus. Vous pouvez refuser sans que ça change votre expérience.
+      </p>
+      <div class="flex gap-3 shrink-0">
+        <button type="button" id="cookie-refuse" class="rounded-full border border-white/30 px-4 py-2 text-sm font-medium text-white hover:bg-white/10 transition-colors">
+          Refuser
+        </button>
+        <button type="button" id="cookie-accept" class="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-hover transition-colors">
+          Accepter
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/scripts/main.js"></script>
+  <script src="/scripts/analytics.js"></script>
 </body>
 </html>
