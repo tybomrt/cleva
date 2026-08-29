@@ -119,14 +119,14 @@
      vision (IntersectionObserver, script plus bas — pas .reveal-on-load,
      cf. commentaire dans le <style> du <head>). -->
 <div id="site-header-bar" class="fixed inset-x-0 top-0 z-50">
-  <div class="content-max-half pt-3 pb-3 sm:pt-4 sm:pb-4">
+  <div class="content-max-half pt-7 pb-3 sm:pt-8 sm:pb-4">
     <header class="rounded-full bg-white/70 backdrop-blur-xl backdrop-saturate-150 border border-white/60 shadow-[0_8px_32px_rgba(47,40,38,0.12),inset_0_1px_0_rgba(255,255,255,0.8)]">
       <div class="h-[56px] sm:h-[68px] px-5 sm:px-8 flex items-center justify-between gap-3">
-        <a href="/index.html" class="shrink-0 flex items-center text-ink" aria-label="cleva.">
+        <a href="/" class="shrink-0 flex items-center text-ink" aria-label="cleva.">
 <!--#include "../assets/images/logo.svg" class="h-6 w-auto" aria-hidden="true" -->
         </a>
 
-        <a href="/produit.html" class="shrink-0 inline-flex items-center rounded-full bg-primary px-5 sm:px-6 h-[40px] sm:h-[48px] text-sm sm:text-base font-semibold text-white hover:bg-primary-hover transition-colors">
+        <a href="/produit" class="shrink-0 inline-flex items-center rounded-full bg-primary px-5 sm:px-6 h-[40px] sm:h-[48px] text-sm sm:text-base font-semibold text-white hover:bg-primary-hover transition-colors">
           Précommander
         </a>
       </div>
@@ -170,15 +170,11 @@
               Enfermez <span class="text-white font-semibold">les cadeaux</span> pour vos invités dans un coffre et laissez-les résoudre les <span class="text-white font-semibold">énigmes</span> pour les récupérer.
             </p>
             <div class="reveal-on-load reveal-on-load-2 mt-8 flex flex-col items-center gap-4">
-              <a href="/produit.html" class="inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-base sm:text-lg font-semibold text-white hover:bg-primary-hover transition-colors">
+              <a href="/produit" class="inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-base sm:text-lg font-semibold text-white hover:bg-primary-hover transition-colors">
                 Précommander
               </a>
               <p id="hero-price-line" class="text-lg sm:text-xl text-white/80">
-                À partir de
-                <span class="hero-price text-white font-semibold">
-                  <span>25&nbsp;€ par table</span>
-                  <span>2,50&nbsp;€ par invité</span>
-                </span>
+                À partir de <span class="text-white font-semibold">2,50&nbsp;€ par invité</span>
               </p>
             </div>
           </div>
@@ -209,7 +205,7 @@
             Quand l'ambiance retombe, <span class="text-ink font-semibold">cleva. prend le relais</span>.<br />
             Sans quitter sa chaise ni abandonner son dessert.
           </p>
-          <a href="/produit.html" class="mt-10 inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-base font-semibold text-white hover:bg-primary-hover transition-colors">
+          <a href="/produit" class="mt-10 inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-base font-semibold text-white hover:bg-primary-hover transition-colors">
             Précommander
           </a>
         </div>
@@ -227,59 +223,54 @@
     <section id="mecanique-teaser" class="reveal py-24 sm:py-32">
       <div class="content-max">
         <h2 class="font-display text-display-md max-w-[22ch]">Comment ça se passe&nbsp;?</h2>
-      </div>
 
-      <div class="mt-12">
-        <div id="mecanique-track" class="flex gap-6 overflow-x-auto snap-x snap-mandatory" style="scrollbar-width:none; padding-left:calc((100vw - min(1260px, 92vw)) / 2); padding-right:calc((100vw - min(1260px, 92vw)) / 2);">
-          <div data-mecanique-card class="snap-center shrink-0 rounded-2xl bg-surface px-8 py-10 sm:px-16 sm:py-14 flex flex-col items-center text-center" style="width:min(1260px, 92vw);">
-            <p class="text-2xl sm:text-3xl font-semibold leading-snug max-w-[32ch]">
-              Mettez les cadeaux sous clé. Vous les placez dans un coffre*, que vous fermez avec le
-              <span class="text-primary">cadenas fourni</span> avec la boîte.
-            </p>
-            <div class="mt-8 w-full max-w-[480px] aspect-[4/3] overflow-hidden rounded-2xl">
-              <img src="/assets/images/Product.webp" alt="" class="h-full w-full object-cover" />
+        <div class="mt-16 sm:mt-24 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
+          <div class="group flex flex-col items-start">
+            <div class="w-full aspect-[4/3] lg:aspect-[2/3] overflow-hidden rounded-2xl">
+              <img src="/assets/images/installation-cadeaux.jpeg" alt="" class="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105" />
+            </div>
+            <div class="mt-6">
+              <h3 class="text-xl sm:text-2xl font-semibold leading-snug">
+                Cachez les cadeaux
+              </h3>
+              <p class="mt-2 text-ink-soft">Coffre et cadeaux non fournis. La boîte cleva. contient le cadenas et les énigmes qui permettent de l'ouvrir.</p>
             </div>
           </div>
-          <div data-mecanique-card class="snap-center shrink-0 rounded-2xl bg-surface px-8 py-10 sm:px-16 sm:py-14 flex flex-col items-center text-center" style="width:min(1260px, 92vw);">
-            <p class="text-2xl sm:text-3xl font-semibold leading-snug max-w-[32ch]">
-              Posez les boîtes sur les tables. Aucune installation ni animation à prévoir&nbsp;:
-              <span class="text-primary">le jeu est autoporteur</span>.
-            </p>
-            <div class="mt-8 w-full max-w-[480px] aspect-[4/3] overflow-hidden rounded-2xl">
-              <img src="/assets/images/hero.webp" alt="" class="h-full w-full object-cover" />
+          <div class="group flex flex-col items-start">
+            <div class="w-full aspect-[4/3] lg:aspect-[2/3] overflow-hidden rounded-2xl">
+              <img src="/assets/images/installation-jeu.jpeg" alt="" class="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105" />
+            </div>
+            <div class="mt-6">
+              <h3 class="text-xl sm:text-2xl font-semibold leading-snug">
+                Installez le jeu en quelques secondes
+              </h3>
+              <p class="mt-2 text-ink-soft">Il suffit de poser le coffre et la boîte de jeu sur la table. L'enquête démarre dès que vos invités l'ouvrent.</p>
             </div>
           </div>
-          <div data-mecanique-card class="snap-center shrink-0 rounded-2xl bg-surface px-8 py-10 sm:px-16 sm:py-14 flex flex-col items-center text-center" style="width:min(1260px, 92vw);">
-            <p class="text-2xl sm:text-3xl font-semibold leading-snug max-w-[32ch]">
-              Chaque table joue à son rythme, ou bien à votre top départ, pour mettre un peu de
-              <span class="text-primary">compétition</span> dans la salle.
-            </p>
-            <div class="mt-8 w-full max-w-[480px] aspect-[4/3] overflow-hidden rounded-2xl">
-              <img src="/assets/images/hero.webp" alt="" class="h-full w-full object-cover object-[75%_50%]" />
+          <div class="group flex flex-col items-start">
+            <div class="w-full aspect-[4/3] lg:aspect-[2/3] overflow-hidden rounded-2xl">
+              <img src="/assets/images/jeu-en-cours.jpeg" alt="" class="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105" />
+            </div>
+            <div class="mt-6">
+              <h3 class="text-xl sm:text-2xl font-semibold leading-snug">
+                Laissez vos invités jouer
+              </h3>
+              <p class="mt-2 text-ink-soft">Aucun animateur n'est nécessaire&nbsp;: vos invités mènent l'enquête en autonomie. Vous pouvez lancer une compétition entre les tables pour ajouter un peu plus d'enjeu.</p>
+            </div>
+          </div>
+          <div class="group flex flex-col items-start">
+            <div class="w-full aspect-[4/3] lg:aspect-[2/3] overflow-hidden rounded-2xl">
+              <img src="/assets/images/ouverture-coffre.jpeg" alt="" class="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105" />
+            </div>
+            <div class="mt-6">
+              <h3 class="text-xl sm:text-2xl font-semibold leading-snug">
+                Vos invités déverrouillent le coffre
+              </h3>
+              <p class="mt-2 text-ink-soft">La dernière énigme donne accès au code du cadenas. Le coffre s'ouvre, les cadeaux sont enfin accessibles.</p>
             </div>
           </div>
         </div>
       </div>
-
-      <div class="mt-8 content-max flex items-center justify-center gap-4">
-        <div class="flex items-center gap-2">
-          <button type="button" data-mecanique-dot aria-label="Aller à l'étape 1" class="relative h-2 w-2 rounded-full bg-line-strong overflow-hidden p-0 border-0 cursor-pointer transition-[width] duration-300">
-            <span data-mecanique-fill class="absolute inset-y-0 left-0 w-0 bg-ink"></span>
-          </button>
-          <button type="button" data-mecanique-dot aria-label="Aller à l'étape 2" class="relative h-2 w-2 rounded-full bg-line-strong overflow-hidden p-0 border-0 cursor-pointer transition-[width] duration-300">
-            <span data-mecanique-fill class="absolute inset-y-0 left-0 w-0 bg-ink"></span>
-          </button>
-          <button type="button" data-mecanique-dot aria-label="Aller à l'étape 3" class="relative h-2 w-2 rounded-full bg-line-strong overflow-hidden p-0 border-0 cursor-pointer transition-[width] duration-300">
-            <span data-mecanique-fill class="absolute inset-y-0 left-0 w-0 bg-ink"></span>
-          </button>
-        </div>
-        <button type="button" id="mecanique-playpause" aria-label="Mettre en pause le défilement" class="flex h-8 w-8 items-center justify-center rounded-full text-ink-soft hover:bg-line transition-colors">
-          <svg data-icon="pause" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
-          <svg data-icon="play" class="hidden" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </button>
-      </div>
-
-      <p class="mt-6 content-max text-sm text-ink-soft text-center">*Cadeaux et coffres non fournis</p>
     </section>
 
     <!-- ================= Avis ================= -->
@@ -292,7 +283,10 @@
       <div class="content-max">
         <h2 class="font-display text-display-md text-white">Ce qu'ils en disent</h2>
         <p class="mt-2 text-[1rem] text-white/50">
-          <a href="https://www.trustpilot.com/review/cleva-games.fr" target="_blank" rel="noopener" class="underline underline-offset-4 hover:text-white transition-colors">Avis vérifiés sur Trustpilot</a>
+          <a href="https://www.trustpilot.com/review/cleva-games.fr" target="_blank" rel="noopener" class="inline-flex items-center gap-1 underline underline-offset-4 hover:text-white transition-colors">
+            Avis vérifiés sur Trustpilot
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+          </a>
         </p>
       </div>
 
@@ -301,21 +295,6 @@
            relais dans cette plage, cf. #avis-grid plus bas). -->
       <div id="avis-carousel" class="mt-12">
         <div id="avis-track" class="flex gap-6 overflow-x-auto snap-x snap-mandatory" style="scrollbar-width:none; padding-left:calc((100vw - min(1260px, 92vw)) / 2); padding-right:calc((100vw - min(1260px, 92vw)) / 2);">
-          <div data-avis-card class="snap-center shrink-0 rounded-3xl bg-white/[0.06] p-8 py-14 flex flex-col items-center text-center gap-4" style="width:min(1260px, 92vw);">
-            <div class="flex gap-1 text-primary" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
-            </div>
-            <p class="font-sans font-semibold text-2xl text-white max-w-[24ch]">Excellent escape game&nbsp;!</p>
-            <p class="text-lg text-white/60 max-w-[42ch]">
-              Une super expérience du début à la fin&nbsp;! Les énigmes sont variées, bien construites
-              et très immersives. L'accueil est top et l'ambiance géniale. Je recommande à 100&nbsp;%&nbsp;!
-            </p>
-            <p class="text-sm text-white/40">Max</p>
-          </div>
           <div data-avis-card class="snap-center shrink-0 rounded-3xl bg-white/[0.06] p-8 py-14 flex flex-col items-center text-center gap-4" style="width:min(1260px, 92vw);">
             <div class="flex gap-1 text-primary" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
@@ -348,6 +327,21 @@
               tout en s'amusant. Un excellent moment que j'ai pris beaucoup de plaisir à partager&nbsp;!
             </p>
             <p class="text-sm text-white/40">Marian</p>
+          </div>
+          <div data-avis-card class="snap-center shrink-0 rounded-3xl bg-white/[0.06] p-8 py-14 flex flex-col items-center text-center gap-4" style="width:min(1260px, 92vw);">
+            <div class="flex gap-1 text-primary" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+            </div>
+            <p class="font-sans font-semibold text-2xl text-white max-w-[24ch]">Excellent escape game&nbsp;!</p>
+            <p class="text-lg text-white/60 max-w-[42ch]">
+              Une super expérience du début à la fin&nbsp;! Les énigmes sont variées, bien construites
+              et très immersives. L'accueil est top et l'ambiance géniale. Je recommande à 100&nbsp;%&nbsp;!
+            </p>
+            <p class="text-sm text-white/40">Max</p>
           </div>
         </div>
 
@@ -383,22 +377,6 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
           </div>
-          <p class="font-sans font-semibold text-lg text-white">Excellent escape game&nbsp;!</p>
-          <p class="text-[1rem] text-white/60">
-            Une super expérience du début à la fin&nbsp;! Les énigmes sont variées, bien construites
-            et très immersives. L'accueil est top et l'ambiance géniale. Je recommande à 100&nbsp;%&nbsp;!
-          </p>
-          <p class="mt-auto text-sm text-white/40">Max</p>
-        </div>
-
-        <div class="rounded-3xl bg-white/[0.06] p-8 sm:p-10 flex flex-col gap-4">
-          <div class="flex gap-1 text-primary" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
-          </div>
           <p class="font-sans font-semibold text-lg text-white">Superbe expérience&nbsp;!</p>
           <p class="text-[1rem] text-white/60">
             Nous avons eu le plaisir de découvrir ce magnifique jeu lors du repas de mariage. Entre
@@ -424,6 +402,22 @@
             tout en s'amusant. Un excellent moment que j'ai pris beaucoup de plaisir à partager&nbsp;!
           </p>
           <p class="mt-auto text-sm text-white/40">Marian</p>
+        </div>
+
+        <div class="rounded-3xl bg-white/[0.06] p-8 sm:p-10 flex flex-col gap-4">
+          <div class="flex gap-1 text-primary" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279L0 9.306l8.332-1.151z"/></svg>
+          </div>
+          <p class="font-sans font-semibold text-lg text-white">Excellent escape game&nbsp;!</p>
+          <p class="text-[1rem] text-white/60">
+            Une super expérience du début à la fin&nbsp;! Les énigmes sont variées, bien construites
+            et très immersives. L'accueil est top et l'ambiance géniale. Je recommande à 100&nbsp;%&nbsp;!
+          </p>
+          <p class="mt-auto text-sm text-white/40">Max</p>
         </div>
       </div>
     </section>
@@ -754,7 +748,6 @@
       }
     }
 
-    initCarousel('mecanique-teaser', 'mecanique-track', 'data-mecanique-card', 'data-mecanique-dot', 'data-mecanique-fill', 'mecanique-playpause');
     initCarousel('avis-carousel', 'avis-track', 'data-avis-card', 'data-avis-dot', 'data-avis-fill', 'avis-playpause');
   </script>
 </body>

@@ -489,6 +489,140 @@
     window.addEventListener('resize', onResize);
   }
 
+  /* ------------------------------------------------------------------------
+     8bis. Galerie produit (page produit) — clic sur une vignette ou sur les
+     flèches précédent/suivant pour changer la photo principale : l'ancienne
+     et la nouvelle image se poussent horizontalement (comme un slide), dans
+     le sens de la navigation. Défilement automatique en boucle tant que
+     personne n'interagit ; la vignette active se remplit (overlay blanc)
+     pour montrer le temps restant avant le passage à la suivante — remise à
+     zéro à chaque interaction manuelle.
+     ---------------------------------------------------------------------- */
+  function initGalerieProduit() {
+    var viewport = document.getElementById('galerie-image');
+    var prevBtn = document.getElementById('galerie-prev');
+    var nextBtn = document.getElementById('galerie-next');
+    var playPauseBtn = document.getElementById('galerie-playpause');
+    var thumbs = document.querySelectorAll('[data-galerie-thumb]');
+    if (!viewport || !prevBtn || !nextBtn || !playPauseBtn || !thumbs.length) return;
+
+    var image = viewport;
+    var current = 0;
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var SLIDE = 400;
+    var DURATION = 7000;
+    var TICK = 50;
+    var elapsed = 0;
+    var intervalId = null;
+    var playing = false;
+
+    function resetFills() {
+      thumbs.forEach(function (t) {
+        var fill = t.querySelector('[data-galerie-fill]');
+        if (fill) fill.style.width = '0%';
+      });
+    }
+
+    function slideTo(src, direction) {
+      if (reducedMotion) {
+        image.src = src;
+        return;
+      }
+      var container = image.parentElement;
+      var oldImg = image;
+      var newImg = document.createElement('img');
+      newImg.src = src;
+      newImg.alt = '';
+      newImg.className = oldImg.className;
+      newImg.style.transform = 'translateX(' + (direction > 0 ? '100%' : '-100%') + ')';
+      container.insertBefore(newImg, oldImg.nextSibling);
+
+      // Force le calcul du style avant d'animer, sinon le navigateur
+      // fusionne l'état initial et l'état final en une seule frame.
+      newImg.getBoundingClientRect();
+      oldImg.style.transition = newImg.style.transition = 'transform ' + SLIDE + 'ms ease';
+      oldImg.style.transform = 'translateX(' + (direction > 0 ? '-100%' : '100%') + ')';
+      newImg.style.transform = 'translateX(0)';
+
+      window.setTimeout(function () {
+        oldImg.remove();
+        newImg.id = 'galerie-image';
+        image = newImg;
+      }, SLIDE);
+    }
+
+    function setActive(index, direction) {
+      var next = (index + thumbs.length) % thumbs.length;
+      if (direction === undefined) direction = next >= current ? 1 : -1;
+      current = next;
+      elapsed = 0;
+      resetFills();
+      slideTo(thumbs[current].querySelector('img').src, direction);
+      thumbs.forEach(function (t, i) {
+        t.classList.toggle('border-primary', i === current);
+        t.classList.toggle('border-transparent', i !== current);
+      });
+    }
+
+    function tick() {
+      elapsed += TICK;
+      var fill = thumbs[current].querySelector('[data-galerie-fill]');
+      if (fill) fill.style.width = (Math.min(1, elapsed / DURATION) * 100) + '%';
+      if (elapsed >= DURATION) {
+        setActive(current + 1, 1);
+      }
+    }
+
+    function play() {
+      playing = true;
+      playPauseBtn.setAttribute('aria-label', 'Mettre en pause le défilement');
+      playPauseBtn.querySelector('[data-icon="pause"]').classList.remove('hidden');
+      playPauseBtn.querySelector('[data-icon="play"]').classList.add('hidden');
+      if (intervalId) window.clearInterval(intervalId);
+      intervalId = window.setInterval(tick, TICK);
+    }
+
+    function pause() {
+      playing = false;
+      playPauseBtn.setAttribute('aria-label', 'Reprendre le défilement');
+      playPauseBtn.querySelector('[data-icon="pause"]').classList.add('hidden');
+      playPauseBtn.querySelector('[data-icon="play"]').classList.remove('hidden');
+      if (intervalId) window.clearInterval(intervalId);
+    }
+
+    // Reprend le compte à rebours à zéro après une navigation manuelle,
+    // sans forcer la reprise si l'utilisateur avait mis en pause.
+    function restart() {
+      elapsed = 0;
+      resetFills();
+      if (playing) play();
+    }
+
+    thumbs.forEach(function (thumb, i) {
+      thumb.addEventListener('click', function () {
+        setActive(i);
+        restart();
+      });
+    });
+    prevBtn.addEventListener('click', function () {
+      setActive(current - 1, -1);
+      restart();
+    });
+    nextBtn.addEventListener('click', function () {
+      setActive(current + 1, 1);
+      restart();
+    });
+    playPauseBtn.addEventListener('click', function () {
+      if (playing) { pause(); } else { play(); }
+    });
+
+    if (reducedMotion) {
+      pause();
+    } else {
+      play();
+    }
+  }
+
   /* ---------------------------------------------------------------------- */
   function init() {
     remplirTextes();
@@ -497,6 +631,7 @@
     initHeroDesktopCrop();
     initNotify();
     initRetraction();
+    initGalerieProduit();
     initBuybar();
     initReveal();
     initAccordion();

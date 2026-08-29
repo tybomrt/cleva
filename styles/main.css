@@ -106,41 +106,6 @@ input[type='number'] {
   }
 }
 
-/* Tarif d'accroche du hero : bascule en boucle entre "25 € par table" et
-   "2,50 € par invité" pour rendre le prix plus concret, en effet rouleau
-   (le montant affiché monte pour disparaître, le suivant arrive du bas).
-   Les deux montants se superposent en grille (CSS Grid), donc le
-   conteneur se dimensionne automatiquement sur le plus long des deux —
-   pas de largeur à deviner. Reduced-motion : seul "25 € par table" reste
-   affiché, sans bascule. */
-.hero-price {
-  display: inline-grid;
-  overflow: hidden;
-}
-.hero-price > span {
-  grid-area: 1 / 1;
-}
-.hero-price > span:last-child {
-  transform: translateY(100%);
-}
-
-@media not (prefers-reduced-motion: reduce) {
-  @keyframes cleva-price-roll {
-    0%, 45% { transform: translateY(0%); }
-    50% { transform: translateY(-100%); }
-    50.01% { transform: translateY(100%); }
-    95% { transform: translateY(100%); }
-    100% { transform: translateY(0%); }
-  }
-
-  .hero-price > span {
-    animation: cleva-price-roll 6s ease-in-out infinite;
-  }
-  .hero-price > span:last-child {
-    animation-delay: -3s;
-  }
-}
-
 /* Respect des préférences système : pas d'animation si l'utilisateur
    a demandé à en être dispensé. */
 @media (prefers-reduced-motion: reduce) {
