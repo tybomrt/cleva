@@ -62,7 +62,7 @@ export default async function handler(req, res) {
 
   try {
     const notifInfo = await transporter.sendMail({
-      from: '"cleva. — Site web" <site@cleva-games.fr>',
+      from: process.env.SMTP_USER,
       to: contactEmail,
       replyTo: email,
       subject: 'Rétractation — ' + nom,
