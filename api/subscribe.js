@@ -36,7 +36,7 @@ export default async function handler(req, res) {
 
   try {
     await transporter.sendMail({
-      from: process.env.SMTP_USER,
+      from: '"cleva." <' + process.env.SMTP_USER + '>',
       to: contactEmail,
       replyTo: email,
       subject: 'Nouvelle inscription — Prévenez-moi',
