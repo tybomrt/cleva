@@ -3,6 +3,12 @@
 
 import nodemailer from 'nodemailer';
 
+// Exécute la fonction en Europe plutôt qu'aux USA par défaut : le serveur
+// SMTP OVH est en France (cf. api/retraction.js pour le détail).
+export const config = {
+  regions: ['cdg1']
+};
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function clean(value, maxLen) {

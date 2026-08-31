@@ -11,6 +11,14 @@
 
 import nodemailer from 'nodemailer';
 
+// Exécute la fonction en Europe plutôt qu'aux USA par défaut : le serveur
+// SMTP OVH est en France, chaque aller-retour SMTP traverserait sinon
+// l'Atlantique deux fois — c'est ça qui rendait l'envoi lent (plusieurs
+// secondes).
+export const config = {
+  regions: ['cdg1']
+};
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_LEN = { nom: 200, email: 200, commande: 100, reception: 100, message: 2000 };
 
@@ -50,7 +58,12 @@ export default async function handler(req, res) {
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASSWORD
-    }
+    },
+    // Réutilise la même connexion pour les deux emails envoyés ci-dessous
+    // au lieu de refaire une poignée de main TLS + authentification pour
+    // chacun.
+    pool: true,
+    maxConnections: 2
   });
 
   const recap =
@@ -61,13 +74,32 @@ export default async function handler(req, res) {
     (message ? '\nMessage :\n' + message + '\n' : '');
 
   try {
-    const notifInfo = await transporter.sendMail({
-      from: '"cleva." <' + process.env.SMTP_USER + '>',
-      to: contactEmail,
-      replyTo: email,
-      subject: 'Rétractation — ' + nom,
-      text: 'Nouvelle demande de rétractation reçue via le site.\n\n' + recap
-    });
+    // Les deux emails sont indépendants (destinataires différents) : les
+    // envoyer en parallèle plutôt que l'un après l'autre évite de payer
+    // deux fois l'aller-retour réseau vers le serveur SMTP.
+    const [notifInfo] = await Promise.all([
+      transporter.sendMail({
+        from: '"cleva." <' + process.env.SMTP_USER + '>',
+        to: contactEmail,
+        replyTo: email,
+        subject: 'Rétractation — ' + nom,
+        text: 'Nouvelle demande de rétractation reçue via le site.\n\n' + recap
+      }),
+      transporter.sendMail({
+        from: '"cleva." <' + process.env.SMTP_USER + '>',
+        to: email,
+        subject: 'Confirmation de réception de votre rétractation — cleva.',
+        text:
+          'Bonjour ' + nom + ',\n\n' +
+          'Nous avons bien reçu votre demande de rétractation concernant votre commande ' +
+          'du ' + commande + '. Conformément à l\'article L221-21 du Code de la consommation, ' +
+          'ce message vaut accusé de réception.\n\n' +
+          'Nous revenons vers vous rapidement pour la suite (modalités de retour du produit ' +
+          'et remboursement).\n\n' +
+          'Récapitulatif de votre demande :\n' + recap +
+          '\nL\'équipe cleva.'
+      })
+    ]);
     console.log('retraction notif email', {
       to: contactEmail,
       messageId: notifInfo.messageId,
@@ -76,24 +108,11 @@ export default async function handler(req, res) {
       rejected: notifInfo.rejected
     });
 
-    await transporter.sendMail({
-      from: '"cleva." <' + process.env.SMTP_USER + '>',
-      to: email,
-      subject: 'Confirmation de réception de votre rétractation — cleva.',
-      text:
-        'Bonjour ' + nom + ',\n\n' +
-        'Nous avons bien reçu votre demande de rétractation concernant votre commande ' +
-        'du ' + commande + '. Conformément à l\'article L221-21 du Code de la consommation, ' +
-        'ce message vaut accusé de réception.\n\n' +
-        'Nous revenons vers vous rapidement pour la suite (modalités de retour du produit ' +
-        'et remboursement).\n\n' +
-        'Récapitulatif de votre demande :\n' + recap +
-        '\nL\'équipe cleva.'
-    });
-
+    transporter.close();
     return res.status(200).json({ ok: true });
   } catch (err) {
     console.error('retraction email error', err);
+    transporter.close();
     return res.status(502).json({ error: 'Envoi impossible pour le moment.' });
   }
 }
