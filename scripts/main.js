@@ -24,7 +24,7 @@
        'octobre 2026'                → acceptable
        'la semaine du 12 octobre 2026' → nettement mieux
      ---------------------------------------------------------------------- */
-  var LIVRAISON = 'automne 2026';
+  var LIVRAISON = 'à partir du 11 janvier 2027';
 
   /* ------------------------------------------------------------------------
      2. Injection de la date et de l'année
