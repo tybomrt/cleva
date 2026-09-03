@@ -47,9 +47,9 @@ export default async function handler(req, res) {
       custom_fields: [
         {
           key: 'date_mariage',
-          label: { type: 'custom', custom: 'Date du mariage' },
+          label: { type: 'custom', custom: 'Date du mariage (JJ/MM/AAAA)' },
           type: 'text',
-          text: { minimum_length: 1, maximum_length: 40 }
+          text: { minimum_length: 8, maximum_length: 10 }
         }
       ],
       line_items: [
