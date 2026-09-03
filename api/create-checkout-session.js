@@ -48,8 +48,7 @@ export default async function handler(req, res) {
         {
           key: 'date_mariage',
           label: { type: 'custom', custom: 'Date du mariage (JJ/MM/AAAA)' },
-          type: 'text',
-          text: { minimum_length: 8, maximum_length: 10 }
+          type: 'text'
         }
       ],
       line_items: [
