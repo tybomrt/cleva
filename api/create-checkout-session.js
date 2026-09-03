@@ -40,6 +40,18 @@ export default async function handler(req, res) {
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       locale: 'fr',
+      allow_promotion_codes: true,
+      shipping_address_collection: {
+        allowed_countries: ['FR']
+      },
+      custom_fields: [
+        {
+          key: 'date_mariage',
+          label: { type: 'custom', custom: 'Date du mariage' },
+          type: 'text',
+          text: { minimum_length: 1, maximum_length: 40 }
+        }
+      ],
       line_items: [
         {
           price_data: {
