@@ -185,6 +185,11 @@
     if (headerCta) headerCta.addEventListener('click', function (e) { e.preventDefault(); irVersPaiement(headerCta); });
 
     calculer();
+
+    // Au retour arrière du navigateur, le champ peut être restauré par le
+    // navigateur APRÈS ce script (valeur d'input à jour, mais prix/texte
+    // encore basés sur l'ancienne valeur) : on recalcule à chaque affichage.
+    window.addEventListener('pageshow', calculer);
   }
 
   /* ------------------------------------------------------------------------
