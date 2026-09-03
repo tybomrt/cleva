@@ -107,24 +107,6 @@
 
   var QTE_MAX = 15;
 
-  var LIENS_STRIPE = {
-    1: 'https://buy.stripe.com/eVqdR875qbkY91U3lK8k801',
-    2: 'https://buy.stripe.com/14A8wOgG0exagum2hG8k802',
-    3: 'https://buy.stripe.com/3cI9AScpK0Gkce65tS8k803',
-    4: 'https://buy.stripe.com/bJedR875qcp25PI5tS8k804',
-    5: 'https://buy.stripe.com/bJeeVccpK1Ko91U09y8k805',
-    6: 'https://buy.stripe.com/28E00iblGagU2Dwg8w8k806',
-    7: 'https://buy.stripe.com/3cI28q4XifBe1zs09y8k807',
-    8: 'https://buy.stripe.com/9B64gy75q4WAba29K88k808',
-    9: 'https://buy.stripe.com/8x2fZg2Paexa0vobSg8k809',
-    10: 'https://buy.stripe.com/7sYfZggG074Igum2hG8k80a',
-    11: 'https://buy.stripe.com/aFa8wO2Pa1Ko91Uf4s8k80b',
-    12: 'https://buy.stripe.com/4gM5kC1L660Efqi7C08k80c',
-    13: 'https://buy.stripe.com/eVq4gy75q2Os91U9K88k80d',
-    14: 'https://buy.stripe.com/00w6oG2Pa3Sw3HA7C08k80e',
-    15: 'https://buy.stripe.com/9B64gy1L6dt6gum7C08k80f'
-  };
-
   function initQuantite() {
     var qte = document.getElementById('qte-tables');
     if (!qte) return;
@@ -134,7 +116,7 @@
     var moins = document.getElementById('qte-moins');
     var plus = document.getElementById('qte-plus');
     var cta = document.getElementById('qte-cta');
-    var navCta = document.getElementById('nav-menu');
+    var headerCta = document.getElementById('header-cta-produit');
 
     function nombreActuel() {
       var n = parseInt(qte.value, 10);
@@ -152,12 +134,6 @@
       }
       if (moins) moins.disabled = n <= 1;
       if (plus) plus.disabled = n >= QTE_MAX;
-
-      var lien = LIENS_STRIPE[n];
-      if (lien) {
-        if (cta) cta.href = lien;
-        if (navCta) navCta.href = lien;
-      }
     }
 
     function pas(delta) {
@@ -167,9 +143,38 @@
       calculer();
     }
 
+    // Le prix est calcul\u00e9 c\u00f4t\u00e9 serveur \u00e0 partir de la m\u00eame grille tarifaire
+    // (voir api/create-checkout-session.js) : le client ne fait que d\u00e9clencher
+    // la cr\u00e9ation de la session Stripe puis suit l'URL renvoy\u00e9e.
+    function irVersPaiement(bouton) {
+      var texteOriginal = bouton.textContent;
+      bouton.style.pointerEvents = 'none';
+      bouton.textContent = 'Redirection\u2026';
+
+      fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ quantity: nombreActuel() })
+      })
+        .then(function (r) {
+          if (!r.ok) throw new Error('http ' + r.status);
+          return r.json();
+        })
+        .then(function (data) {
+          window.location.href = data.url;
+        })
+        .catch(function () {
+          bouton.style.pointerEvents = '';
+          bouton.textContent = 'Oups, r\u00e9essayez';
+          setTimeout(function () { bouton.textContent = texteOriginal; }, 2500);
+        });
+    }
+
     qte.addEventListener('input', calculer);
     if (moins) moins.addEventListener('click', function () { pas(-1); });
     if (plus) plus.addEventListener('click', function () { pas(1); });
+    if (cta) cta.addEventListener('click', function (e) { e.preventDefault(); irVersPaiement(cta); });
+    if (headerCta) headerCta.addEventListener('click', function (e) { e.preventDefault(); irVersPaiement(headerCta); });
 
     calculer();
   }
