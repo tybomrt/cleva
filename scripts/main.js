@@ -118,6 +118,14 @@
     var cta = document.getElementById('qte-cta');
     var headerCta = document.getElementById('header-cta-produit');
 
+    // Si on revient d'un paiement Stripe annulé, api/create-checkout-session.js
+    // renvoie vers ?qte=n pour ne pas faire perdre la sélection au client.
+    var qteRetour = parseInt(new URLSearchParams(window.location.search).get('qte'), 10);
+    if (!isNaN(qteRetour) && qteRetour >= 1 && qteRetour <= QTE_MAX) {
+      qte.value = qteRetour;
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+
     function nombreActuel() {
       var n = parseInt(qte.value, 10);
       if (isNaN(n) || n < 1) n = 1;

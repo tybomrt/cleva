@@ -68,7 +68,7 @@ export default async function handler(req, res) {
         quantity: String(quantity)
       },
       success_url: SITE_URL + '/produit?commande=confirmee',
-      cancel_url: SITE_URL + '/produit'
+      cancel_url: SITE_URL + '/produit?qte=' + quantity
     });
 
     return res.status(200).json({ url: session.url });
