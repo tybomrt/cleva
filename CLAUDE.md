@@ -29,9 +29,10 @@ Paiement externe via Stripe (lien existant, ne pas recréer de logique de paieme
   `font-sans`, appliqué par défaut sur `<body>`). Chargées via Google Fonts (`<link>`).
 
 ## Page d'énigme (QR code dans les boîtes)
-- Messagerie fictive dans `m/r8w3k2/` : page autonome (HTML/CSS/JS à la main, hors
+- Messagerie fictive dans `m/yPIJmt0brVePOdo8/` : page autonome (HTML/CSS/JS à la main, hors
   templates et hors Tailwind, pour rester légère). Contenu des messages : `data.js`.
-- Le QR code imprimé pointe vers `/q/messages`, redirigé (302, `vercel.json`) vers la page.
+- Le QR code imprimé pointe vers `/q/zktAqDX8cT0o`, redirigé (307 temporaire, `vercel.json`) vers la page.
+  Les deux adresses sont des suites aléatoires : ne jamais les remplacer par des mots devinables.
   **Ne jamais supprimer cette redirection** : les boîtes déjà livrées en dépendent.
 - Ne jamais la lier depuis le site, ni l'ajouter au sitemap, à `llms.txt` ou à `robots.txt`.
   `noindex` via meta + en-tête `X-Robots-Tag`.
