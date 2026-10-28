@@ -575,3 +575,130 @@ button.conv-item { width: 100%; text-align: left; font: inherit; color: inherit;
   background: var(--accent);
   opacity: .45;
 }
+
+/* ---------- Écran de verrouillage ---------- */
+.lock {
+  position: fixed; inset: 0;
+  z-index: 10;
+  color: #fff;
+  /* Fond d'écran : dégradé doux crépuscule */
+  background:
+    radial-gradient(120% 80% at 20% 10%, #8FA8E8 0%, transparent 60%),
+    radial-gradient(120% 90% at 90% 90%, #D99BB6 0%, transparent 55%),
+    linear-gradient(160deg, #3B4F8F 0%, #6A5D9B 55%, #B47FA3 100%);
+  display: flex;
+  justify-content: center;
+}
+.lock.unlocking { animation: unlock .28s ease-in forwards; }
+@keyframes unlock { to { opacity: 0; transform: scale(1.06); } }
+
+.lock-home, .lock-pad {
+  width: 100%; max-width: 560px;
+  height: 100%;
+  display: flex; flex-direction: column; align-items: center;
+  padding: calc(env(safe-area-inset-top) + 18px) 16px calc(env(safe-area-inset-bottom) + 20px);
+}
+.lock-home { color: inherit; text-align: center; cursor: pointer; }
+.lock-top { opacity: .9; margin-bottom: 18px; }
+.lock-date { font-size: 18px; font-weight: 600; text-transform: capitalize; text-shadow: 0 1px 8px rgba(0,0,0,.2); }
+.lock-clock {
+  font-size: 86px; font-weight: 700; line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  margin-top: 2px;
+  text-shadow: 0 2px 16px rgba(0,0,0,.18);
+}
+.lock-notifs { width: 100%; margin-top: auto; display: flex; flex-direction: column; gap: 8px; }
+.lock-notif {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+  padding: 11px 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .62);
+  -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+  color: #16181D;
+  text-align: left;
+}
+.lock-notif-head { display: flex; justify-content: space-between; width: 100%; font-size: 12px; color: #3E434B; }
+.lock-notif-app { font-weight: 700; letter-spacing: .03em; }
+.lock-notif-title { font-size: 15px; font-weight: 700; }
+.lock-notif-body { font-size: 14px; color: #2B2F36; }
+.lock-cta {
+  margin-top: 22px;
+  font-size: 14px; font-weight: 600;
+  opacity: .9;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse { 50% { opacity: .45; } }
+
+/* Saisie du code */
+.lock-pad { justify-content: center; gap: 0; }
+.lock-pad-title { margin: 0 0 18px; font-size: 19px; font-weight: 600; }
+.lock-dots { display: flex; gap: 22px; margin-bottom: 10px; }
+.lock-dots i {
+  width: 14px; height: 14px; border-radius: 50%;
+  border: 1.5px solid #fff;
+  transition: background-color .1s;
+}
+.lock-dots i.on { background: #fff; }
+.lock-hint {
+  min-height: 40px;
+  margin: 6px 0 14px;
+  max-width: 280px;
+  font-size: 14px; font-weight: 600; line-height: 1.35;
+  text-align: center;
+}
+.lock-keys {
+  display: grid;
+  grid-template-columns: repeat(3, 78px);
+  gap: 16px 26px;
+}
+.lock-keys button {
+  width: 78px; height: 78px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .22);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 34px; font-weight: 400; line-height: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  touch-action: manipulation;
+}
+.lock-keys button small { font-size: 10px; font-weight: 700; letter-spacing: .14em; margin-top: 2px; }
+.lock-keys button:active { background: rgba(255, 255, 255, .5); }
+.lock-actions {
+  display: flex; justify-content: space-between; align-items: center;
+  width: 100%; max-width: 286px;
+  margin-top: 24px;
+  min-height: 24px;
+}
+.lock-link { color: #fff; font-size: 16px; font-weight: 600; padding: 6px 4px; }
+#lock-cancel, #lock-delete { margin-left: auto; }
+
+.lock-pad.shake { animation: shake .4s; }
+@keyframes shake {
+  20% { transform: translateX(-14px); } 40% { transform: translateX(12px); }
+  60% { transform: translateX(-8px); } 80% { transform: translateX(5px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lock-cta, .lock-pad.shake, .lock.unlocking { animation: none; }
+}
+/* Petits écrans (iPhone SE…) : pavé un peu plus compact */
+@media (max-height: 700px) {
+  .lock-clock { font-size: 72px; }
+  .lock-keys { gap: 12px 22px; grid-template-columns: repeat(3, 70px); }
+  .lock-keys button { width: 70px; height: 70px; font-size: 30px; }
+}
+
+/* Message « Code erroné » sous les points, et indice sur deux lignes */
+.lock-error {
+  min-height: 20px;
+  margin: 8px 0 0;
+  font-size: 15px; font-weight: 600;
+  text-align: center;
+}
+.lock-hint { white-space: pre-line; margin-top: 4px; }
+
+/* Notification avec l'icône de la conversation + marge basse de l'écran verrouillé */
+.lock-notif { flex-direction: row; align-items: center; gap: 12px; }
+.lock-notif-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.lock-notif-icon { width: 40px; height: 40px; flex: none; border-radius: 50%; font-size: 22px; }
+.lock-home { padding-bottom: calc(env(safe-area-inset-bottom) + 48px); }

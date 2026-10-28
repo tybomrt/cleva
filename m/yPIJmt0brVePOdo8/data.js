@@ -26,6 +26,14 @@
    ========================================================================== */
 
 window.MESSAGES_DATA = {
+  // Écran de verrouillage. Le code = heure de « Début cérémonie » entourée sur le planning papier.
+  lock: {
+    code: '1730',
+    time: '15:52',          // heure affichée (juste après le dernier message reçu)
+    date: 'samedi',
+    hint: 'À quelle heure les mariés\nse disent-ils « oui » ?',   // \n = retour à la ligne
+  },
+
   people: {
     me:       { name: 'Moi',   avatar: '/m/yPIJmt0brVePOdo8/img/me.jpg' },
     man:      { name: 'Lucas', avatar: '/m/yPIJmt0brVePOdo8/img/man.jpg' },

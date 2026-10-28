@@ -34,6 +34,9 @@ Paiement externe via Stripe (lien existant, ne pas recréer de logique de paieme
 - Le QR code imprimé pointe vers `/q/zktAqDX8cT0o`, redirigé (307 temporaire, `vercel.json`) vers la page.
   Les deux adresses sont des suites aléatoires : ne jamais les remplacer par des mots devinables.
   **Ne jamais supprimer cette redirection** : les boîtes déjà livrées en dépendent.
+- Écran de verrouillage au départ : code = heure de « Début cérémonie » entourée sur le planning
+  papier (`lock.code` dans `data.js`, actuellement 1730). Une fois déverrouillé, le téléphone le
+  reste (localStorage) ; ajouter `?lock` à l'adresse pour le reverrouiller en test.
 - Ne jamais la lier depuis le site, ni l'ajouter au sitemap, à `llms.txt` ou à `robots.txt`.
   `noindex` via meta + en-tête `X-Robots-Tag`.
 

@@ -503,10 +503,111 @@
     conv.unread = 0;
   }
 
+  /* ---------- Écran de verrouillage ---------- */
+  var LOCK = DATA.lock;
+  var STORE_KEY = 'cleva-msg-unlocked';
+  var screenLock = document.getElementById('screen-lock');
+
+  // ?lock dans l'adresse = reverrouiller (pratique pour tester).
+  if (/[?&]lock\b/.test(location.search)) { try { localStorage.removeItem(STORE_KEY); } catch (e) {} }
+  var locked = !!LOCK;
+  try { if (localStorage.getItem(STORE_KEY) === '1') locked = false; } catch (e) {}
+
+  function setupLock() {
+    document.getElementById('lock-clock').textContent = LOCK.time;
+    document.getElementById('lock-date').textContent = LOCK.date;
+
+    // Notifications sans aperçu (comme un vrai téléphone verrouillé) : juste l'expéditeur et le nombre.
+    var notifs = document.getElementById('lock-notifs');
+    DATA.conversations.filter(function (c) { return c.unread; }).forEach(function (c) {
+      var n = el('span', 'lock-notif');
+      // Icône de la conversation à gauche, comme les notifications iOS
+      n.appendChild(convAvatar(c, 'lock-notif-icon'));
+      var txt = el('span', 'lock-notif-text');
+      var head = el('span', 'lock-notif-head');
+      head.appendChild(el('span', 'lock-notif-app', 'MESSAGES'));
+      head.appendChild(el('span', 'lock-notif-time', lastOf(c).time));
+      txt.appendChild(head);
+      txt.appendChild(el('span', 'lock-notif-title', c.title));
+      txt.appendChild(el('span', 'lock-notif-body', c.unread + ' notification' + (c.unread > 1 ? 's' : '')));
+      n.appendChild(txt);
+      notifs.appendChild(n);
+    });
+
+    var home = document.getElementById('lock-home');
+    var pad = document.getElementById('lock-pad');
+    var dots = document.getElementById('lock-dots').children;
+    var hint = document.getElementById('lock-hint');
+    var error = document.getElementById('lock-error');
+    var forgot = document.getElementById('lock-forgot');
+    var del = document.getElementById('lock-delete');
+    var entry = '', fails = 0, busy = false;
+
+    function paint() {
+      for (var i = 0; i < dots.length; i++) dots[i].classList.toggle('on', i < entry.length);
+      del.hidden = !entry.length;
+      document.getElementById('lock-cancel').hidden = !!entry.length;
+    }
+    // Chaque ouverture du pavé repart de zéro : 3 nouveaux essais, pas de message ni d'indice.
+    function openPad() {
+      if (!pad.hidden) return;
+      entry = ''; fails = 0;
+      error.textContent = ''; hint.textContent = '';
+      forgot.hidden = true;
+      paint();
+      home.hidden = true; pad.hidden = false;
+    }
+    function closePad() { entry = ''; paint(); pad.hidden = true; home.hidden = false; }
+
+    function press(k) {
+      if (busy || entry.length >= 4) return;
+      error.textContent = '';
+      entry += k;
+      paint();
+      if (entry.length < 4) return;
+      busy = true;
+      setTimeout(function () {
+        if (entry === LOCK.code) {
+          try { localStorage.setItem(STORE_KEY, '1'); } catch (e) {}
+          screenLock.classList.add('unlocking');
+          setTimeout(function () { locked = false; screenLock.hidden = true; route(); }, 280);
+          return;
+        }
+        // Mauvais code : le pavé tremble, on recommence. « Code oublié ? » après 3 échecs.
+        fails++;
+        pad.classList.remove('shake'); void pad.offsetWidth; pad.classList.add('shake');
+        if (navigator.vibrate) { try { navigator.vibrate(120); } catch (e) {} }
+        entry = ''; paint(); busy = false;
+        error.textContent = 'Code erroné';
+        if (fails >= 3 && !hint.textContent) forgot.hidden = false;
+      }, 150);
+    }
+
+    home.addEventListener('click', openPad);
+    document.getElementById('lock-keys').addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-k]');
+      if (b) press(b.getAttribute('data-k'));
+    });
+    del.addEventListener('click', function () { entry = entry.slice(0, -1); paint(); });
+    document.getElementById('lock-cancel').addEventListener('click', closePad);
+    forgot.addEventListener('click', function () { hint.textContent = LOCK.hint; forgot.hidden = true; });
+    document.addEventListener('keydown', function (e) {
+      if (!locked) return;
+      if (/^[0-9]$/.test(e.key)) { openPad(); press(e.key); }
+      else if (e.key === 'Backspace' && !pad.hidden) { entry = entry.slice(0, -1); paint(); }
+    });
+    paint();
+  }
+
   /* ---------- Navigation (#id-conversation dans l'URL, le bouton retour du téléphone marche) ---------- */
   var openedFromList = false;
 
   function route() {
+    if (locked) {
+      // Tant que le téléphone est verrouillé, on n'affiche que l'écran de verrouillage.
+      screenList.hidden = true; screenConv.hidden = true; screenLock.hidden = false;
+      return;
+    }
     if (current) current.pause();
     var id = decodeURIComponent(location.hash.slice(1));
     var conv = DATA.conversations.filter(function (c) { return c.id === id; })[0];
@@ -539,5 +640,6 @@
     else location.hash = '';
   });
   window.addEventListener('hashchange', route);
+  if (LOCK) setupLock();
   route();
 })();
