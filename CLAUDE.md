@@ -28,6 +28,14 @@ Paiement externe via Stripe (lien existant, ne pas recréer de logique de paieme
 - Polices : Marcellus (titres/marque, via `font-display`) et DM Sans (texte courant, via
   `font-sans`, appliqué par défaut sur `<body>`). Chargées via Google Fonts (`<link>`).
 
+## Page d'énigme (QR code dans les boîtes)
+- Messagerie fictive dans `m/r8w3k2/` : page autonome (HTML/CSS/JS à la main, hors
+  templates et hors Tailwind, pour rester légère). Contenu des messages : `data.js`.
+- Le QR code imprimé pointe vers `/q/messages`, redirigé (302, `vercel.json`) vers la page.
+  **Ne jamais supprimer cette redirection** : les boîtes déjà livrées en dépendent.
+- Ne jamais la lier depuis le site, ni l'ajouter au sitemap, à `llms.txt` ou à `robots.txt`.
+  `noindex` via meta + en-tête `X-Robots-Tag`.
+
 ## Conventions
 - Classes Tailwind directement dans le HTML (des templates) pour le style. `main.css`
   réservé aux quelques overrides custom que Tailwind ne couvre pas.

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Page d'énigme : jamais indexée (doublé par l'en-tête X-Robots-Tag dans vercel.json). -->
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#E6E9EE">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Messages</title>
+  <link rel="stylesheet" href="/m/r8w3k2/app.css">
+</head>
+<body>
+  <!-- Icônes : Lucide (lucide.dev, ISC), recopiées en SVG inline. -->
+
+  <!-- Écran 1 : les onglets (Messages = écran d'arrivée du QR code, Appels, Contacts, Réglages) -->
+  <div class="app screen" id="screen-list">
+    <header class="list-header">
+      <div class="list-title-row">
+        <h1 class="list-title" id="home-title">Messages</h1>
+        <!-- Même bouton rond bleu que le « + » de la barre de saisie -->
+        <button class="round-btn" type="button" id="home-action" aria-label="Nouvelle conversation">
+          <svg class="ico ico-md" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+        </button>
+      </div>
+      <div class="search" id="home-search" aria-hidden="true">
+        <svg class="ico ico-sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <span>Rechercher</span>
+      </div>
+    </header>
+    <nav class="conv-list" id="conv-list" aria-label="Contenu"></nav>
+
+    <!-- Barre d'onglets -->
+    <nav class="tabbar" aria-label="Onglets">
+      <a class="tab" href="#" data-tab="messages">
+        <span class="tab-ico">
+          <svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+          <span class="tab-badge" id="tab-badge" hidden></span>
+        </span>
+        Messages
+      </a>
+      <a class="tab" href="#appels" data-tab="appels">
+        <svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Appels
+      </a>
+      <a class="tab" href="#contacts" data-tab="contacts">
+        <svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Contacts
+      </a>
+      <a class="tab" href="#reglages" data-tab="reglages">
+        <svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+        Réglages
+      </a>
+    </nav>
+  </div>
+
+  <!-- Écran 2 : une conversation -->
+  <div class="app screen" id="screen-conv" hidden>
+    <header class="topbar">
+      <button class="icon-btn" type="button" id="back" aria-label="Retour">
+        <svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <div class="topbar-avatar" id="conv-icon" aria-hidden="true"></div>
+      <div class="topbar-text">
+        <h1 class="topbar-title" id="conv-title"></h1>
+        <span class="topbar-sub" id="conv-sub" hidden></span>
+      </div>
+      <button class="icon-btn" type="button" aria-label="Appeler">
+        <svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </button>
+    </header>
+
+    <main class="thread" id="thread" aria-live="polite"></main>
+
+    <footer class="composer" aria-hidden="true">
+      <span class="round-btn">
+        <svg class="ico ico-md" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+      </span>
+      <input class="composer-input" type="text" placeholder="Aa" readonly tabindex="-1">
+      <span class="round-btn">
+        <svg class="ico ico-md" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg>
+      </span>
+    </footer>
+  </div>
+
+  <script src="/m/r8w3k2/data.js"></script>
+  <script src="/m/r8w3k2/app.js"></script>
+</body>
+</html>

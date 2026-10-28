@@ -1,0 +1,577 @@
+/* Messagerie de l'énigme — page autonome, volontairement sans Tailwind
+   ni police web pour rester ultra légère sur un réseau de salle des fêtes. */
+
+:root {
+  --bg: #E6E9EE;
+  --bubble-in: #FFFFFF;
+  /* Contrastes vérifiés WCAG AA (texte >= 4.5:1) :
+     ink-soft  #5F6670 → 4.8 sur le fond, 5.8 sur blanc
+     accent    #2F6FDB → texte blanc dessus 4.75
+     accent-text #2459C4 → texte bleu sur le fond gris 5.2 */
+  --bubble-out: #2F6FDB;
+  --ink: #16181D;
+  --ink-soft: #5F6670;
+  --accent: #2F6FDB;
+  --accent-text: #2459C4;
+  --placeholder: #6B7280;
+  --card: #F0F2F5;        /* un cran plus clair que le fond, sans le contraste du blanc pur */
+  --divider: rgba(0, 0, 0, 0.08);
+  --online: #1F9D55;
+  --online-text: #187A42;   /* 4.6:1 sur le fond */
+  --wave-off: #C5CBD4;
+  --icon-bg: #EBD5E8;
+  --radius: 9px;
+
+  /* Icônes (Lucide) : 3 tailles seulement, même trait partout. */
+  --icon-lg: 24px;   /* en-tête */
+  --icon-md: 20px;   /* boutons ronds de la barre de saisie */
+  --icon-sm: 16px;   /* lecture / pause */
+  --icon-xs: 14px;   /* double coche « lu » */
+  --icon-stroke: 2;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+.ico {
+  display: block;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--icon-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ico-lg { width: var(--icon-lg); height: var(--icon-lg); }
+.ico-md { width: var(--icon-md); height: var(--icon-md); }
+.ico-sm { width: var(--icon-sm); height: var(--icon-sm); }
+.ico-xs { width: var(--icon-xs); height: var(--icon-xs); }
+.ico-fill { fill: currentColor; stroke: none; }
+
+/* Focus clavier visible partout */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+
+.app {
+  height: 100vh;
+  height: 100dvh;
+  max-width: 560px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.screen[hidden] { display: none; }
+
+/* Petite entrée « glissée » quand on ouvre une conversation, comme une appli native. */
+#screen-conv:not([hidden]) { animation: slide-in .22s ease-out; }
+@keyframes slide-in { from { transform: translateX(24px); opacity: 0; } }
+
+/* ---------- Écran liste ---------- */
+.list-header {
+  padding: calc(env(safe-area-inset-top) + 12px) 16px 14px;
+}
+.list-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 46px 0 18px;   /* espace au-dessus du titre, comme une vraie appli */
+}
+.list-title {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.search {
+  display: flex; align-items: center; gap: 8px;
+  height: 42px;
+  padding: 0 12px;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--placeholder);
+  font-size: 15px;
+}
+
+.conv-list {
+  padding: 0 16px 16px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  flex: 1;
+}
+/* La carte : un seul bloc blanc arrondi qui contient toutes les conversations */
+.conv-card {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--card);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.conv-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  color: inherit;
+  text-decoration: none;
+}
+.conv-item:active { background: rgba(0, 0, 0, 0.04); }
+/* Séparateur entre deux conversations, aligné sur le texte (pas sous l'avatar) */
+.conv-card li + li .conv-item::before {
+  content: "";
+  position: absolute;
+  top: 0; right: 0;
+  left: 82px;
+  border-top: 1px solid var(--divider);
+}
+
+.conv-avatar {
+  width: 56px; height: 56px; flex: none;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.emoji-avatar {
+  background: var(--icon-bg);
+  display: grid; place-items: center;
+  font-size: 28px; line-height: 1;
+}
+
+.conv-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.conv-line { display: flex; align-items: center; gap: 8px; }
+.conv-name {
+  flex: 1; min-width: 0;
+  font-size: 16px; font-weight: 600;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.conv-time { font-size: 12px; color: var(--ink-soft); flex: none; }
+.conv-preview {
+  flex: 1; min-width: 0;
+  font-size: 14px; color: var(--ink-soft);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* Non lu : nom et aperçu en gras + pastille bleue */
+.unread .conv-name { font-weight: 800; }
+.unread .conv-preview { color: var(--ink); font-weight: 600; }
+.unread .conv-time { color: var(--accent-text); font-weight: 600; }
+.badge {
+  flex: none;
+  min-width: 22px; height: 22px;
+  padding: 0 7px;
+  border-radius: 11px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 12px; font-weight: 700;
+  display: grid; place-items: center;
+}
+
+/* Initiales quand une personne n'a pas de photo */
+.initials {
+  display: grid; place-items: center;
+  color: rgba(0, 0, 0, .62);
+  font-weight: 700;
+  font-size: 14px;
+}
+.conv-avatar.initials { font-size: 20px; }
+
+/* Photo dans l'en-tête d'une conversation à deux */
+.topbar-avatar.has-photo { background: none; }
+.topbar-photo { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; }
+.topbar-photo.initials { font-size: 16px; }
+
+/* ---------- En-tête ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: calc(env(safe-area-inset-top) + 10px) 16px 10px 10px;
+  background: var(--bg);
+}
+.icon-btn {
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  color: var(--ink);
+}
+.icon-btn:last-child { margin-left: auto; }
+.topbar-avatar {
+  width: 42px; height: 42px; flex: none;
+  border-radius: 50%;
+  background: var(--icon-bg);
+  display: grid; place-items: center;
+  font-size: 24px; line-height: 1;
+}
+.topbar-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.topbar-sub {
+  font-size: 12px;
+  color: var(--ink-soft);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.topbar-sub.is-online { color: var(--online-text); font-weight: 600; }
+.topbar-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* ---------- Fil de messages ---------- */
+.thread {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 20px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.thread > :first-child { margin-top: auto; }   /* colle les messages en bas s'ils sont peu nombreux */
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.row.group-start { margin-top: 14px; }
+.row.out { flex-direction: row-reverse; }
+
+.avatar {
+  width: 36px; height: 36px; flex: none;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #CFD4DB;
+}
+.avatar.ghost { visibility: hidden; }
+
+.bubble {
+  position: relative;
+  max-width: min(78%, 400px);
+  padding: 8px 14px 8px;
+  border-radius: var(--radius);
+  background: var(--bubble-in);
+  font-size: 15px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+.out .bubble { background: var(--bubble-out); color: #fff; }
+
+/* Séparateur de date dans le fil */
+.day-sep {
+  align-self: center;
+  margin: 18px 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+.thread > .day-sep:first-child { margin-top: auto; }
+
+/* L'heure : un « fantôme » invisible réserve sa place en fin de texte,
+   la vraie heure est posée en absolu dans le coin. */
+.time {
+  font-size: 12px;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.out .time { color: #fff; }
+.bubble > .time:not(.time-spacer) { position: absolute; right: 14px; bottom: 8px; line-height: 1.3; }
+.time-spacer { display: inline-block; visibility: hidden; margin-left: 12px; }
+
+.emoji { font-size: 40px; line-height: 1.1; padding: 2px 0; }
+
+/* ---------- Message vocal ---------- */
+.bubble.voice { width: min(78%, 300px); padding: 10px 12px 8px; }
+
+.voice-main { display: flex; align-items: center; gap: 10px; }
+.play {
+  width: 36px; height: 36px; flex: none;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  display: grid; place-items: center;
+}
+.out .play { background: #fff; color: var(--accent); }
+/* Le triangle « lecture » est optiquement décalé à droite. */
+.play .i-play { margin-left: 2px; }
+.play .i-pause { display: none; }
+.voice.playing .play .i-play { display: none; }
+.voice.playing .play .i-pause { display: block; }
+
+.wave {
+  flex: 1;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.wave span {
+  flex: 1;
+  min-width: 2px;
+  border-radius: 2px;
+  background: var(--wave-off);
+  transition: background-color .12s;
+}
+.wave span.on { background: var(--accent); }
+.out .wave span { background: rgba(255, 255, 255, .45); }
+.out .wave span.on { background: #fff; }
+
+.voice-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+  padding-left: 46px;
+  min-height: 22px;
+}
+.voice-foot .time { position: static; }
+.dur { font-size: 12px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.out .dur { color: #fff; }
+
+/* Pile vocal + bouton/transcription en dessous */
+.stack {
+  width: min(78%, 300px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.out .stack { align-items: flex-end; }
+.stack .bubble.voice { width: 100%; max-width: none; }
+
+/* Avatar centré sur la bulle du vocal, pas sur toute la pile */
+.row.has-voice { align-items: flex-start; }
+.row.has-voice .avatar { margin-top: 23px; }
+
+.transcribe-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-top: 4px;
+  padding: 6px 4px;
+  font-size: 13px; font-weight: 600;
+  color: var(--accent-text);
+}
+.transcribe-loading {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 4px;
+  padding: 6px 4px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.spinner {
+  width: 14px; height: 14px;
+  border: 2px solid var(--wave-off);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+
+/* Transcription : bulle plus claire sous le vocal */
+.transcript {
+  margin-top: 5px;
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  background: #F6F7F9;
+  color: #3A3F47;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.caret::after {
+  content: "";
+  display: inline-block;
+  width: 2px; height: 1em;
+  margin-left: 1px;
+  vertical-align: -2px;
+  background: var(--accent);
+  animation: blink .8s steps(1) infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes blink { 50% { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner, .caret::after, #screen-conv:not([hidden]) { animation: none; }
+}
+
+/* ---------- Barre de saisie (décorative) ---------- */
+.composer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px calc(env(safe-area-inset-bottom) + 12px);
+  background: var(--bg);
+}
+.round-btn {
+  width: 36px; height: 36px; flex: none;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  display: grid; place-items: center;
+}
+.composer-input {
+  flex: 1; min-width: 0;
+  height: 38px;
+  border: 0; border-radius: 10px;
+  padding: 0 14px;
+  background: #fff;
+  font: inherit; font-size: 15px;
+  color: var(--ink);
+  pointer-events: none;
+}
+.composer-input::placeholder { color: var(--placeholder); }
+
+/* ---------- Réalisme : avatars de groupe, en ligne, « lu », onglets ---------- */
+
+/* Avatar de groupe : deux membres qui se chevauchent */
+.group-avatar { position: relative; flex: none; }
+.group-avatar .ga-item {
+  position: absolute;
+  width: 66%; height: 66%;
+  border-radius: 50%;
+  object-fit: cover;
+  font-size: 13px;
+}
+.group-avatar .ga-item:first-child { top: 0; left: 0; }
+.group-avatar .ga-item:last-child { right: 0; bottom: 0; box-shadow: 0 0 0 2px var(--card); }
+.topbar-avatar .group-avatar .ga-item { font-size: 11px; }
+.topbar-avatar .group-avatar .ga-item:last-child { box-shadow: 0 0 0 2px var(--bg); }
+
+/* Point vert « en ligne » */
+.av-wrap { position: relative; flex: none; }
+.online-dot {
+  position: absolute;
+  right: 1px; bottom: 1px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--online);
+  box-shadow: 0 0 0 2px var(--card);
+}
+.topbar-avatar .online-dot { width: 11px; height: 11px; right: 0; bottom: 0; box-shadow: 0 0 0 2px var(--bg); }
+
+/* Double coche « lu » */
+.seen-ico { display: inline-block; vertical-align: -2px; margin-right: 3px; color: var(--accent); }
+.conv-seen { flex: none; display: flex; }
+.conv-seen .seen-ico { margin-right: 0; }
+.seen {
+  align-self: flex-end;
+  display: flex; align-items: center;
+  margin: 3px 46px 0 0;   /* aligné sous la bulle, pas sous l'avatar */
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+/* Barre d'onglets en bas de la liste */
+.tabbar {
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 8px calc(env(safe-area-inset-bottom) + 8px);
+  border-top: 1px solid var(--divider);
+  background: var(--bg);
+}
+.tab {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  min-width: 64px;
+  font-size: 11px; font-weight: 500;
+  color: var(--ink-soft);
+}
+.tab.is-active { color: var(--accent-text); font-weight: 600; }
+.tab-ico { position: relative; display: block; }
+.tab-badge {
+  position: absolute;
+  top: -5px; right: -11px;
+  min-width: 18px; height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px; font-weight: 700;
+  display: grid; place-items: center;
+  box-shadow: 0 0 0 2px var(--bg);
+}
+.tab-badge[hidden] { display: none; }
+
+/* Les photos d'avatar en bloc : pas d'espace fantôme sous l'image (ligne de base du texte) */
+img.avatar, img.conv-avatar, img.topbar-photo, img.ga-item { display: block; }
+
+/* ---------- Onglets Appels, Contacts, Réglages ---------- */
+[hidden] { display: none !important; }
+
+.tab { text-decoration: none; }
+
+/* Les lignes qui ne mènent à aucune conversation sont des boutons : même rendu que les liens */
+button.conv-item { width: 100%; text-align: left; font: inherit; color: inherit; }
+
+.conv-avatar.is-sm { width: 44px; height: 44px; }
+.conv-avatar.is-sm.initials { font-size: 16px; }
+
+/* Séparateurs alignés sur le texte selon la taille de l'avatar */
+.conv-card.is-compact li + li .conv-item::before { left: 70px; }
+.settings-card li + li .conv-item::before { left: 56px; }
+
+.conv-card + .conv-card { margin-top: 18px; }
+.section-label {
+  margin: 18px 14px 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+.section-label:first-child { margin-top: 4px; }
+
+/* Appels */
+.conv-name.is-missed { color: #C62828; }   /* 5.2:1 sur la carte */
+.call-sub { display: flex; align-items: center; gap: 5px; }
+.call-sub .ico { flex: none; }
+
+.conv-preview.is-online { color: var(--online-text); font-weight: 600; }
+
+/* Réglages */
+.settings-tile {
+  width: 30px; height: 30px; flex: none;
+  border-radius: 8px;
+  display: grid; place-items: center;
+  color: #fff;
+}
+.settings-item .conv-name { flex: 1; font-weight: 500; }
+.chevron { margin-left: auto; color: var(--ink-soft); flex: none; }
+.conv-body > .conv-name { flex: none; }
+
+/* Saut temporel dans la journée (>= 1 h entre deux messages) */
+.row.time-gap { margin-top: 40px; }
+
+/* Ligne « N messages non lus » : repère de lecture pour les joueurs */
+.thread { position: relative; }   /* pour calculer la position de la ligne au défilement */
+.unread-marker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-text);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.unread-marker::before,
+.unread-marker::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--accent);
+  opacity: .45;
+}

@@ -1,4 +1,21 @@
 {
   "outputDirectory": ".",
-  "cleanUrls": true
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/q/messages",
+      "destination": "/m/r8w3k2",
+      "permanent": false
+    }
+  ],
+  "headers": [
+    {
+      "source": "/m/(.*)",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" }]
+    },
+    {
+      "source": "/q/(.*)",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" }]
+    }
+  ]
 }
