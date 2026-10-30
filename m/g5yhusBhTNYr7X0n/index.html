@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Page d'énigme : jamais indexée (doublé par l'en-tête X-Robots-Tag dans vercel.json). -->
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#F6F7F9">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Boîte de réception</title>
+  <link rel="stylesheet" href="/m/g5yhusBhTNYr7X0n/app.css">
+</head>
+<body>
+  <!-- Icônes : Lucide (lucide.dev, ISC), recopiées en SVG inline. -->
+
+  <!-- Écran 1 : la liste des e-mails + recherche -->
+  <div class="app screen" id="screen-list">
+    <header class="list-header">
+      <form class="search" id="search-form" role="search" autocomplete="off">
+        <svg class="ico ico-md search-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input class="search-input" id="search" type="search" placeholder="Rechercher dans les e-mails" aria-label="Rechercher dans les e-mails" enterkeyhint="search" spellcheck="false">
+        <button class="search-clear" id="search-clear" type="button" aria-label="Effacer la recherche" hidden>
+          <svg class="ico ico-md" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+        <img class="search-avatar" id="me-avatar" alt="" width="32" height="32">
+      </form>
+      <p class="folder" id="folder"></p>
+    </header>
+
+    <main class="mail-list" id="mail-list" aria-live="polite"></main>
+  </div>
+
+  <!-- Écran 2 : une conversation -->
+  <div class="app screen" id="screen-thread" hidden>
+    <header class="topbar">
+      <button class="icon-btn" type="button" id="back" aria-label="Retour à la boîte de réception">
+        <svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      </button>
+      <span class="topbar-spacer"></span>
+      <button class="icon-btn" type="button" data-readonly aria-label="Archiver">
+        <svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg>
+      </button>
+      <button class="icon-btn" type="button" data-readonly aria-label="Supprimer">
+        <svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+      </button>
+      <button class="icon-btn" type="button" data-readonly aria-label="Marquer comme non lu">
+        <svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      </button>
+    </header>
+
+    <main class="thread" id="thread"></main>
+
+    <footer class="reply-bar">
+      <button class="reply-btn" type="button" data-readonly>
+        <svg class="ico ico-md" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 17 4 12l5-5"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>
+        Répondre
+      </button>
+      <button class="reply-btn" type="button" data-readonly>
+        <svg class="ico ico-md" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 17 5-5-5-5"/><path d="M4 18v-2a4 4 0 0 1 4-4h12"/></svg>
+        Transférer
+      </button>
+    </footer>
+  </div>
+
+  <!-- Visionneuse de pièce jointe (image) -->
+  <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-labelledby="viewer-name" hidden>
+    <header class="viewer-bar">
+      <button class="icon-btn" type="button" id="viewer-close" aria-label="Fermer">
+        <svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+      <span class="viewer-name" id="viewer-name"></span>
+      <a class="icon-btn" id="viewer-download" download aria-label="Télécharger">
+        <svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>
+      </a>
+    </header>
+    <div class="viewer-stage" id="viewer-stage">
+      <img class="viewer-img" id="viewer-img" alt="">
+    </div>
+  </div>
+
+  <!-- Lecteur vidéo (pièce jointe YouTube), passe en plein écran au lancement -->
+  <div class="video" id="video" role="dialog" aria-modal="true" aria-label="Vidéo" hidden>
+    <button class="icon-btn video-close" type="button" id="video-close" aria-label="Fermer la vidéo">
+      <svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+    <div class="video-frame" id="video-frame"></div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="/m/g5yhusBhTNYr7X0n/data.js"></script>
+  <script src="/m/g5yhusBhTNYr7X0n/app.js"></script>
+</body>
+</html>

@@ -40,6 +40,25 @@ Paiement externe via Stripe (lien existant, ne pas recréer de logique de paieme
 - Ne jamais la lier depuis le site, ni l'ajouter au sitemap, à `llms.txt` ou à `robots.txt`.
   `noindex` via meta + en-tête `X-Robots-Tag`.
 
+## Page d'énigme n° 2 : la boîte mail de la mariée
+- Boîte mail fictive dans `m/g5yhusBhTNYr7X0n/` : même principe (autonome, hors templates et
+  hors Tailwind). Contenu des e-mails : `data.js` (seul fichier à modifier).
+- QR code : `/q/uMxvRsgK7km5` → redirection 307 vers la page (`vercel.json`). Mêmes règles que
+  l'énigme 1 : adresses aléatoires, ne jamais supprimer la redirection une fois des boîtes livrées,
+  jamais liée depuis le site, ni dans sitemap / `llms.txt` / `robots.txt`, `noindex`.
+- **Autre couple que l'énigme 1** : mariée Pauline Laurent, témoins Chloé Petit et Inès Moreau
+  (toutes des femmes : accorder les textes au féminin).
+  Aucun personnage, photo ou anecdote en commun avec la messagerie (Lucas, Clara, etc.).
+- Deux échanges comptent pour l'énigme : « Toujours pas remboursée » (non lu, en haut : la mariée
+  se plaint d'un prestataire — jamais nommé — qui ne rembourse pas le trop-perçu, sa témoin la
+  renvoie vers l'origami) et « Un petit cadeau (à plier) » (ancien, à retrouver via la recherche). `?reset` remet tout en non lu.
+- Dates **relatives au jour d'ouverture** (= jour du mariage) : `date: 'J-1 22:15'` = la veille.
+  La mariée écrit à J-2, Chloé répond à J-1. Ne jamais écrire de date en dur dans les textes
+  (« vendredi 24 octobre »…). `?jour=AAAA-MM-JJ` simule un autre jour pour tester.
+- La pièce jointe origami est une vidéo YouTube intégrée (muette, plein écran au lancement).
+  L'iframe garde `referrerpolicy="strict-origin-when-cross-origin"` : sans en-tête Referer
+  (la page est en `no-referrer`), YouTube refuse la lecture (« Erreur 153 »).
+
 ## Conventions
 - Classes Tailwind directement dans le HTML (des templates) pour le style. `main.css`
   réservé aux quelques overrides custom que Tailwind ne couvre pas.
