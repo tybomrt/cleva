@@ -8,9 +8,11 @@
    people : tous les expéditeurs/destinataires.
      { name, email, avatar }            → photo
      { name, email, initials, color }   → pastille colorée (initiales calculées si absentes)
+     short : nom court dans la liste (« moi, Ma témoin 💍 ») ; sinon le premier mot du nom.
+     Ni la mariée ni sa témoin n'ont de prénom : on reste générique pour tous les couples.
      'me' = la propriétaire de la boîte (la mariée).
    Photos : Unsplash (licence Unsplash, usage libre), recadrées en 96 px.
-     pauline 1494790108377-be9c29b29330 · chloe 1438761681033-6461ffad8d80
+     moi 1494790108377-be9c29b29330 · temoin 1438761681033-6461ffad8d80
      ines 1544005313-94ddf0286df2 · maman 1508214751196-bcfd4ca60f91 · mamie 1581579438747-1dc8d17bbce4
      patrick 1472099645785-5658abf4ff4e · manon 1517841905240-472988babdf9 · yasmine 1544725176-7c40e5a71c5e
      olivier 1559548331-f9cb98001426 · mehdi 1566492031773-4f4e44671857 · baptiste 1539571696357-5a69c17a67c6
@@ -32,7 +34,7 @@
 
    La liste est triée automatiquement du plus récent au plus ancien.
    Les deux e-mails de l'énigme sont volontairement anciens : on les retrouve en
-   cherchant (« Chloé », « origami »…), pas en faisant défiler.
+   cherchant (« témoin », « origami »…), pas en faisant défiler.
 
    Ajouter ?reset à l'adresse pour remettre tous les e-mails en « non lu » (tests).
    ========================================================================== */
@@ -45,13 +47,13 @@ window.MAIL_DATA = {
   folder: 'Boîte de réception',
 
   people: {
-    me:       { name: 'Pauline Laurent', email: 'pauline.laurent@mail.fr', avatar: '/m/g5yhusBhTNYr7X0n/img/pauline.jpg' },
-    chloe:    { name: 'Chloé Petit', email: 'chloe.petit@mail.fr', avatar: '/m/g5yhusBhTNYr7X0n/img/chloe.jpg' },
+    me:       { name: 'Moi', email: 'future.mariee@mail.fr', avatar: '/m/g5yhusBhTNYr7X0n/img/moi.jpg' },
+    temoin:   { name: 'Ma témoin 💍', short: 'Ma témoin 💍', email: 'temoin.officielle@mail.fr', avatar: '/m/g5yhusBhTNYr7X0n/img/temoin.jpg' },
     ines:     { name: 'Inès Moreau', email: 'ines.moreau@mail.fr', avatar: '/m/g5yhusBhTNYr7X0n/img/ines.jpg' },
-    maman:    { name: 'Maman', email: 'catherine.laurent@mail.fr', avatar: '/m/g5yhusBhTNYr7X0n/img/maman.jpg' },
-    mamie:    { name: 'Mamie', email: 'odette.laurent@mail.fr', avatar: '/m/g5yhusBhTNYr7X0n/img/mamie.jpg' },
-    patrick:  { name: 'Patrick Laurent', email: 'pat.laurent@mail.fr', avatar: '/m/g5yhusBhTNYr7X0n/img/patrick.jpg' },
-    manon:    { name: 'Manon Laurent', email: 'manon.laurent@mail.fr', avatar: '/m/g5yhusBhTNYr7X0n/img/manon.jpg' },
+    maman:    { name: 'Maman', email: 'maman.poule@mail.fr', avatar: '/m/g5yhusBhTNYr7X0n/img/maman.jpg' },
+    mamie:    { name: 'Mamie', email: 'mamie.odette@mail.fr', avatar: '/m/g5yhusBhTNYr7X0n/img/mamie.jpg' },
+    patrick:  { name: 'Tonton Patrick', short: 'Tonton Patrick', email: 'tonton.pat@mail.fr', avatar: '/m/g5yhusBhTNYr7X0n/img/patrick.jpg' },
+    manon:    { name: 'Ma sœur', short: 'Ma sœur', email: 'petite.soeur@mail.fr', avatar: '/m/g5yhusBhTNYr7X0n/img/manon.jpg' },
     yasmine:  { name: 'Yasmine Haddad', email: 'yasmine.haddad@mail.fr', avatar: '/m/g5yhusBhTNYr7X0n/img/yasmine.jpg' },
     olivier:  { name: 'Olivier Garcia', email: 'o.garcia@agence-nord.fr', avatar: '/m/g5yhusBhTNYr7X0n/img/olivier.jpg' },
     mehdi:    { name: 'Mehdi Benali', email: 'm.benali@agence-nord.fr', avatar: '/m/g5yhusBhTNYr7X0n/img/mehdi.jpg' },
@@ -73,7 +75,7 @@ window.MAIL_DATA = {
 
   threads: [
     /* =====================================================================
-       ÉNIGME 1/2 — La mariée se plaint à sa témoin (Chloé) : le prestataire ne lui a
+       ÉNIGME 1/2 — La mariée se plaint à sa témoin : le prestataire ne lui a
        toujours pas remboursé le trop-perçu. La témoin la renvoie vers l'origami.
        Règle : ne JAMAIS nommer le prestataire. Non lu : on le voit en arrivant.
        ===================================================================== */
@@ -85,8 +87,8 @@ window.MAIL_DATA = {
       expanded: true,   // tous les e-mails dépliés à l'ouverture (la plainte du début compte)
       messages: [
         {
-          from: 'me', to: ['chloe'], date: 'J-2 21:47',
-          body: `Salut Chloé,
+          from: 'me', to: ['temoin'], date: 'J-2 21:47',
+          body: `Salut ma témoin préférée,
 
 Il faut que je vide mon sac, et tu es ma témoin, donc techniquement ça fait partie de ton job.
 
@@ -94,12 +96,10 @@ Je n'ai TOUJOURS pas été remboursée du trop-perçu. Tu sais, la somme qu'on a
 
 Je l'ai appelé quatre fois. Quatre. Et à chaque fois, je tombe sur sa secrétaire, jamais sur le patron. Elle est adorable, elle note tout, elle me promet qu'il va me rappeler… et il ne m'a jamais rappelé.
 
-À deux jours du mariage, j'ai autre chose à faire que de courir après mon propre argent.
-
-Pauline`,
+À deux jours du mariage, j'ai autre chose à faire que de courir après mon propre argent.`,
         },
         {
-          from: 'chloe', date: 'J-1 22:15',
+          from: 'temoin', date: 'J-1 22:15',
           body: `Calme-toi, respire. Détends-toi.
 
 C'est pas grave, il va te répondre. En pleine saison des mariages, ils sont tous débordés, ce n'est pas contre toi.
@@ -108,9 +108,9 @@ Essaie de le rappeler. Peut-être que tu tomberas enfin sur lui, avec un petit p
 
 En attendant, tu te maries demain : on déstresse. N'oublie pas, je t'ai déjà parlé de comment moi je me déstresse : je fais de l'origami. Plier, déplier, et la tête se vide toute seule.
 
-D'ailleurs, est-ce que tu as fait la figure que je t'ai envoyée ?
+D'ailleurs, est-ce que tu as fait la figure que je t'ai envoyée dans un autre mail, il y a une dizaine de jours ?
 
-Chloé`,
+Ta témoin`,
         },
       ],
     },
@@ -125,7 +125,7 @@ Chloé`,
       subject: 'Un petit cadeau (à plier)',
       messages: [
         {
-          from: 'chloe', date: 'J-11 19:02',
+          from: 'temoin', date: 'J-11 19:02',
           body: `Hello,
 
 Comme tu m'as dit que tu stressais, je te livre mon secret : moi, quand je suis à bout, je fais de l'origami. Ça occupe les mains et ça vide la tête.
@@ -134,19 +134,19 @@ Je t'ai trouvé une figure pour commencer.
 
 Tout est dans la vidéo en pièce jointe. Une feuille, un peu de patience, et surtout tu suis les étapes dans l'ordre.
 
-Chloé`,
+Ta témoin`,
           attachments: [
             { name: 'origami.mp4', youtube: '58J5_xp_R44', size: '18 Mo' },
           ],
         },
         {
-          from: 'me', to: ['chloe'], date: 'J-11 22:37',
-          body: `Chloé, je n'arrive pas à plier une serviette correctement.
+          from: 'me', to: ['temoin'], date: 'J-11 22:37',
+          body: `Je n'arrive pas à plier une serviette correctement.
 
 Mais merci, c'est adorable. Je tente ce soir.`,
         },
         {
-          from: 'chloe', date: 'J-11 22:40',
+          from: 'temoin', date: 'J-11 22:40',
           body: `Courage. Et n'hésite pas à mettre pause entre chaque étape 😉`,
         },
       ],
@@ -158,7 +158,7 @@ Mais merci, c'est adorable. Je tente ce soir.`,
       subject: 'Votre colis est en cours de livraison',
       messages: [{
         from: 'colis', date: 'J 08:12',
-        body: `Bonjour Pauline,
+        body: `Bonjour,
 
 Bonne nouvelle : votre colis n° CE 4471 0923 FR est en cours de livraison aujourd'hui.
 
@@ -177,7 +177,7 @@ L'équipe Colis Express`,
         from: 'maman', date: 'J 07:31',
         body: `Coucou ma grande, Tante Sylvie m'a envoyé ça, ça m'a fait penser à toi.
 
-Et tu as bien vérifié que Chloé a les alliances ??? Vérifie encore.
+Et tu as bien vérifié que ta témoin a les alliances ??? Vérifie encore.
 
 Bisous, Maman
 
@@ -211,7 +211,7 @@ Son petit mot : « Pour que vous mangiez enfin des pâtes fraîches. Et pour que
       messages: [
         {
           from: 'domaine', date: 'J-3 10:05',
-          body: `Bonjour Madame Laurent,
+          body: `Bonjour Madame,
 
 Nous vous confirmons la remise des clés du Domaine des Tilleuls la veille de votre mariage, à partir de 16h.
 
@@ -224,9 +224,7 @@ Isabelle, Domaine des Tilleuls`,
           from: 'me', to: ['domaine'], date: 'J-3 12:40',
           body: `Bonjour Isabelle,
 
-C'est noté, merci beaucoup. À très vite !
-
-Pauline Laurent`,
+C'est noté, merci beaucoup. À très vite !`,
         },
       ],
     },
@@ -235,7 +233,7 @@ Pauline Laurent`,
       subject: 'Congés validés 🎉',
       messages: [{
         from: 'olivier', date: 'J-1 16:31',
-        body: `Bonjour Pauline,
+        body: `Hello la future mariée,
 
 Tes trois semaines de congés sont validées. Interdiction formelle de lire tes mails pendant le voyage de noces.
 
@@ -267,7 +265,7 @@ Olivier`,
       subject: 'Vos retouches sont prêtes',
       messages: [{
         from: 'robe', date: 'J-5 14:22',
-        body: `Bonjour Madame Laurent,
+        body: `Bonjour Madame,
 
 Votre robe est prête : ourlet repris et bretelles raccourcies de 1,5 cm.
 
@@ -282,7 +280,7 @@ L'Atelier Rose`,
       messages: [
         {
           from: 'traiteur', date: 'J-8 09:15',
-          body: `Bonjour Pauline,
+          body: `Bonjour,
 
 Pouvez-vous nous confirmer le nombre définitif de couverts, ainsi que les régimes particuliers ?
 
@@ -295,8 +293,7 @@ Margaux`,
 
 Nous serons 96 adultes et 7 enfants. Deux végétariens, une allergie aux fruits à coque, et mon oncle Patrick qui veut « de la viande, de la vraie ».
 
-Merci !
-Pauline`,
+Merci !`,
         },
         {
           from: 'traiteur', date: 'J-8 15:48',
@@ -311,7 +308,7 @@ Margaux`,
       subject: 'Chansons INTERDITES à la soirée',
       messages: [
         {
-          from: 'ines', to: ['me', 'chloe'], date: 'J-9 18:20',
+          from: 'ines', to: ['me', 'temoin'], date: 'J-9 18:20',
           body: `Bon, il faut qu'on fasse la liste des chansons interdites. Je commence :
 
 1. La chenille
@@ -320,7 +317,7 @@ Margaux`,
 À vous.`,
         },
         {
-          from: 'me', to: ['ines', 'chloe'], date: 'J-9 18:41',
+          from: 'me', to: ['ines', 'temoin'], date: 'J-9 18:41',
           body: `3. Tout ce que Tonton Patrick va demander au micro.`,
         },
       ],
@@ -331,7 +328,7 @@ Margaux`,
       messages: [
         {
           from: 'patrick', date: 'J-10 21:06',
-          body: `Pauline,
+          body: `Ma nièce préférée,
 
 J'ai préparé un petit discours pour le repas. Rien de long, une vingtaine de minutes. Avec quelques anecdotes de quand tu étais petite.
 
@@ -378,7 +375,7 @@ Pensez à présenter vos billets à bord.`,
       subject: 'Votre galerie de la séance couple est en ligne 📸',
       messages: [{
         from: 'photo', date: 'J-12 17:40',
-        body: `Bonjour Pauline,
+        body: `Bonjour,
 
 Les photos de votre séance couple sont prêtes ! Vous trouverez 64 photos retouchées dans votre galerie privée.
 
@@ -469,7 +466,7 @@ Banque du Lac`,
 
 Si, je les ai reçues, elles étaient dans le petit trombone.
 
-Vous êtes très beaux. Pauline, coiffe-toi pour le mariage.
+Vous êtes très beaux. Ma chérie, coiffe-toi pour le mariage.
 
 Mamie`,
       }],

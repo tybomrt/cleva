@@ -108,6 +108,23 @@ mark { background: var(--mark); color: inherit; border-radius: 2px; padding: 0 1
 .search-avatar { width: 32px; height: 32px; flex: none; border-radius: 50%; object-fit: cover; }
 .search-avatar[hidden] { display: none; }
 
+/* Bouton « Nouveau message » flottant, comme dans les applis mail */
+.app { position: relative; }
+.compose {
+  position: absolute;
+  right: 16px;
+  bottom: calc(env(safe-area-inset-bottom) + 16px);
+  display: flex; align-items: center; gap: 10px;
+  height: 52px;
+  padding: 0 20px 0 16px;
+  border-radius: 16px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 15px; font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .16);
+}
+.compose:active { filter: brightness(.96); }
+
 .folder {
   margin: 14px 6px 4px;
   font-size: 13px;
@@ -121,7 +138,7 @@ mark { background: var(--mark); color: inherit; border-radius: 2px; padding: 0 1
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 0 0 calc(env(safe-area-inset-bottom) + 16px);
+  padding: 0 0 calc(env(safe-area-inset-bottom) + 88px); /* place pour le bouton « Nouveau message » */
 }
 .mail-items { list-style: none; margin: 0; padding: 0; }
 

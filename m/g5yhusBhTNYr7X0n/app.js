@@ -38,6 +38,7 @@
   function shortName(id) {
     if (id === 'me') return 'moi';
     var p = person(id);
+    if (p.short) return p.short;   // ex. « Ma témoin 💍 », « Tonton Patrick »
     return p.initials ? p.name : p.name.split(' ')[0];
   }
   function initialsOf(p) {
@@ -176,7 +177,7 @@
   var byId = {};
   threads.forEach(function (t) { byId[t.id] = t; });
 
-  // « Chloé, moi  3 » : participants dans l'ordre d'apparition.
+  // « moi, Ma témoin 💍  2 » : participants dans l'ordre d'apparition.
   function senders(t) {
     var seen = [], ids = [];
     t.messages.forEach(function (m) { if (seen.indexOf(m.from) === -1) { seen.push(m.from); ids.push(m.from); } });
