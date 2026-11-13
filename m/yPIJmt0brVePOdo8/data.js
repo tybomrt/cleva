@@ -194,7 +194,7 @@ window.MESSAGES_DATA = {
         { day: 'Mercredi' },
         { from: 'tata',  time: '18:02', text: 'Pour le repas de famille, on fait ça samedi ou dimanche ? Répondez avant vendredi svp 🙏' },
         { from: 'tata',  time: '18:03', text: "Et Raphaël, c'est toi qui fais le plan de table. T'es du métier 😇" },
-        { from: 'me',    time: '18:30', text: 'Samedi pour moi ✅ Le plan de table, je le fais, mais je ne place pas tonton à côté de mamie' },
+        { from: 'me',    time: '18:30', text: 'Dimanche pour moi ✅ Le plan de table, je le fais, mais je ne place pas tonton à côté de mamie' },
         { from: 'tonton', time: '18:41', text: "J'ai rien fait." },
         { from: 'hugo',  time: '23:47', text: 'Je demande à Camille et je te dis' },
         { day: 'Hier' },
