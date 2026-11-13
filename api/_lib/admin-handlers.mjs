@@ -55,6 +55,8 @@ function view(w, today) {
     marie1_prenom: w.marie1_prenom, marie1_nom: w.marie1_nom,
     marie2_prenom: w.marie2_prenom, marie2_nom: w.marie2_nom,
     temoin1_prenom: w.temoin1_prenom, temoin2_prenom: w.temoin2_prenom,
+    marie1_genre: w.marie1_genre || null, marie2_genre: w.marie2_genre || null,
+    temoin1_genre: w.temoin1_genre || null, temoin2_genre: w.temoin2_genre || null,
     photos: w.photos || [],
     archived_on: w.archived_on || null,
     delete_on: w.archived_on ? deleteOn(w.archived_on) : null,
@@ -70,7 +72,7 @@ function readPhotos(input) {
     if (!(r in p)) continue;
     if (p[r] === null) { out[r] = null; continue; }
     const jpeg = photoFromBase64(p[r]);
-    if (!jpeg) return { error: 'Une des photos n’a pas pu être lue. Essayez avec une autre (JPG ou PNG).' };
+    if (!jpeg) return { error: 'Une des photos n’a pas pu être lue. Essaie avec une autre (JPG ou PNG).' };
     out[r] = jpeg;
   }
   return { photos: out };
@@ -151,7 +153,7 @@ export function makeAdminHandler(deps) {
       let date;
       if (b.days === 7 || b.days === 30) date = addDays(w.expires_at > today ? w.expires_at : today, b.days);
       else if (isDate(b.expires_at)) date = b.expires_at;
-      else return [400, { status: 'error', error: 'Choisissez une date.' }];
+      else return [400, { status: 'error', error: 'Choisis une date.' }];
       if (date < today) return [400, { status: 'error', error: 'Cette date est déjà passée.' }];
       await store.setExpiry(w.id, date);
       return [200, { status: 'ok', expires_at: date }];
@@ -169,7 +171,7 @@ export function makeAdminHandler(deps) {
       const w = await findWedding(b.id);
       if (!w || !w.archived_on) return [404, { status: 'error', error: 'Ce mariage n’est pas dans les archives.' }];
       if (!isDate(b.expires_at) || b.expires_at < today) {
-        return [400, { status: 'error', error: 'Choisissez une nouvelle échéance, à partir d’aujourd’hui.' }];
+        return [400, { status: 'error', error: 'Choisis une nouvelle échéance, à partir d’aujourd’hui.' }];
       }
       const clashes = findClashes(w.cles, await store.listWeddings(), today, w.id);
       if (clashes.length && b.force !== true) return [200, { status: 'clash', clashes: clashes.map(coupleName) }];
@@ -181,9 +183,9 @@ export function makeAdminHandler(deps) {
     async delete(b) {
       const w = await findWedding(b.id);
       if (!w) return [404, { status: 'error', error: 'Ce mariage n’existe plus.' }];
-      if (!w.archived_on) return [400, { status: 'error', error: 'Archivez d’abord ce mariage : on ne supprime que depuis les archives.' }];
+      if (!w.archived_on) return [400, { status: 'error', error: 'Archive d’abord ce mariage : on ne supprime que depuis les archives.' }];
       if (String(b.confirm || '').trim().toLowerCase() !== 'supprimer') {
-        return [400, { status: 'error', error: 'Tapez « supprimer » pour confirmer.' }];
+        return [400, { status: 'error', error: 'Tape « supprimer » pour confirmer.' }];
       }
       await store.deleteWedding(w.id);
       return [200, { status: 'ok' }];
@@ -212,7 +214,7 @@ export function makeAdminHandler(deps) {
         const expected = deps.password();
         if (!expected) return send(res, 503, { status: 'setup', error: 'Le mot de passe n’est pas encore réglé (ADMIN_PASSWORD dans Vercel).' });
         if (!(await limiter.hit('admin:' + deps.ipHash(clientIp(req))))) {
-          return send(res, 429, { status: 'wait', error: 'Trop d’essais. Réessayez dans un quart d’heure.' });
+          return send(res, 429, { status: 'wait', error: 'Trop d’essais. Réessaie dans un quart d’heure.' });
         }
         if (!checkPassword(b.password, expected)) return send(res, 401, { status: 'error', error: 'Ce n’est pas le bon mot de passe.' });
         const token = newSessionToken();
@@ -233,7 +235,7 @@ export function makeAdminHandler(deps) {
       return send(res, status, body);
     } catch (e) {
       console.error('admin', e && e.message);
-      return send(res, 500, { status: 'error', error: 'Petit souci côté serveur. Réessayez dans un instant.' });
+      return send(res, 500, { status: 'error', error: 'Petit souci côté serveur. Réessaie dans un instant.' });
     }
   };
 }

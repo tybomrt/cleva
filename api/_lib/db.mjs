@@ -20,7 +20,8 @@ const STATUS_COLS = "expires_at::text AS expires_at, ((archived_at AT TIME ZONE 
 // (échéance passée) et la décision se font ensuite dans handlers.mjs / resolve().
 export async function findCandidates(inputs) {
   return sql()(
-    `SELECT id, marie1_prenom, marie1_nom, marie2_prenom, marie2_nom, temoin1_prenom, temoin2_prenom, cles, ${STATUS_COLS}
+    `SELECT id, marie1_prenom, marie1_nom, marie2_prenom, marie2_nom, temoin1_prenom, temoin2_prenom, cles, ${STATUS_COLS},
+            marie1_genre, marie2_genre, temoin1_genre, temoin2_genre
        FROM weddings WHERE archived_at IS NULL AND cles && $1::text[] LIMIT 50`,
     [inputs],
   );
@@ -66,7 +67,8 @@ export const attemptStore = {
 
 // Base vue par l'interface d'administration (voir la liste des fonctions en tête de admin-handlers.mjs).
 const WEDDING_COLS = `w.id, w.wedding_date::text AS wedding_date, w.marie1_prenom, w.marie1_nom, w.marie2_prenom, w.marie2_nom,
-  w.temoin1_prenom, w.temoin2_prenom, w.cles, w.expires_at::text AS expires_at,
+  w.temoin1_prenom, w.temoin2_prenom, w.marie1_genre, w.marie2_genre, w.temoin1_genre, w.temoin2_genre,
+  w.cles, w.expires_at::text AS expires_at,
   ((w.archived_at AT TIME ZONE 'Europe/Paris')::date)::text AS archived_on,
   COALESCE((SELECT array_agg(p.role ORDER BY p.role) FROM wedding_photos p WHERE p.wedding_id = w.id), '{}') AS photos`;
 
@@ -76,16 +78,20 @@ export const adminStore = {
   },
   async insertWedding(w) {
     await sql()(
-      `INSERT INTO weddings (id, wedding_date, expires_at, marie1_prenom, marie1_nom, marie2_prenom, marie2_nom, temoin1_prenom, temoin2_prenom, cles)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10::text[])`,
-      [w.id, w.wedding_date, w.expires_at, w.marie1_prenom, w.marie1_nom, w.marie2_prenom, w.marie2_nom, w.temoin1_prenom, w.temoin2_prenom, w.cles],
+      `INSERT INTO weddings (id, wedding_date, expires_at, marie1_prenom, marie1_nom, marie2_prenom, marie2_nom, temoin1_prenom, temoin2_prenom, cles,
+                             marie1_genre, marie2_genre, temoin1_genre, temoin2_genre)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10::text[], $11, $12, $13, $14)`,
+      [w.id, w.wedding_date, w.expires_at, w.marie1_prenom, w.marie1_nom, w.marie2_prenom, w.marie2_nom, w.temoin1_prenom, w.temoin2_prenom, w.cles,
+        w.marie1_genre || null, w.marie2_genre || null, w.temoin1_genre || null, w.temoin2_genre || null],
     );
   },
   async updateWedding(id, w) {
     await sql()(
       `UPDATE weddings SET wedding_date = $2, expires_at = $3, marie1_prenom = $4, marie1_nom = $5, marie2_prenom = $6,
-         marie2_nom = $7, temoin1_prenom = $8, temoin2_prenom = $9, cles = $10::text[] WHERE id = $1`,
-      [id, w.wedding_date, w.expires_at, w.marie1_prenom, w.marie1_nom, w.marie2_prenom, w.marie2_nom, w.temoin1_prenom, w.temoin2_prenom, w.cles],
+         marie2_nom = $7, temoin1_prenom = $8, temoin2_prenom = $9, cles = $10::text[],
+         marie1_genre = $11, marie2_genre = $12, temoin1_genre = $13, temoin2_genre = $14 WHERE id = $1`,
+      [id, w.wedding_date, w.expires_at, w.marie1_prenom, w.marie1_nom, w.marie2_prenom, w.marie2_nom, w.temoin1_prenom, w.temoin2_prenom, w.cles,
+        w.marie1_genre, w.marie2_genre, w.temoin1_genre, w.temoin2_genre],
     );
   },
   async setExpiry(id, date) { await sql()('UPDATE weddings SET expires_at = $2 WHERE id = $1', [id, date]); },

@@ -67,11 +67,12 @@ export function resolve(inputs, candidates) {
   return { status: 'none' };
 }
 
-// Ce que le navigateur reçoit en cas de succès : prénoms + URL des photos (via l'id secret). Rien d'autre.
+// Ce que le navigateur reçoit en cas de succès : prénoms, genres + URL des photos (via l'id secret). Rien d'autre.
 export function publicDossier(w, photoRoles) {
-  const photos = {};
+  const photos = {}, genres = {};
   for (const r of ROLES) {
     if (photoRoles.includes(r)) photos[r] = '/api/photo?d=' + w.id + '&r=' + r;
+    if (w[r + '_genre'] === 'f' || w[r + '_genre'] === 'h') genres[r] = w[r + '_genre'];
   }
   return {
     id: w.id,
@@ -79,6 +80,7 @@ export function publicDossier(w, photoRoles) {
       marie1: w.marie1_prenom, marie2: w.marie2_prenom,
       temoin1: w.temoin1_prenom, temoin2: w.temoin2_prenom,
     },
+    genres, // 'f' | 'h' par rôle (absent = genre du personnage par défaut) : sert à accorder les textes
     photos,
   };
 }

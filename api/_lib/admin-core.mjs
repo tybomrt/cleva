@@ -65,6 +65,8 @@ export function dailyPlan(weddings, today) {
 /* ---------- Saisie d'un mariage ---------- */
 
 export const FIELDS = ['marie1_prenom', 'marie1_nom', 'marie2_prenom', 'marie2_nom', 'temoin1_prenom', 'temoin2_prenom'];
+export const GENRE_FIELDS = ['marie1_genre', 'marie2_genre', 'temoin1_genre', 'temoin2_genre'];
+const GENRE_LABELS = { marie1_genre: 'le marié 1', marie2_genre: 'le marié 2', temoin1_genre: 'le témoin 1', temoin2_genre: 'le témoin 2' };
 const LABELS = {
   marie1_prenom: 'le prénom du marié 1', marie1_nom: 'le nom du marié 1',
   marie2_prenom: 'le prénom du marié 2', marie2_nom: 'le nom du marié 2',
@@ -81,11 +83,15 @@ export function validateWedding(input, today) {
     if (v.length > MAX_LEN) return { ok: false, error: 'C’est un peu long pour ' + LABELS[f] + ' (60 caractères maximum).' };
     w[f] = v;
   }
+  for (const f of GENRE_FIELDS) {
+    if (b[f] !== 'f' && b[f] !== 'h') return { ok: false, error: 'Choisis « homme » ou « femme » pour ' + GENRE_LABELS[f] + '.' };
+    w[f] = b[f];
+  }
   if (!isDate(b.wedding_date)) return { ok: false, error: 'Il manque la date du mariage.' };
   w.wedding_date = b.wedding_date;
   w.expires_at = b.expires_at ? b.expires_at : defaultExpiry(w.wedding_date);
   if (!isDate(w.expires_at)) return { ok: false, error: 'La date d’échéance n’est pas valable.' };
-  if (w.expires_at < today) return { ok: false, error: 'L’échéance est déjà passée : choisissez une date à partir d’aujourd’hui.' };
+  if (w.expires_at < today) return { ok: false, error: 'L’échéance est déjà passée : choisis une date à partir d’aujourd’hui.' };
   w.cles = weddingKeys(w);
   if (w.cles.some((k) => !k)) return { ok: false, error: 'Un prénom ou un nom ne contient que des signes (tirets, apostrophes…).' };
   return { ok: true, w };

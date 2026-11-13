@@ -107,7 +107,7 @@ function setup({ password = PASSWORD, start = Date.parse('2026-11-13T10:00:00Z')
       return env.post({
         action: 'save', wedding_date: '2026-12-05',
         marie1_prenom: 'Camille', marie1_nom: 'Dupont', marie2_prenom: 'Alex', marie2_nom: 'Martin',
-        temoin1_prenom: 'Sam', temoin2_prenom: 'Léo', ...extra,
+        temoin1_prenom: 'Sam', temoin2_prenom: 'Léo', marie1_genre: 'f', marie2_genre: 'h', temoin1_genre: 'h', temoin2_genre: 'f', ...extra,
       });
     },
   };
@@ -195,13 +195,18 @@ test('ajout : échéance par défaut = date + 30 jours, photos nettoyées, maria
   const f = await env.find('camille', 'ALEX');
   assert.equal(f.json.status, 'ok');
   assert.equal(f.json.dossier.prenoms.temoin2, 'Léo');
+  // Genres transmis au jeu pour accorder les textes.
+  assert.deepEqual(f.json.dossier.genres, { marie1: 'f', marie2: 'h', temoin1: 'h', temoin2: 'f' });
+  assert.equal(w.marie1_genre, 'f');
   assert.equal((await env.playerPhoto(w.id, 'marie1')).status, 200);
 });
 
-test('ajout : champs manquants, échéance passée et photo illisible refusés', async () => {
+test('ajout : champs manquants, genre manquant, échéance passée et photo illisible refusés', async () => {
   const env = setup();
   await env.login();
   assert.match((await env.add({ marie2_nom: '  ' })).json.error, /nom du marié 2/);
+  assert.match((await env.add({ temoin1_genre: undefined })).json.error, /homme.*femme.*témoin 1/);
+  assert.match((await env.add({ marie2_genre: 'x' })).json.error, /marié 2/);
   assert.equal((await env.add({ wedding_date: '2026-02-30' })).status, 400);
   assert.match((await env.add({ wedding_date: '2026-01-01' })).json.error, /déjà passée/);
   assert.match((await env.add({ photos: { marie1: 'pasunephoto' } })).json.error, /photo/);
@@ -230,12 +235,13 @@ test('modification : prénoms, dates, photos remplacées ou retirées, clés rec
   const r = await env.post({
     action: 'save', id, wedding_date: '2027-03-20', expires_at: '2027-04-19',
     marie1_prenom: 'Camille', marie1_nom: 'Dupont-Leroy', marie2_prenom: 'Alexandre', marie2_nom: 'Martin',
-    temoin1_prenom: 'Sam', temoin2_prenom: 'Noé', photos: { marie2: null, temoin1: JPEG_B64 },
+    temoin1_prenom: 'Sam', temoin2_prenom: 'Noé', marie1_genre: 'f', marie2_genre: 'h', temoin1_genre: 'h', temoin2_genre: 'h', photos: { marie2: null, temoin1: JPEG_B64 },
   });
   assert.equal(r.json.status, 'ok'); // pas d'avertissement contre lui-même
   const [w] = (await listOf(env)).active;
   assert.equal(w.wedding_date, '2027-03-20');
   assert.equal(w.expires_at, '2027-04-19');
+  assert.equal(w.temoin2_genre, 'h');
   assert.deepEqual(w.photos, ['marie1', 'temoin1']);
   assert.deepEqual(env.db.weddings.get(id).cles, ['camille', 'dupontleroy', 'alexandre', 'martin']);
   assert.equal((await env.find('Camille', 'Alex')).json.status, 'more'); // « Alex » n'est plus reconnu
@@ -332,7 +338,7 @@ test('suppression manuelle : refusée pour un mariage actif, confirmation obliga
   const { id } = (await env.add({ photos: { marie1: JPEG_B64 } })).json;
   const refused = await env.post({ action: 'delete', id, confirm: 'supprimer' });
   assert.equal(refused.status, 400);
-  assert.match(refused.json.error, /Archivez/);
+  assert.match(refused.json.error, /Archive d’abord/);
   assert.equal(env.db.weddings.size, 1);
   await env.post({ action: 'archive', id });
   assert.equal((await env.post({ action: 'delete', id, confirm: 'oui' })).status, 400);

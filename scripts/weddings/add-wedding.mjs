@@ -11,6 +11,8 @@
 //     --t1-prenom Sam     --t1-photo ~/photos/sam.jpg \
 //     --t2-prenom Léo     --t2-photo ~/photos/leo.jpg \
 //     --echeance 2027-01-10            (facultatif ; par défaut : date du mariage + 30 jours)
+//     --m1-genre f --m2-genre h --t1-genre h --t2-genre f   (f = femme, h = homme ; facultatif,
+//                                       sans genre, les textes du jeu gardent l'accord du personnage)
 //
 // marie1 = Lucas dans les SMS · marie2 = Sacha dans les mails · temoin1 = Clara · temoin2 = Julien.
 // Les photos sont recadrées au carré en 144 px (outil `sips` de macOS) et stockées dans la base,
@@ -31,6 +33,7 @@ import { stripMetadata as strip } from '../../api/_lib/jpeg.mjs';
 const opts = {
   date: { type: 'string' },
   echeance: { type: 'string' },
+  'm1-genre': { type: 'string' }, 'm2-genre': { type: 'string' }, 't1-genre': { type: 'string' }, 't2-genre': { type: 'string' },
   'm1-prenom': { type: 'string' }, 'm1-nom': { type: 'string' }, 'm1-photo': { type: 'string' },
   'm2-prenom': { type: 'string' }, 'm2-nom': { type: 'string' }, 'm2-photo': { type: 'string' },
   't1-prenom': { type: 'string' }, 't1-photo': { type: 'string' },
@@ -61,6 +64,11 @@ if (!isDate(w.wedding_date)) fail('--date au format AAAA-MM-JJ');
 w.expires_at = (a.echeance || '').trim() || defaultExpiry(w.wedding_date);
 if (!isDate(w.expires_at)) fail('--echeance au format AAAA-MM-JJ');
 if (w.expires_at < todayParis()) fail('l’échéance (' + w.expires_at + ') est déjà passée : ajouter --echeance AAAA-MM-JJ');
+for (const [flag, col] of [['m1-genre', 'marie1_genre'], ['m2-genre', 'marie2_genre'], ['t1-genre', 'temoin1_genre'], ['t2-genre', 'temoin2_genre']]) {
+  const g = (a[flag] || '').trim().toLowerCase();
+  if (g && g !== 'f' && g !== 'h') fail('--' + flag + ' : f (femme) ou h (homme)');
+  w[col] = g || null;
+}
 w.cles = weddingKeys(w);
 if (w.cles.some((k) => !k)) fail('un prénom ou un nom est vide une fois normalisé');
 
@@ -112,9 +120,11 @@ if (clash.length && !a.force) {
 
 const id = randomBytes(16).toString('base64url'); // 22 caractères, 128 bits
 await db(
-  `INSERT INTO weddings (id, wedding_date, expires_at, marie1_prenom, marie1_nom, marie2_prenom, marie2_nom, temoin1_prenom, temoin2_prenom, cles)
-   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10::text[])`,
-  [id, w.wedding_date, w.expires_at, w.marie1_prenom, w.marie1_nom, w.marie2_prenom, w.marie2_nom, w.temoin1_prenom, w.temoin2_prenom, w.cles],
+  `INSERT INTO weddings (id, wedding_date, expires_at, marie1_prenom, marie1_nom, marie2_prenom, marie2_nom, temoin1_prenom, temoin2_prenom, cles,
+                         marie1_genre, marie2_genre, temoin1_genre, temoin2_genre)
+   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10::text[], $11, $12, $13, $14)`,
+  [id, w.wedding_date, w.expires_at, w.marie1_prenom, w.marie1_nom, w.marie2_prenom, w.marie2_nom, w.temoin1_prenom, w.temoin2_prenom, w.cles,
+    w.marie1_genre, w.marie2_genre, w.temoin1_genre, w.temoin2_genre],
 );
 for (const role in photos) {
   await db("INSERT INTO wedding_photos (wedding_id, role, jpeg) VALUES ($1, $2, decode($3, 'base64'))", [id, role, photos[role].toString('base64')]);

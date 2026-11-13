@@ -69,7 +69,12 @@ Paiement externe via Stripe (lien existant, ne pas recréer de logique de paieme
 - Dans les `data.js`, les prénoms sont des jetons `{marie1}` `{marie2}` `{temoin1}` `{temoin2}`
   (sans dossier : Lucas, Sacha, Clara, Julien). `roles` dit quelle personne prend prénom + photo :
   SMS man = marie1, woman = temoin1, julien = temoin2 ; mail sacha = marie2. Ne jamais réécrire
-  ces prénoms en dur.
+  ces prénoms en dur. Vrai mariage sans photo : pastille avec l'initiale du prénom (jamais la photo
+  du personnage par défaut).
+- Chaque personne a un genre (f / h, choisi dans l'admin). Tout texte qui dépend du genre d'un rôle
+  s'écrit `{temoin2:masculin|féminin}` ; `{couple:…|…}` = féminin si les deux mariés sont des femmes ;
+  `{groupe:…|…}` = féminin si toutes les personnes jouées dans la page (`roles`) sont des femmes.
+  Sans genre : accord du personnage par défaut (Lucas h, Sacha h, Clara f, Julien h).
 - Serveur : `api/dossier.mjs` (reconnaissance, 10 essais / 10 min / IP) et `api/photo.mjs` ; toute
   la logique dans `api/_lib/` (testée : `npm test`). Données dans Neon (projet `cleva-dossiers`),
   **jamais dans le dépôt** (il est public et Vercel sert toute la racine). Variables d'env. :

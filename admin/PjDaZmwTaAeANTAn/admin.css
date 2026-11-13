@@ -187,3 +187,14 @@ button, input { font: inherit; color: inherit; }
   background: var(--text); color: #fff; font-size: 15px; z-index: 50;
   box-shadow: 0 6px 20px rgba(0, 0, 0, .18);
 }
+
+/* Choix du genre (Homme / Femme) */
+.person-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+.person-head .person-title { margin: 0; }
+.genre { display: inline-flex; flex-shrink: 0; border: 1px solid var(--line-strong); border-radius: 999px; padding: 2px; background: var(--field); }
+.genre label { position: relative; cursor: pointer; }
+.genre input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.genre span { display: block; padding: 5px 12px; border-radius: 999px; font-size: 14px; font-weight: 500; color: var(--muted); }
+.genre input:checked + span { background: var(--accent); color: #fff; }
+.genre input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 1px; }
+.card-todo { margin: 10px 0 0; padding: 6px 10px; border-radius: 6px; background: var(--warn-bg); color: var(--warn); font-size: 14px; }

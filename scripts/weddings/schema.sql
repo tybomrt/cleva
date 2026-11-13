@@ -18,6 +18,10 @@ CREATE TABLE IF NOT EXISTS weddings (
   marie2_nom      text NOT NULL,
   temoin1_prenom  text NOT NULL,
   temoin2_prenom  text NOT NULL,
+  marie1_genre    text CHECK (marie1_genre IN ('f', 'h')),   -- f = femme, h = homme : accorde les textes du jeu
+  marie2_genre    text CHECK (marie2_genre IN ('f', 'h')),   -- (vide = accord du personnage par défaut)
+  temoin1_genre   text CHECK (temoin1_genre IN ('f', 'h')),
+  temoin2_genre   text CHECK (temoin2_genre IN ('f', 'h')),
   cles            text[] NOT NULL,           -- [prénom1, nom1, prénom2, nom2] normalisés, pour la recherche
   created_at      timestamptz NOT NULL DEFAULT now()
 );
@@ -28,6 +32,11 @@ ALTER TABLE weddings ADD COLUMN IF NOT EXISTS expires_at date;
 ALTER TABLE weddings ADD COLUMN IF NOT EXISTS archived_at timestamptz;
 UPDATE weddings SET expires_at = wedding_date + 30 WHERE expires_at IS NULL;
 ALTER TABLE weddings ALTER COLUMN expires_at SET NOT NULL;
+-- Migration (novembre 2026) : genre de chaque personne.
+ALTER TABLE weddings ADD COLUMN IF NOT EXISTS marie1_genre text CHECK (marie1_genre IN ('f', 'h'));
+ALTER TABLE weddings ADD COLUMN IF NOT EXISTS marie2_genre text CHECK (marie2_genre IN ('f', 'h'));
+ALTER TABLE weddings ADD COLUMN IF NOT EXISTS temoin1_genre text CHECK (temoin1_genre IN ('f', 'h'));
+ALTER TABLE weddings ADD COLUMN IF NOT EXISTS temoin2_genre text CHECK (temoin2_genre IN ('f', 'h'));
 
 CREATE TABLE IF NOT EXISTS wedding_photos (
   wedding_id  text NOT NULL REFERENCES weddings(id) ON DELETE CASCADE,

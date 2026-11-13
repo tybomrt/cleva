@@ -65,12 +65,18 @@
     <section id="view-edit" class="view" hidden>
       <button class="link-btn back" type="button" id="edit-back">← Retour à la liste</button>
       <h1 class="title" id="edit-title">Nouveau mariage</h1>
-      <p class="notice is-muted" id="edit-archived-note" hidden>Ce mariage est dans les archives. Vous pouvez corriger sa fiche ; pour qu’il soit de nouveau reconnu, utilisez « Restaurer » depuis les archives.</p>
+      <p class="notice is-muted" id="edit-archived-note" hidden>Ce mariage est dans les archives. Tu peux corriger sa fiche ; pour qu’il soit de nouveau reconnu, utilise « Restaurer » depuis les archives.</p>
 
       <form id="edit-form" novalidate>
-        <h2 class="section">Les mariés</h2>
+        <h2 class="section" id="section-maries">Les mariés</h2>
         <div class="person" data-role="marie1">
-          <p class="person-title">Marié 1 <span class="swap">remplace Lucas, dans la messagerie</span></p>
+          <div class="person-head">
+            <p class="person-title"><span class="role-label" data-kind="marie" data-num="1"></span> <span class="swap">remplace Lucas, dans la messagerie</span></p>
+            <div class="genre" role="radiogroup" aria-label="Genre">
+              <label><input type="radio" name="marie1_genre" value="h"><span>Homme</span></label>
+              <label><input type="radio" name="marie1_genre" value="f"><span>Femme</span></label>
+            </div>
+          </div>
           <div class="person-body">
             <div class="photo-slot"></div>
             <div class="person-fields two">
@@ -80,7 +86,13 @@
           </div>
         </div>
         <div class="person" data-role="marie2">
-          <p class="person-title">Marié 2 <span class="swap">remplace Sacha, dans la boîte mail</span></p>
+          <div class="person-head">
+            <p class="person-title"><span class="role-label" data-kind="marie" data-num="2"></span> <span class="swap">remplace Sacha, dans la boîte mail</span></p>
+            <div class="genre" role="radiogroup" aria-label="Genre">
+              <label><input type="radio" name="marie2_genre" value="h"><span>Homme</span></label>
+              <label><input type="radio" name="marie2_genre" value="f"><span>Femme</span></label>
+            </div>
+          </div>
           <div class="person-body">
             <div class="photo-slot"></div>
             <div class="person-fields two">
@@ -92,7 +104,13 @@
 
         <h2 class="section">Les témoins</h2>
         <div class="person" data-role="temoin1">
-          <p class="person-title">Témoin 1 <span class="swap">remplace Clara</span></p>
+          <div class="person-head">
+            <p class="person-title"><span class="role-label" data-kind="temoin" data-num="1"></span> <span class="swap">remplace Clara</span></p>
+            <div class="genre" role="radiogroup" aria-label="Genre">
+              <label><input type="radio" name="temoin1_genre" value="h"><span>Homme</span></label>
+              <label><input type="radio" name="temoin1_genre" value="f"><span>Femme</span></label>
+            </div>
+          </div>
           <div class="person-body">
             <div class="photo-slot"></div>
             <div class="person-fields">
@@ -101,7 +119,13 @@
           </div>
         </div>
         <div class="person" data-role="temoin2">
-          <p class="person-title">Témoin 2 <span class="swap">remplace Julien</span></p>
+          <div class="person-head">
+            <p class="person-title"><span class="role-label" data-kind="temoin" data-num="2"></span> <span class="swap">remplace Julien</span></p>
+            <div class="genre" role="radiogroup" aria-label="Genre">
+              <label><input type="radio" name="temoin2_genre" value="h"><span>Homme</span></label>
+              <label><input type="radio" name="temoin2_genre" value="f"><span>Femme</span></label>
+            </div>
+          </div>
           <div class="person-body">
             <div class="photo-slot"></div>
             <div class="person-fields">
@@ -109,7 +133,7 @@
             </div>
           </div>
         </div>
-        <p class="help">Photos facultatives : sans photo, le jeu garde la photo par défaut. Elles sont recadrées au carré (sur le centre) et allégées directement sur votre appareil.</p>
+        <p class="help">Photos facultatives : sans photo, le jeu affiche une pastille avec l’initiale du prénom. Elles sont recadrées au carré (sur le centre) et allégées directement sur ton appareil. Le genre sert à accorder les textes du jeu (« le marié » ou « la mariée »…).</p>
 
         <h2 class="section">Les dates</h2>
         <label class="field">
@@ -180,7 +204,7 @@
       <h2 class="dlg-title">Supprimer définitivement ?</h2>
       <p class="dlg-text" id="dlg-delete-text"></p>
       <p class="dlg-text">Prénoms, noms et photos seront effacés pour de bon. <strong>Impossible de revenir en arrière.</strong></p>
-      <label class="field"><span class="label">Pour confirmer, tapez « supprimer »</span><input name="confirm" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+      <label class="field"><span class="label">Pour confirmer, tape « supprimer »</span><input name="confirm" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
       <p class="notice is-error" id="dlg-delete-msg" hidden></p>
       <div class="form-actions">
         <button class="btn btn-danger" type="submit" value="ok">Supprimer définitivement</button>

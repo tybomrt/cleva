@@ -50,16 +50,16 @@
     }).then(function (r) {
       return r.json().catch(function () { return { status: 'error' }; }).then(function (j) {
         if (r.status === 401 && j.status === 'login') {
-          showLogin(state.today ? 'Votre session a expiré : reconnectez-vous.' : '');
+          showLogin(state.today ? 'Ta session a expiré : reconnecte-toi.' : '');
           throw new Error('login');
         }
         return j;
       });
     }, function () {
-      return { status: 'error', error: 'Pas de connexion internet ? Réessayez dans un instant.' };
+      return { status: 'error', error: 'Pas de connexion internet ? Réessaie dans un instant.' };
     });
   }
-  function errorOf(r) { return (r && r.error) || 'Petit souci. Réessayez dans un instant.'; }
+  function errorOf(r) { return (r && r.error) || 'Petit souci. Réessaie dans un instant.'; }
   function photoUrl(id, role) { return API + '?action=photo&id=' + encodeURIComponent(id) + '&role=' + role + '&t=' + Date.now(); }
 
   var toastTimer;
@@ -89,7 +89,7 @@
   $('login-form').addEventListener('submit', function (e) {
     e.preventDefault();
     var f = e.target, btn = f.querySelector('button');
-    if (!f.elements.password.value) return show('login-msg', 'Le mot de passe, s’il vous plaît.');
+    if (!f.elements.password.value) return show('login-msg', 'Il manque le mot de passe.');
     btn.disabled = true;
     api({ action: 'login', password: f.elements.password.value }).then(function (r) {
       btn.disabled = false;
@@ -168,6 +168,9 @@
   function activeCard(w) {
     var card = el('article', 'card');
     card.appendChild(cardHead(w));
+    if (!w.marie1_genre || !w.marie2_genre || !w.temoin1_genre || !w.temoin2_genre) {
+      card.appendChild(el('p', 'card-todo', 'Genre à préciser : ouvre la fiche pour que les textes du jeu soient bien accordés.'));
+    }
     var dates = el('ul', 'card-dates');
     dateRow(dates, 'Mariage', fmt(w.wedding_date), relative(w.wedding_date));
     var n = daysBetween(today(), w.expires_at);
@@ -240,7 +243,7 @@
     form.onsubmit = function (e) {
       if (e.submitter && e.submitter.value === 'cancel') return;
       e.preventDefault();
-      if (!input.value) return show('dlg-date-msg', 'Choisissez une date.');
+      if (!input.value) return show('dlg-date-msg', 'Choisis une date.');
       if (input.value < today()) return show('dlg-date-msg', 'Cette date est déjà passée.');
       $('dlg-date-ok').disabled = true;
       opts.action(input.value, force).then(function (r) {
@@ -302,7 +305,7 @@
   }
 
   function archive(w) {
-    return confirmDialog('Archiver ce mariage ?', names(w) + ' ne sera plus reconnu par l’écran « Retrouver le dossier », et ses photos ne seront plus montrées aux joueurs. Vous pourrez le restaurer depuis les archives pendant un an.', 'Archiver')
+    return confirmDialog('Archiver ce mariage ?', names(w) + ' ne sera plus reconnu par l’écran « Retrouver le dossier », et ses photos ne seront plus montrées aux joueurs. Tu pourras le restaurer depuis les archives pendant un an.', 'Archiver')
       .then(function (ok) {
         if (!ok) return;
         return api({ action: 'archive', id: w.id }).then(function (r) {
@@ -321,7 +324,7 @@
     form.onsubmit = function (e) {
       if (e.submitter && e.submitter.value === 'cancel') return;
       e.preventDefault();
-      if (form.elements.confirm.value.trim().toLowerCase() !== 'supprimer') return show('dlg-delete-msg', 'Tapez « supprimer » pour confirmer.');
+      if (form.elements.confirm.value.trim().toLowerCase() !== 'supprimer') return show('dlg-delete-msg', 'Tape « supprimer » pour confirmer.');
       api({ action: 'delete', id: w.id, confirm: form.elements.confirm.value }).then(function (r) {
         if (r.status !== 'ok') return show('dlg-delete-msg', errorOf(r));
         dlg.close();
@@ -335,6 +338,20 @@
   /* ---------- Fiche (ajout / modification) ---------- */
   var form = $('edit-form');
   var force = false;
+  var GENRES = ['marie1_genre', 'marie2_genre', 'temoin1_genre', 'temoin2_genre'];
+
+  // « Marié 1 » / « Mariée 1 », « Témoin 1 » ; titre de section accordé au couple.
+  function genreOf(role) { var c = form.querySelector('input[name="' + role + '_genre"]:checked'); return c ? c.value : ''; }
+  function updateLabels() {
+    document.querySelectorAll('.role-label').forEach(function (l) {
+      var role = l.closest('.person').getAttribute('data-role');
+      var f = genreOf(role) === 'f';
+      l.textContent = (l.getAttribute('data-kind') === 'marie' ? (f ? 'Mariée ' : 'Marié ') : 'Témoin ') + l.getAttribute('data-num');
+    });
+    var both = genreOf('marie1') === 'f' && genreOf('marie2') === 'f';
+    $('section-maries').textContent = both ? 'Les mariées' : 'Les mariés';
+  }
+  form.addEventListener('change', function (e) { if (/_genre$/.test(e.target.name)) updateLabels(); });
 
   function photoSlot(role) {
     var slot = document.querySelector('.person[data-role="' + role + '"] .photo-slot');
@@ -383,7 +400,7 @@
     };
     img.onerror = function () {
       URL.revokeObjectURL(url);
-      show('edit-msg', 'Cette photo n’a pas pu être ouverte. Essayez avec une photo en JPG ou PNG (sur ordinateur, les photos d’iPhone au format HEIC ne passent pas).');
+      show('edit-msg', 'Cette photo n’a pas pu être ouverte. Essaie avec une photo en JPG ou PNG (sur ordinateur, les photos d’iPhone au format HEIC ne passent pas).');
     };
     img.src = url;
   }
@@ -403,6 +420,10 @@
     ['marie1_prenom', 'marie1_nom', 'marie2_prenom', 'marie2_nom', 'temoin1_prenom', 'temoin2_prenom'].forEach(function (k) {
       form.elements[k].value = w ? w[k] : '';
     });
+    GENRES.forEach(function (g) {
+      form.querySelectorAll('input[name="' + g + '"]').forEach(function (i) { i.checked = !!w && w[g] === i.value; });
+    });
+    updateLabels();
     form.elements.wedding_date.value = w ? w.wedding_date : '';
     form.elements.expires_at.value = w ? w.expires_at : '';
     form.elements.expires_at.min = today();
@@ -460,6 +481,7 @@
     ['marie1_prenom', 'marie1_nom', 'marie2_prenom', 'marie2_nom', 'temoin1_prenom', 'temoin2_prenom', 'wedding_date', 'expires_at'].forEach(function (k) {
       body[k] = form.elements[k].value.trim();
     });
+    GENRES.forEach(function (g) { body[g] = genreOf(g.replace('_genre', '')); });
     if (state.editing && state.editing.archived_on) delete body.expires_at;
     ROLES.forEach(function (r) { if ('change' in state.photos[r]) body.photos[r] = state.photos[r].change; });
     if (!body.wedding_date) return show('edit-msg', 'Il manque la date du mariage.');

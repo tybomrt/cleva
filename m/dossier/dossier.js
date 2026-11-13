@@ -3,7 +3,9 @@
    À la première ouverture sur un téléphone, Raphaël demande qui se marie. Le serveur
    (api/dossier.mjs) reconnaît le mariage et renvoie les prénoms + les URL des photos ; la page
    remplace alors les jetons {marie1} {marie2} {temoin1} {temoin2} de data.js et les photos des
-   personnes listées dans data.roles. Sans dossier : Lucas, Sacha, Clara, Julien et les photos actuelles.
+   personnes listées dans data.roles (sans photo : pastille avec l'initiale). Les jetons genrés
+   {temoin2:masculin|féminin}, {couple:…|…}, {groupe:…|…} s'accordent au genre reçu.
+   Sans dossier : Lucas, Sacha, Clara, Julien et les photos actuelles.
 
    Le choix est gardé dans localStorage (même adresse pour les deux pages : une seule saisie).
    ?dossier=reset dans l'adresse efface ce choix (tests).
@@ -16,6 +18,10 @@
 
   var KEY = 'cleva-dossier';
   var DEFAULTS = { marie1: 'Lucas', marie2: 'Sacha', temoin1: 'Clara', temoin2: 'Julien' };
+  // Genre des personnages par défaut (sans dossier, ou dossier ancien sans genre).
+  var DEFAULT_GENRES = { marie1: 'h', marie2: 'h', temoin1: 'f', temoin2: 'h' };
+  // Couleur de la pastille d'initiale quand un vrai marié / témoin n'a pas de photo.
+  var COLORS = { marie1: '#E8C6B8', marie2: '#C9D3EC', temoin1: '#E3C9D6', temoin2: '#C8D9A6' };
   var ROLES = ['marie1', 'marie2', 'temoin1', 'temoin2'];
   var me = document.currentScript;
   var DATA = window[me.getAttribute('data-data')];
@@ -28,26 +34,46 @@
   /* ---------- Personnalisation de data.js ---------- */
   function personalize(choice) {
     var perso = choice && choice.mode === 'perso';
-    var names = {}, photos = (perso && choice.photos) || {};
+    var names = {}, genres = {}, photos = (perso && choice.photos) || {};
     ROLES.forEach(function (r) {
       var v = perso && choice.prenoms && typeof choice.prenoms[r] === 'string' ? choice.prenoms[r].trim() : '';
       names[r] = v || DEFAULTS[r];
+      var g = perso && choice.genres && choice.genres[r];
+      genres[r] = g === 'f' || g === 'h' ? g : DEFAULT_GENRES[r];
     });
-    // Remplace les jetons dans tous les textes (messages, noms, objets…).
+    var roles = DATA.roles || {};
+    // {couple:…|…} : féminin si les deux mariés sont des femmes.
+    // {groupe:…|…} : féminin si toutes les personnes jouées par le vrai mariage dans cette page sont des femmes.
+    var fem = {
+      couple: genres.marie1 === 'f' && genres.marie2 === 'f',
+      groupe: Object.keys(roles).length > 0 && Object.keys(roles).every(function (pid) { return genres[roles[pid]] === 'f'; }),
+    };
+    ROLES.forEach(function (r) { fem[r] = genres[r] === 'f'; });
+    // Remplace les jetons dans tous les textes (messages, noms, objets…) :
+    //   {temoin2:ma chemise|ma robe} → selon le genre ; {marie1} → prénom.
     (function walk(o) {
       for (var k in o) {
         if (!Object.prototype.hasOwnProperty.call(o, k)) continue;
-        if (typeof o[k] === 'string') o[k] = o[k].replace(/\{(marie1|marie2|temoin1|temoin2)\}/g, function (_, r) { return names[r]; });
-        else if (o[k] && typeof o[k] === 'object') walk(o[k]);
+        if (typeof o[k] === 'string') {
+          o[k] = o[k]
+            .replace(/\{(marie1|marie2|temoin1|temoin2|couple|groupe):([^|{}]*)\|([^{}]*)\}/g, function (_, r, m, f) { return fem[r] ? f : m; })
+            .replace(/\{(marie1|marie2|temoin1|temoin2)\}/g, function (_, r) { return names[r]; });
+        } else if (o[k] && typeof o[k] === 'object') walk(o[k]);
       }
     })(DATA);
-    // Photos (et initiales) des personnes qui jouent un rôle.
-    var roles = DATA.roles || {};
+    // Photos des personnes qui jouent un rôle. Vrai mariage sans photo (ou photo plus servie) :
+    // pastille avec l'initiale du prénom, jamais la photo du personnage par défaut.
     for (var pid in roles) {
       var p = DATA.people && DATA.people[pid], r = roles[pid];
       if (!p) continue;
-      if (photos[r] && /^\/api\/photo\?/.test(photos[r])) p.avatar = photos[r];
-      if (p.initials && perso) p.initials = names[r].charAt(0).toUpperCase();
+      if (!perso) continue;
+      if (photos[r] && /^\/api\/photo\?/.test(photos[r])) {
+        p.avatar = photos[r];
+      } else {
+        delete p.avatar;
+        p.initials = names[r].charAt(0).toUpperCase();
+        if (!p.color) p.color = COLORS[r];
+      }
     }
   }
 
@@ -188,7 +214,7 @@
       .then(function (r) {
         button.disabled = false;
         if (r.status === 'ok' && r.dossier) {
-          return close({ v: 1, mode: 'perso', id: r.dossier.id, prenoms: r.dossier.prenoms, photos: r.dossier.photos });
+          return close({ v: 1, mode: 'perso', id: r.dossier.id, prenoms: r.dossier.prenoms, genres: r.dossier.genres || {}, photos: r.dossier.photos });
         }
         if (r.status === 'more') return say(MORE, false);
         if (r.status === 'none') return say("Je ne trouve pas ce dossier. Vérifiez l'orthographe.", true);

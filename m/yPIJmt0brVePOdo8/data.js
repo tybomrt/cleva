@@ -37,7 +37,7 @@ window.MESSAGES_DATA = {
     code: '1730',
     time: '15:52',          // heure affichée (juste après le dernier message reçu)
     date: 'samedi',
-    hint: 'À quelle heure les mariés\nse disent-ils « oui » ?',   // \n = retour à la ligne
+    hint: 'À quelle heure {couple:les mariés|les mariées}\nse disent-{couple:ils|elles} « oui » ?',   // \n = retour à la ligne
   },
 
   // Personnes remplacées par le vrai mariage (prénom + photo) : voir l'en-tête.
@@ -74,7 +74,7 @@ window.MESSAGES_DATA = {
         // ---- Historique déjà lu : du contexte, AUCUN indice sur les prestataires ----
         { day: 'Jeudi' },
         { from: 'woman', time: '12:15', text: 'J-2 !!! 😱' },
-        { from: 'julien', time: '12:16', text: "J'ai déjà repassé ma chemise. Deux fois." },
+        { from: 'julien', time: '12:16', text: "J'ai déjà repassé {temoin2:ma chemise|ma robe}. Deux fois." },
         { from: 'me',    time: '12:17', text: "Tout est prêt de mon côté. Il ne vous reste plus qu'à profiter 😊" },
         { from: 'man',   time: '12:30', text: 'Merci à vous trois ❤️ Vous êtes les meilleurs' },
         { from: 'woman', time: '12:31', text: 'On sait 😌' },
@@ -129,7 +129,7 @@ window.MESSAGES_DATA = {
           time: '15:32',
           audio: '/m/yPIJmt0brVePOdo8/audio/raphael-01.m4a',
           duration: 9,
-          transcript: "Les gars, j'ai une mauvaise nouvelle. Je viens d'avoir le DJ au téléphone : il va pas pouvoir venir, il est cloué au lit avec 39 de fièvre.",
+          transcript: "{groupe:Les gars|Les filles}, j'ai une mauvaise nouvelle. Je viens d'avoir le DJ au téléphone : il va pas pouvoir venir, il est cloué au lit avec 39 de fièvre.",
         },
         {
           from: 'me',
