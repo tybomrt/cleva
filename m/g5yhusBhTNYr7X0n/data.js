@@ -143,7 +143,7 @@ Raphaël`,
 
 Bonne nouvelle : votre colis n° CE 4471 0923 FR est en cours de livraison aujourd'hui.
 
-Contenu déclaré : « 200 bulles de savon - mariage ».
+Contenu déclaré : « 150 bulles de savon - mariage ».
 
 Si vous êtes absent, il sera déposé chez votre voisin, ou devant la porte, ou là où le livreur le sentira.
 
@@ -225,7 +225,7 @@ Raphaël`,
       id: 'lea-train',
       subject: 'Fwd: Vos billets de train',
       messages: [{
-        from: 'lea', date: 'J-12 21:06',
+        from: 'lea', date: 'J-1 21:06',
         body: `Je t'ai pris les billets pour Saint-Malo, pour l'anniv de maman, comme ça c'est fait. Tu me dois un resto (un vrai).
 
 ---------- Message transféré ----------
@@ -252,7 +252,7 @@ Aucun message pour l'instant. Astuce : une photo prise de jour, ça aide.`,
 
 Votre relevé de compte du mois dernier est disponible dans votre espace client.
 
-Conseil de saison : en pleine saison des mariages, prévoyez une ligne « imprévus » dans votre budget. Et doublez-la.
+Conseil : quand on organise des mariages, prévoyez une ligne « imprévus » dans votre budget. Et doublez-la.
 
 Banque du Lac`,
       }],
