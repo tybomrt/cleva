@@ -5,6 +5,7 @@
    Types de messages :
      { from, time, text: '...' }                       → bulle texte
      { from, time, emoji: '👌' }                       → gros emoji sans bulle
+     reaction: '👍' sur un message texte              → pastille de réaction sur la bulle
      { from, time, audio, duration, transcript }       → message vocal
        - audio      : chemin du fichier (m4a/mp3, mono, ~24-32 kbps)
        - duration   : durée en secondes, affichée avant le chargement du son
@@ -23,6 +24,7 @@
      maman 1566616213894-2d4e1baee5d8 · sarah 1580489944761-15a19d654956 · lea 1548382131-e0ebb1f0cdea
      thomas 1568602471122-7832951cc4c5 · kevin 1583264277168-58ceba4b84e7 · yanis 1522529599102-193c0d76b5b6
      hugo 1592234789031-94bf65f630ed · papi 1635594798220-ee1ac90d41c1 · tonton 1758691030490-fe1cb6c972ce
+     julien 1507003211169-0a1dd7228f2d
    ========================================================================== */
 
 window.MESSAGES_DATA = {
@@ -35,9 +37,10 @@ window.MESSAGES_DATA = {
   },
 
   people: {
-    me:       { name: 'Moi',   avatar: '/m/yPIJmt0brVePOdo8/img/me.jpg' },
+    me:       { name: 'Raphaël', avatar: '/m/yPIJmt0brVePOdo8/img/me.jpg' },
     man:      { name: 'Lucas', avatar: '/m/yPIJmt0brVePOdo8/img/man.jpg' },
     woman:    { name: 'Clara', avatar: '/m/yPIJmt0brVePOdo8/img/woman.jpg' },
+    julien:   { name: 'Julien', avatar: '/m/yPIJmt0brVePOdo8/img/julien.jpg' },
     maman:    { name: 'Maman',   avatar: '/m/yPIJmt0brVePOdo8/img/maman.jpg' },
     sarah:    { name: 'Sarah',   avatar: '/m/yPIJmt0brVePOdo8/img/sarah.jpg', online: true },
     tata:     { name: 'Tata Brigitte', initials: 'B', color: '#B9D7B0' },
@@ -63,69 +66,71 @@ window.MESSAGES_DATA = {
         // ---- Historique déjà lu : du contexte, AUCUN indice sur les prestataires ----
         { day: 'Jeudi' },
         { from: 'woman', time: '12:15', text: 'J-2 !!! 😱' },
-        { from: 'man',   time: '12:17', text: 'On est prêts. Enfin je crois.' },
-        { from: 'me',    time: '12:30', text: 'Merci les témoins ❤️ Vous êtes les meilleurs' },
+        { from: 'julien', time: '12:16', text: "J'ai déjà repassé ma chemise. Deux fois." },
+        { from: 'me',    time: '12:17', text: "Tout est prêt de mon côté. Il ne vous reste plus qu'à profiter 😊" },
+        { from: 'man',   time: '12:30', text: 'Merci à vous trois ❤️ Vous êtes les meilleurs' },
         { from: 'woman', time: '12:31', text: 'On sait 😌' },
         { from: 'woman', time: '21:40', text: "Petite question : les alliances, c'est toi qui les gardes jusqu'à la cérémonie ?" },
-        { from: 'me',    time: '21:52', text: "Non, c'est Lucas. Je suis capable de les oublier quelque part 😅" },
-        { from: 'man',   time: '21:53', text: "Mission acceptée. Je dors avec s'il le faut 💍" },
+        { from: 'man',   time: '21:52', text: "Non, c'est Julien. Je suis capable de les oublier quelque part 😅" },
+        { from: 'julien', time: '21:53', text: "Mission acceptée. Je dors avec s'il le faut 💍" },
         { day: 'Hier' },
-        { from: 'woman', time: '10:14', text: 'Météo pour demain : 24 °C et grand soleil ☀️' },
-        { from: 'me',    time: '10:16', text: "J'ose pas y croire" },
-        { from: 'man',   time: '10:20', text: "J'ai vérifié sur 3 applis, c'est confirmé 🤞" },
+        { from: 'julien', time: '10:14', text: 'Météo pour demain : 24 °C et grand soleil ☀️' },
+        { from: 'man',   time: '10:16', text: "J'ose pas y croire" },
+        { from: 'me',    time: '10:20', text: 'Je surveille 3 applis depuis 10 jours. Le plan B pluie retourne au placard 🤞' },
         { from: 'woman', time: '19:30', text: 'Discours des témoins : terminé. Il y aura des larmes. Et peut-être quelques dossiers 😇' },
-        { from: 'me',    time: '19:42', text: "J'ai peur" },
-        { from: 'man',   time: '19:43', text: 'Tu peux' },
-        { from: 'woman', time: '21:04', text: "Demain c'est le grand jour !! 🥂" },
-        { from: 'man',   time: '21:05', text: "J'en dors déjà plus" },
-        { from: 'me',    time: '21:12', text: 'Merci de gérer les prestataires demain, je vais avoir la tête ailleurs 😅' },
+        { from: 'julien', time: '19:31', text: 'Les meilleurs, je les garde pour la fin' },
+        { from: 'man',   time: '19:42', text: "J'ai peur" },
+        { from: 'me',    time: '19:43', text: "J'ai prévu une boîte de mouchoirs par table, au cas où 😇" },
+        { from: 'julien', time: '21:04', text: "Demain c'est le grand jour !! 🥂" },
+        { from: 'me',    time: '21:05', text: 'Dernier tour de salle fait, tout est en place. Maintenant, au lit !' },
+        { from: 'man',   time: '21:12', text: 'Merci de gérer les prestataires demain, je vais avoir la tête ailleurs 😅' },
         { from: 'woman', time: '21:13', text: "T'inquiète, on s'occupe de tout" },
-        { from: 'man',   time: '21:13', text: 'On te tient au courant ici' },
-        { from: 'me',    time: '23:41', text: "J'arrive pas à dormir. Je stresse trop 😰" },
-        { from: 'woman', time: '23:44', text: 'Calme-toi, tout va bien se passer ❤️' },
-        { from: 'woman', time: '23:44', text: 'Moi quand je suis stressée, je me fais une grille de mots croisés' },
-        { from: 'woman', time: '23:45', text: "Je remplis les cases une par une et tout de suite ça m'apaise. Ça me détend à chaque fois" },
+        { from: 'me',    time: '21:13', text: 'Je vous tiens au courant ici. Ton seul job demain : profiter.' },
+        { from: 'man',   time: '23:41', text: "J'arrive pas à dormir. Je stresse trop 😰" },
+        { from: 'me',    time: '23:44', text: 'Calme-toi, tout va bien se passer ❤️' },
+        { from: 'me',    time: '23:44', text: 'Moi quand je suis stressé, je fais une grille de mots croisés. Ça me détend à chaque fois' },
+        { from: 'me',    time: '23:45', text: 'Tu devrais peut-être en faire une 😉', reaction: '👍' },
         { day: "Aujourd'hui" },
-        { from: 'me',    time: '8:02',  text: "C'est le grand jour 🥹 Merci pour tout les amis" },
-        { from: 'man',   time: '8:03',  text: 'Profite ❤️' },
+        { from: 'man',   time: '8:02',  text: "C'est le grand jour 🥹 Merci pour tout les amis" },
+        { from: 'me',    time: '8:03',  text: "Belle journée à vous ❤️ J'arrive sur place à 9h" },
 
         // ---- Ligne « messages non lus » : les joueurs lisent à partir d'ici ----
-        // Règle : AUCUN message de 'me' en dessous.
+        // Choix assumé : des messages de Raphaël ('me') restent sous la ligne, pour guider les joueurs.
         { unreadMarker: true },
-        { from: 'man',   time: '9:26',  text: "Les gars, le coiffeur vient d'arriver. Vous descendez ?" },
-        { from: 'woman', time: '9:27',  text: "Déjà ? Je croyais que c'était le photographe en premier" },
-        { from: 'man',   time: '9:27',  text: "Non, c'est juste inversé sur le planning 🙈" },
-        { from: 'woman', time: '9:32',  text: 'Ahah, pas grave !' },
+        { from: 'me',    time: '9:26',  text: "Bonjour à tous ☀️ Le coiffeur vient d'arriver, je l'installe dans le salon. Vous pouvez descendre ?" },
+        { from: 'julien', time: '9:27',  text: "Déjà ? Je croyais que c'était le photographe en premier" },
+        { from: 'me',    time: '9:27',  text: 'Non, petite coquille de ma part : ils sont inversés sur le planning 🙈' },
+        { from: 'julien', time: '9:32',  text: 'Ahah, pas grave !' },
         { from: 'woman', time: '9:33',  text: "Et la fleuriste, on l'attend à quelle heure déjà ?" },
         {
-          from: 'man',
+          from: 'me',
           time: '9:39',
           audio: '/m/yPIJmt0brVePOdo8/audio/lucas-00.m4a',
           duration: 12,
           transcript: "La fleuriste est déjà venue hier. En fait, on a oublié de te prévenir, et elle a déjà fait toute l'installation. Tu peux aller voir dans la salle, c'est vraiment super beau ce qu'elle a fait ! Et du coup, bah, tu peux la rayer de la liste.",
         },
-        { from: 'man',   time: '15:12', text: 'Tout se passe bien de ton côté ?' },
+        { from: 'me',    time: '15:12', text: 'Petit point d’étape : tout se passe bien de ton côté ?' },
         { from: 'woman', time: '15:23', text: "Oui, tous les prestataires sont arrivés à l'heure" },
         { from: 'woman', time: '15:23', text: 'Sauf la babysitter' },
         { from: 'woman', time: '15:24', text: 'Elle est coincée dans les bouchons' },
         { from: 'woman', time: '15:24', text: 'Elle devrait être là avant le début de la cérémonie' },
-        { from: 'man',   time: '15:25', emoji: '👌' },
-        // Vocaux de Lucas (enregistrements réels), transcrits automatiquement puis relus.
+        { from: 'me',    time: '15:25', emoji: '👌' },
+        // Vocaux de Raphaël (enregistrements réels), transcrits automatiquement puis relus.
         {
-          from: 'man',
+          from: 'me',
           time: '15:32',
           audio: '/m/yPIJmt0brVePOdo8/audio/lucas-01.m4a',
           duration: 9,
           transcript: "Les gars, j'ai une mauvaise nouvelle. Je viens d'avoir le DJ au téléphone : il va pas pouvoir venir, il est cloué au lit avec 39 de fièvre.",
         },
         {
-          from: 'man',
+          from: 'me',
           time: '15:33',
           audio: '/m/yPIJmt0brVePOdo8/audio/lucas-02.m4a',
           duration: 19,
           transcript: "Mais vous inquiétez pas, je suis l'homme de la situation ! Je viens de parler avec le chanteur et il n'a rien de prévu ce soir, donc il peut rester toute la soirée pour faire l'animation. Il a déjà tout le matériel dans son camion, donc en fait il y a absolument rien à aller chercher, rien à louer en plus. Tout est OK !",
         },
-        { from: 'woman', time: '15:46', text: 'Tu gères !' },
+        { from: 'julien', time: '15:46', text: 'Tu gères !' },
       ],
     },
 

@@ -376,7 +376,7 @@
     me.alt = '';
     pItem.appendChild(me);
     var pBody = el('div', 'conv-body');
-    pBody.appendChild(el('span', 'conv-name', 'Mon profil'));
+    pBody.appendChild(el('span', 'conv-name', DATA.people.me.name));
     pBody.appendChild(el('span', 'conv-preview', 'Disponible'));
     pItem.appendChild(pBody);
     pItem.insertAdjacentHTML('beforeend', CHEVRON);
@@ -486,6 +486,11 @@
         bubble.appendChild(document.createTextNode(msg.text));
         bubble.appendChild(el('span', 'time time-spacer', msg.time)).setAttribute('aria-hidden', 'true');
         bubble.appendChild(el('span', 'time', msg.time));
+        // Réaction d'un participant (ex. 👍), en pastille sur le coin de la bulle.
+        if (msg.reaction) {
+          row.classList.add('has-reaction');
+          bubble.appendChild(el('span', 'reaction', msg.reaction)).setAttribute('aria-label', 'Réaction : ' + msg.reaction);
+        }
         row.appendChild(bubble);
       }
       thread.appendChild(row);
@@ -618,6 +623,12 @@
       // Comme WhatsApp : on arrive sur la ligne « non lus » s'il y en a une, sinon tout en bas.
       var marker = document.getElementById('unread-marker');
       thread.scrollTop = marker ? marker.offsetTop - 16 : thread.scrollHeight;
+      // Après un rechargement de la page, on revient là où on lisait.
+      try {
+        var saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY) || 'null');
+        sessionStorage.removeItem(SCROLL_KEY);
+        if (saved && saved.id === conv.id) thread.scrollTop = saved.top;
+      } catch (e) {}
     } else {
       showHome(HOME[id] ? id : 'messages');
       screenConv.hidden = true;
@@ -640,6 +651,14 @@
     else location.hash = '';
   });
   window.addEventListener('hashchange', route);
+  // Mémorise la position de lecture au moment où la page est quittée ou rechargée.
+  var SCROLL_KEY = 'cleva-msg-scroll';
+  window.addEventListener('pagehide', function () {
+    if (screenConv.hidden) return;
+    try {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({ id: decodeURIComponent(location.hash.slice(1)), top: thread.scrollTop }));
+    } catch (e) {}
+  });
   if (LOCK) setupLock();
   route();
 })();
