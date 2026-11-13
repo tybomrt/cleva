@@ -85,8 +85,11 @@
   function group(n) {
     var fs = el('fieldset', 'dossier-group');
     fs.appendChild(el('legend', 'dossier-legend', 'Marié ' + n));
-    fs.appendChild(field('prenom' + n, 'Prénom', 'off'));
-    fs.appendChild(field('nom' + n, 'Nom de famille', 'off'));
+    // Prénom et nom côte à côte : le bouton reste visible sans faire défiler.
+    var row = el('div', 'dossier-row');
+    row.appendChild(field('prenom' + n, 'Prénom', 'off'));
+    row.appendChild(field('nom' + n, 'Nom de famille', 'off'));
+    fs.appendChild(row);
     return fs;
   }
 

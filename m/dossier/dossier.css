@@ -42,7 +42,8 @@ html.dossier-open, html.dossier-open body { overflow: hidden; background: #F6F2E
   font-size: 13px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase;
   color: var(--d-accent-dark);
 }
-.dossier-field { display: flex; flex-direction: column; gap: 4px; }
+.dossier-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.dossier-field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .dossier-label { font-size: 14px; }
 .dossier-field input {
   width: 100%;
@@ -76,3 +77,12 @@ html.dossier-open, html.dossier-open body { overflow: hidden; background: #F6F2E
   cursor: pointer;
 }
 .dossier-skip[hidden] { display: none; }
+
+/* Petits écrans (iPhone SE…) : en-tête plus serré, pour garder le bouton et la réponse visibles */
+@media (max-height: 700px) {
+  .dossier-card { padding-top: calc(env(safe-area-inset-top) + 24px); }
+  .dossier-head { padding-bottom: 14px; }
+  .dossier-title { font-size: 32px; }
+  .dossier-intro { margin: 16px 0 18px; font-size: 20px; }
+  .dossier-form { gap: 16px; }
+}
