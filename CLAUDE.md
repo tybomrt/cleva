@@ -60,6 +60,26 @@ Paiement externe via Stripe (lien existant, ne pas recréer de logique de paieme
   L'iframe garde `referrerpolicy="strict-origin-when-cross-origin"` : sans en-tête Referer
   (la page est en `no-referrer`), YouTube refuse la lecture (« Erreur 153 »).
 
+## Dossiers : prénoms et photos des vrais mariés dans les deux pages d'énigme
+- Les QR codes sont identiques pour toutes les boîtes. À la première ouverture, un écran
+  « Retrouver le dossier » (Raphaël, wedding planner) demande qui se marie ; le choix est gardé
+  dans localStorage (`cleva-dossier`, commun aux deux pages). `?dossier=reset` l'efface (tests).
+- Code partagé : `m/dossier/dossier.js` + `dossier.css`, chargés par les deux `index.html` à la
+  place de `app.js` (qui n'est chargé qu'une fois le dossier choisi).
+- Dans les `data.js`, les prénoms sont des jetons `{marie1}` `{marie2}` `{temoin1}` `{temoin2}`
+  (sans dossier : Lucas, Sacha, Clara, Julien). `roles` dit quelle personne prend prénom + photo :
+  SMS man = marie1, woman = temoin1, julien = temoin2 ; mail sacha = marie2. Ne jamais réécrire
+  ces prénoms en dur.
+- Serveur : `api/dossier.js` (reconnaissance, 10 essais / 10 min / IP) et `api/photo.js` ; toute
+  la logique dans `api/_lib/` (testée : `npm test`). Données dans Neon (projet `cleva-dossiers`),
+  **jamais dans le dépôt** (il est public et Vercel sert toute la racine). Variables d'env. :
+  `DATABASE_URL`, `DOSSIER_SALT` (Vercel + `.env` local, ignoré par Git).
+- Ajouter un mariage : `npm run add-wedding -- --date … --m1-prenom … --m1-nom … --m1-photo …`
+  (détail en tête de `scripts/weddings/add-wedding.mjs`). Purger (date + 30 jours) :
+  `npm run purge-weddings` (`-- --dry-run` pour voir). Mariage de test : Camille Dupont & Alex
+  Martin, témoins Sam et Léo.
+- Tester en local avec l'API : `npm run dev:dossiers` (http://localhost:4176/m/…).
+
 ## Conventions
 - Classes Tailwind directement dans le HTML (des templates) pour le style. `main.css`
   réservé aux quelques overrides custom que Tailwind ne couvre pas.

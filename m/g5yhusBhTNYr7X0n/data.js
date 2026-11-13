@@ -5,6 +5,10 @@
    Boîte mail de Raphaël, wedding planner. Même mariage que la messagerie
    (énigme 1) : Lucas est le premier marié, Sacha (prénom par défaut) le deuxième.
    Les textes de Sacha restent neutres en genre.
+   Prénoms personnalisés (écran « Retrouver le dossier », m/dossier/dossier.js) :
+     {marie1} {marie2} {temoin1} {temoin2} dans un texte → prénom du vrai mariage,
+     ou Lucas / Sacha / Clara / Julien sans dossier. Ne jamais écrire ces prénoms en dur.
+     roles : quelle personne reçoit le prénom ET la photo de quel rôle.
    Le prestataire à rembourser n'est jamais nommé, et le montant du trop-perçu
    n'apparaît nulle part dans la boîte (il se trouve ailleurs dans le jeu).
 
@@ -46,9 +50,12 @@ window.MAIL_DATA = {
   // Pour tester un autre jour : ajouter ?jour=2026-06-20 à l'adresse.
   folder: 'Boîte de réception',
 
+  // Personnes remplacées par le vrai mariage (prénom + photo) : voir l'en-tête.
+  roles: { sacha: 'marie2' },
+
   people: {
     me:       { name: 'Raphaël Verdier', short: 'Raphaël', email: 'contact@verdier-mariages.fr', avatar: '/m/g5yhusBhTNYr7X0n/img/raphael.jpg' },
-    sacha:    { name: 'Sacha', email: 'sacha.mariage@mail.fr', initials: 'S', color: '#C9D3EC' },
+    sacha:    { name: '{marie2}', email: 'sacha.mariage@mail.fr', initials: 'S', color: '#C9D3EC' },
     emma:     { name: 'Emma Lefèvre', email: 'emma.lefevre@mail.fr', initials: 'EL', color: '#F3D1C4' },
     maman:    { name: 'Maman', email: 'maman.poule@mail.fr', avatar: '/m/g5yhusBhTNYr7X0n/img/maman.jpg' },
     mamie:    { name: 'Mamie', email: 'mamie.odette@mail.fr', avatar: '/m/g5yhusBhTNYr7X0n/img/mamie.jpg' },
@@ -81,13 +88,13 @@ window.MAIL_DATA = {
 
 Je ne comprends pas. Il y a un mois, le prestataire m'a promis un remboursement « dans la semaine » pour le trop-perçu. Rien depuis. Je l'ai appelé 4 fois, et je tombe à chaque fois sur sa secrétaire, jamais sur lui.
 
-Lucas me dit de laisser tomber, mais je n'y arrive pas. Tu peux faire quelque chose ?
+{marie1} me dit de laisser tomber, mais je n'y arrive pas. Tu peux faire quelque chose ?
 
-Sacha`,
+{marie2}`,
         },
         {
           from: 'me', to: ['sacha'], date: 'J-1 22:15',
-          body: `Sacha, respire.
+          body: `{marie2}, respire.
 
 Ne lâche rien : essaye d'appeler à nouveau.
 
@@ -111,7 +118,7 @@ Raphaël`,
       messages: [
         {
           from: 'me', to: ['sacha'], date: 'J-11 19:02',
-          body: `Salut Sacha,
+          body: `Salut {marie2},
 
 Comme promis, un petit cadeau pour les moments de stress : un origami tout simple. Tout est dans la vidéo, suis les étapes dans l'ordre. N'importe quel papier fera l'affaire, même un vieux brouillon.
 

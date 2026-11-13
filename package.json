@@ -7,13 +7,18 @@
     "build:css": "tailwindcss -i ./styles/tailwind.src.css -o ./styles/tailwind.css --minify",
     "build": "npm run build:html && npm run build:css",
     "dev": "npm run build && (node scripts/build-html.js --watch & tailwindcss -i ./styles/tailwind.src.css -o ./styles/tailwind.css --watch & browser-sync start --server --port 4173 --files \"*.html, legal/*.html, styles/*.css, scripts/main.js, m/**/*\")",
-    "start": "npm run dev"
+    "start": "npm run dev",
+    "test": "node --test tests/",
+    "add-wedding": "node --env-file=.env scripts/weddings/add-wedding.mjs",
+    "purge-weddings": "node --env-file=.env scripts/weddings/purge-weddings.mjs",
+    "dev:dossiers": "node --env-file=.env scripts/dev-server.mjs"
   },
   "devDependencies": {
     "browser-sync": "^3.0.4",
     "tailwindcss": "^3.4.19"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^0.10.4",
     "nodemailer": "^9.0.6"
   }
 }

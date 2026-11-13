@@ -20,6 +20,10 @@
    La liste affiche l'heure si le dernier message est d'aujourd'hui, sinon ce libellé.
    Groupes : members: [...] → avatar composé de 2 membres + leurs prénoms sous le titre.
    Personnes : avatar (photo) OU initials + color (pastille colorée) ; online: true → point vert.
+   Prénoms personnalisés (écran « Retrouver le dossier », m/dossier/dossier.js) :
+     {marie1} {marie2} {temoin1} {temoin2} dans un texte → prénom du vrai mariage,
+     ou Lucas / Sacha / Clara / Julien sans dossier. Ne jamais écrire ces prénoms en dur.
+     roles : quelle personne reçoit le prénom ET la photo de quel rôle.
    Photos des contacts : Unsplash (licence Unsplash, usage libre), recadrées en 144 px.
      maman 1566616213894-2d4e1baee5d8 · sarah 1580489944761-15a19d654956 · lea 1548382131-e0ebb1f0cdea
      thomas 1568602471122-7832951cc4c5 · kevin 1583264277168-58ceba4b84e7 · yanis 1522529599102-193c0d76b5b6
@@ -36,11 +40,14 @@ window.MESSAGES_DATA = {
     hint: 'À quelle heure les mariés\nse disent-ils « oui » ?',   // \n = retour à la ligne
   },
 
+  // Personnes remplacées par le vrai mariage (prénom + photo) : voir l'en-tête.
+  roles: { man: 'marie1', woman: 'temoin1', julien: 'temoin2' },
+
   people: {
     me:       { name: 'Raphaël', avatar: '/m/yPIJmt0brVePOdo8/img/me.jpg' },
-    man:      { name: 'Lucas', avatar: '/m/yPIJmt0brVePOdo8/img/man.jpg' },
-    woman:    { name: 'Clara', avatar: '/m/yPIJmt0brVePOdo8/img/woman.jpg' },
-    julien:   { name: 'Julien', avatar: '/m/yPIJmt0brVePOdo8/img/julien.jpg' },
+    man:      { name: '{marie1}', avatar: '/m/yPIJmt0brVePOdo8/img/man.jpg' },
+    woman:    { name: '{temoin1}', avatar: '/m/yPIJmt0brVePOdo8/img/woman.jpg' },
+    julien:   { name: '{temoin2}', avatar: '/m/yPIJmt0brVePOdo8/img/julien.jpg' },
     maman:    { name: 'Maman',   avatar: '/m/yPIJmt0brVePOdo8/img/maman.jpg' },
     sarah:    { name: 'Sarah',   avatar: '/m/yPIJmt0brVePOdo8/img/sarah.jpg', online: true },
     tata:     { name: 'Tata Brigitte', initials: 'B', color: '#B9D7B0' },
@@ -72,7 +79,7 @@ window.MESSAGES_DATA = {
         { from: 'man',   time: '12:30', text: 'Merci à vous trois ❤️ Vous êtes les meilleurs' },
         { from: 'woman', time: '12:31', text: 'On sait 😌' },
         { from: 'woman', time: '21:40', text: "Petite question : les alliances, c'est toi qui les gardes jusqu'à la cérémonie ?" },
-        { from: 'man',   time: '21:52', text: "Non, c'est Julien. Je suis capable de les oublier quelque part 😅" },
+        { from: 'man',   time: '21:52', text: "Non, c'est {temoin2}. Je suis capable de les oublier quelque part 😅" },
         { from: 'julien', time: '21:53', text: "Mission acceptée. Je dors avec s'il le faut 💍" },
         { day: 'Hier' },
         { from: 'julien', time: '10:14', text: 'Météo pour demain : grand soleil ☀️' },
