@@ -686,6 +686,33 @@ button.conv-item { width: 100%; text-align: left; font: inherit; color: inherit;
 }
 .lock-link { color: #fff; font-size: 16px; font-weight: 600; padding: 6px 4px; }
 #lock-cancel, #lock-delete { margin-left: auto; }
+/* Liens en bas de l'écran, comme « Urgence » / « Annuler » sur iPhone */
+.lock-pad { position: relative; }
+.lock-actions {
+  position: absolute; left: 0; right: 0;
+  bottom: calc(env(safe-area-inset-bottom) + 28px);
+  max-width: none; margin: 0; padding: 0 32px;
+}
+
+/* Fenêtre de confirmation de l'indice (style alerte iOS) */
+.lock-dialog {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, .35);
+}
+.lock-dialog[hidden] { display: none; }
+.lock-dialog-box {
+  width: 100%; max-width: 270px;
+  border-radius: 14px; overflow: hidden;
+  background: rgba(242, 242, 247, .92);
+  -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+  color: #16181D; text-align: center;
+}
+.lock-dialog-text { margin: 0; padding: 20px 16px; font-size: 16px; font-weight: 600; line-height: 1.35; }
+.lock-dialog-buttons { display: flex; border-top: 1px solid rgba(60, 60, 67, .29); }
+.lock-dialog-buttons button { flex: 1; padding: 12px 8px; font-size: 17px; color: #0A7AFF; }
+.lock-dialog-buttons button + button { border-left: 1px solid rgba(60, 60, 67, .29); font-weight: 600; }
 
 .lock-pad.shake { animation: shake .4s; }
 @keyframes shake {

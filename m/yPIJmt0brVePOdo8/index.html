@@ -52,6 +52,16 @@
         <button type="button" class="lock-link" id="lock-cancel">Annuler</button>
         <button type="button" class="lock-link" id="lock-delete" hidden>Effacer</button>
       </div>
+      <!-- Confirmation avant d'afficher l'indice -->
+      <div class="lock-dialog" id="lock-dialog" hidden>
+        <div class="lock-dialog-box" role="alertdialog" aria-modal="true" aria-labelledby="lock-dialog-text">
+          <p class="lock-dialog-text" id="lock-dialog-text">Êtes-vous sûr de vouloir afficher un indice ?</p>
+          <div class="lock-dialog-buttons">
+            <button type="button" id="lock-dialog-no">Annuler</button>
+            <button type="button" id="lock-dialog-yes">Afficher</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

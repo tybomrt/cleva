@@ -547,6 +547,7 @@
     var error = document.getElementById('lock-error');
     var forgot = document.getElementById('lock-forgot');
     var del = document.getElementById('lock-delete');
+    var dialog = document.getElementById('lock-dialog');
     var entry = '', fails = 0, busy = false;
 
     function paint() {
@@ -559,7 +560,7 @@
       if (!pad.hidden) return;
       entry = ''; fails = 0;
       error.textContent = ''; hint.textContent = '';
-      forgot.hidden = true;
+      forgot.hidden = false; dialog.hidden = true;
       paint();
       home.hidden = true; pad.hidden = false;
     }
@@ -579,13 +580,12 @@
           setTimeout(function () { locked = false; screenLock.hidden = true; route(); }, 280);
           return;
         }
-        // Mauvais code : le pavé tremble, on recommence. « Code oublié ? » après 3 échecs.
+        // Mauvais code : le pavé tremble, on recommence.
         fails++;
         pad.classList.remove('shake'); void pad.offsetWidth; pad.classList.add('shake');
         if (navigator.vibrate) { try { navigator.vibrate(120); } catch (e) {} }
         entry = ''; paint(); busy = false;
         error.textContent = 'Code erroné';
-        if (fails >= 3 && !hint.textContent) forgot.hidden = false;
       }, 150);
     }
 
@@ -596,9 +596,15 @@
     });
     del.addEventListener('click', function () { entry = entry.slice(0, -1); paint(); });
     document.getElementById('lock-cancel').addEventListener('click', closePad);
-    forgot.addEventListener('click', function () { hint.textContent = LOCK.hint; forgot.hidden = true; });
+    // « Code oublié ? » (toujours visible, en bas à gauche) : on demande confirmation avant l'indice.
+    forgot.addEventListener('click', function () { dialog.hidden = false; document.getElementById('lock-dialog-yes').focus(); });
+    document.getElementById('lock-dialog-no').addEventListener('click', function () { dialog.hidden = true; });
+    document.getElementById('lock-dialog-yes').addEventListener('click', function () {
+      dialog.hidden = true; hint.textContent = LOCK.hint; forgot.hidden = true;
+    });
     document.addEventListener('keydown', function (e) {
       if (!locked) return;
+      if (!dialog.hidden) { if (e.key === 'Escape') dialog.hidden = true; return; }
       if (/^[0-9]$/.test(e.key)) { openPad(); press(e.key); }
       else if (e.key === 'Backspace' && !pad.hidden) { entry = entry.slice(0, -1); paint(); }
     });
