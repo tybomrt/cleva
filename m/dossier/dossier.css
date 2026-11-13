@@ -58,6 +58,7 @@ html.dossier-open, html.dossier-open body { overflow: hidden; background: #F6F2E
   border: 0; border-radius: 6px;
   background: var(--d-accent-dark); color: #fff;
   font: inherit; font-size: 16px; font-weight: 500; letter-spacing: .04em;
+  text-align: center; /* la boîte mail aligne ses boutons à gauche par défaut */
   cursor: pointer;
 }
 .dossier-submit:hover { background: #745c3d; }
@@ -70,7 +71,7 @@ html.dossier-open, html.dossier-open body { overflow: hidden; background: #F6F2E
   margin-top: -10px; padding: 6px;
   border: 0; background: none;
   color: var(--d-accent-dark);
-  font: inherit; font-size: 14px;
+  font: inherit; font-size: 14px; text-align: center;
   text-decoration: underline; text-underline-offset: 3px;
   cursor: pointer;
 }
