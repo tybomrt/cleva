@@ -108,27 +108,36 @@
 
   var form = el('form', 'dossier-form');
   form.noValidate = true;
+  // Réponse de Raphaël EN HAUT du formulaire : sur téléphone, le bas est caché par le clavier.
+  var notice = el('div', 'dossier-notice');
+  notice.hidden = true;
+  var msg = el('p', 'dossier-msg');
+  msg.setAttribute('role', 'status');
+  notice.appendChild(msg);
+  var skip = el('button', 'dossier-skip', 'Continuer sans dossier');
+  skip.type = 'button';
+  skip.hidden = true;
+  notice.appendChild(skip);
+  form.appendChild(notice);
   form.appendChild(group(1));
   form.appendChild(group(2));
   var button = el('button', 'dossier-submit', 'Retrouver le dossier');
   button.type = 'submit';
   form.appendChild(button);
-  var msg = el('p', 'dossier-msg');
-  msg.setAttribute('role', 'status');
-  form.appendChild(msg);
-  var skip = el('button', 'dossier-skip', 'Continuer sans dossier');
-  skip.type = 'button';
-  skip.hidden = true;
-  form.appendChild(skip);
   card.appendChild(form);
   screen.appendChild(card);
   document.body.appendChild(screen);
   document.documentElement.classList.add('dossier-open');
 
-  function say(text, showSkip) {
+  // tone 'info' (recherche en cours) : discret ; sinon message d'erreur bien visible.
+  function say(text, showSkip, tone) {
     msg.textContent = text;
     skip.hidden = !showSkip;
+    notice.hidden = false;
+    notice.className = 'dossier-notice' + (tone === 'info' ? ' is-info' : ' is-error');
+    try { notice.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch (e) {}
   }
+  var MORE = "Je n'ai pas réussi à identifier les mariés, merci de compléter les autres champs.";
   function close(choice) {
     save(choice);
     screen.remove();
@@ -143,10 +152,10 @@
     var v = {};
     ['prenom1', 'nom1', 'prenom2', 'nom2'].forEach(function (k) { v[k] = form.elements[k].value.trim(); });
     var filled = Object.keys(v).filter(function (k) { return v[k]; }).length;
-    if (filled < 2) return say("Encore un nom, s'il vous plaît.", false);
+    if (filled < 2) return say(MORE, false);
 
     button.disabled = true;
-    say('Je cherche…', false);
+    say('Je cherche…', false, 'info');
     fetch('/api/dossier', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(v) })
       .then(function (r) { return r.json().catch(function () { return { status: 'error' }; }); })
       .then(function (r) {
@@ -154,7 +163,7 @@
         if (r.status === 'ok' && r.dossier) {
           return close({ v: 1, mode: 'perso', id: r.dossier.id, prenoms: r.dossier.prenoms, photos: r.dossier.photos });
         }
-        if (r.status === 'more') return say("Encore un nom, s'il vous plaît.", false);
+        if (r.status === 'more') return say(MORE, false);
         if (r.status === 'none') return say("Je ne trouve pas ce dossier. Vérifiez l'orthographe.", true);
         if (r.status === 'wait') return say('Doucement, je fouille encore mes classeurs. Réessayez dans quelques minutes.', true);
         say('Petit souci de connexion. Réessayez dans un instant.', true);
