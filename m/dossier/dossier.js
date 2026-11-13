@@ -162,5 +162,7 @@
       });
   });
 
-  form.elements.prenom1.focus();
+  // Curseur dans le premier champ seulement sur ordinateur : sur téléphone, le clavier
+  // s'ouvrirait et cacherait le texte de Raphaël.
+  if (window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches) form.elements.prenom1.focus();
 })();
