@@ -206,11 +206,12 @@
   function isSep(m) { return m && !m.from; }
 
   // Nombre de messages reçus après la ligne « non lus » d'une conversation.
+  // Les messages envoyés par le propriétaire ('me') ne comptent jamais comme non lus.
   function countAfterMarker(conv) {
     var k = -1;
     conv.messages.forEach(function (m, i) { if (m.unreadMarker) k = i; });
     if (k < 0) return 0;
-    return conv.messages.slice(k + 1).filter(function (m) { return m.from; }).length;
+    return conv.messages.slice(k + 1).filter(function (m) { return m.from && m.from !== 'me'; }).length;
   }
 
   // La pastille de non-lus se déduit de la ligne « non lus » si elle n'est pas fixée à la main.
