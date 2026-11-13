@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Page d'administration des dossiers (mariages des pages d'énigme). Adresse secrète :
+       jamais liée depuis le site, ni dans le sitemap, llms.txt ou robots.txt. -->
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#FFFFFF">
+  <title>Mariages · cleva.</title>
+  <link rel="icon" href="/assets/images/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Marcellus&display=swap">
+  <link rel="stylesheet" href="/admin/PjDaZmwTaAeANTAn/admin.css">
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <div class="brand">
+        <span class="logo" role="img" aria-label="cleva."></span>
+        <span class="kicker">Espace mariages</span>
+      </div>
+      <button class="link-btn" type="button" id="logout" hidden>Se déconnecter</button>
+    </div>
+  </header>
+
+  <main class="page">
+    <!-- Connexion -->
+    <section id="view-login" class="view" hidden>
+      <form id="login-form" class="login" novalidate>
+        <h1 class="title">Bonjour !</h1>
+        <p class="lead">Ton espace pour gérer les mariages des boîtes cleva. Le mot de passe, et c’est parti.</p>
+        <label class="field">
+          <span class="label">Mot de passe</span>
+          <input type="password" name="password" autocomplete="current-password" required>
+        </label>
+        <p class="notice is-error" id="login-msg" role="alert" hidden></p>
+        <button class="btn btn-primary" type="submit">Entrer</button>
+      </form>
+    </section>
+
+    <!-- Listes -->
+    <section id="view-list" class="view" hidden>
+      <div class="tabs" role="tablist">
+        <button class="tab" type="button" role="tab" id="tab-active" aria-selected="true">En cours <span class="count" id="count-active"></span></button>
+        <button class="tab" type="button" role="tab" id="tab-archived" aria-selected="false">Archives <span class="count" id="count-archived"></span></button>
+      </div>
+
+      <div id="panel-active">
+        <button class="btn btn-primary btn-block" type="button" id="add">+ Ajouter un mariage</button>
+        <div class="cards" id="list-active"></div>
+        <p class="empty" id="empty-active" hidden>Aucun mariage en cours. Le prochain arrive bientôt, c’est sûr.</p>
+      </div>
+
+      <div id="panel-archived" hidden>
+        <p class="help">Un mariage archivé n’est plus reconnu par l’écran « Retrouver le dossier » et ses photos ne sont plus montrées aux joueurs. Il est supprimé définitivement un an après son archivage.</p>
+        <div class="cards" id="list-archived"></div>
+        <p class="empty" id="empty-archived" hidden>Les archives sont vides.</p>
+      </div>
+    </section>
+
+    <!-- Fiche d'un mariage (ajout ou modification) -->
+    <section id="view-edit" class="view" hidden>
+      <button class="link-btn back" type="button" id="edit-back">← Retour à la liste</button>
+      <h1 class="title" id="edit-title">Nouveau mariage</h1>
+      <p class="notice is-muted" id="edit-archived-note" hidden>Ce mariage est dans les archives. Vous pouvez corriger sa fiche ; pour qu’il soit de nouveau reconnu, utilisez « Restaurer » depuis les archives.</p>
+
+      <form id="edit-form" novalidate>
+        <h2 class="section">Les mariés</h2>
+        <div class="person" data-role="marie1">
+          <p class="person-title">Marié 1 <span class="swap">remplace Lucas, dans la messagerie</span></p>
+          <div class="person-body">
+            <div class="photo-slot"></div>
+            <div class="person-fields two">
+              <label class="field"><span class="label">Prénom</span><input name="marie1_prenom" maxlength="60" autocomplete="off" autocapitalize="words"></label>
+              <label class="field"><span class="label">Nom</span><input name="marie1_nom" maxlength="60" autocomplete="off" autocapitalize="words"></label>
+            </div>
+          </div>
+        </div>
+        <div class="person" data-role="marie2">
+          <p class="person-title">Marié 2 <span class="swap">remplace Sacha, dans la boîte mail</span></p>
+          <div class="person-body">
+            <div class="photo-slot"></div>
+            <div class="person-fields two">
+              <label class="field"><span class="label">Prénom</span><input name="marie2_prenom" maxlength="60" autocomplete="off" autocapitalize="words"></label>
+              <label class="field"><span class="label">Nom</span><input name="marie2_nom" maxlength="60" autocomplete="off" autocapitalize="words"></label>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="section">Les témoins</h2>
+        <div class="person" data-role="temoin1">
+          <p class="person-title">Témoin 1 <span class="swap">remplace Clara</span></p>
+          <div class="person-body">
+            <div class="photo-slot"></div>
+            <div class="person-fields">
+              <label class="field"><span class="label">Prénom</span><input name="temoin1_prenom" maxlength="60" autocomplete="off" autocapitalize="words"></label>
+            </div>
+          </div>
+        </div>
+        <div class="person" data-role="temoin2">
+          <p class="person-title">Témoin 2 <span class="swap">remplace Julien</span></p>
+          <div class="person-body">
+            <div class="photo-slot"></div>
+            <div class="person-fields">
+              <label class="field"><span class="label">Prénom</span><input name="temoin2_prenom" maxlength="60" autocomplete="off" autocapitalize="words"></label>
+            </div>
+          </div>
+        </div>
+        <p class="help">Photos facultatives : sans photo, le jeu garde la photo par défaut. Elles sont recadrées au carré (sur le centre) et allégées directement sur votre appareil.</p>
+
+        <h2 class="section">Les dates</h2>
+        <label class="field">
+          <span class="label">Date du mariage</span>
+          <input type="date" name="wedding_date">
+        </label>
+        <div class="notice is-info" id="recalc" hidden>
+          <p id="recalc-text"></p>
+          <div class="row-btns">
+            <button class="btn btn-small btn-primary" type="button" id="recalc-yes">Oui, recalculer</button>
+            <button class="btn btn-small" type="button" id="recalc-no">Non, garder</button>
+          </div>
+        </div>
+        <div id="expiry-block">
+          <label class="field">
+            <span class="label">Échéance</span>
+            <input type="date" name="expires_at">
+          </label>
+          <div class="row-btns">
+            <button class="btn btn-small" type="button" data-plus="7">+7 jours</button>
+            <button class="btn btn-small" type="button" data-plus="30">+30 jours</button>
+          </div>
+          <p class="help" id="expiry-help">Le dossier reste reconnu jusqu’au soir de l’échéance, puis il passe tout seul aux archives. Par défaut : 30 jours après le mariage.</p>
+        </div>
+
+        <div class="notice is-warn" id="clash" hidden>
+          <p><strong>Attention, possible doublon.</strong> Ce mariage partage au moins deux prénoms ou noms avec :</p>
+          <ul id="clash-list"></ul>
+          <p>Les joueurs risquent de ne jamais réussir à les départager : l’écran « Retrouver le dossier » leur demandera « encore un nom » sans fin.</p>
+          <button class="btn btn-small" type="button" id="clash-force">Enregistrer quand même</button>
+        </div>
+        <p class="notice is-error" id="edit-msg" role="alert" hidden></p>
+
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit" id="save">Enregistrer</button>
+          <button class="btn" type="button" id="edit-cancel">Annuler</button>
+        </div>
+        <button class="btn btn-danger-soft btn-block" type="button" id="archive-now" hidden>Archiver maintenant</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- Choisir une date (prolongation ou restauration) -->
+  <dialog id="dlg-date" class="dlg">
+    <form method="dialog" id="dlg-date-form">
+      <h2 class="dlg-title" id="dlg-date-title">Choisir une échéance</h2>
+      <p class="dlg-text" id="dlg-date-text"></p>
+      <label class="field"><span class="label">Échéance</span><input type="date" name="date" required></label>
+      <div class="row-btns">
+        <button class="btn btn-small" type="button" data-dplus="7">Dans 7 jours</button>
+        <button class="btn btn-small" type="button" data-dplus="30">Dans 30 jours</button>
+      </div>
+      <p class="notice is-error" id="dlg-date-msg" hidden></p>
+      <div class="notice is-warn" id="dlg-clash" hidden>
+        <p><strong>Attention, possible doublon</strong> avec :</p>
+        <ul id="dlg-clash-list"></ul>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit" value="ok" id="dlg-date-ok">Valider</button>
+        <button class="btn" type="submit" value="cancel" formnovalidate>Annuler</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Suppression définitive -->
+  <dialog id="dlg-delete" class="dlg">
+    <form method="dialog" id="dlg-delete-form">
+      <h2 class="dlg-title">Supprimer définitivement ?</h2>
+      <p class="dlg-text" id="dlg-delete-text"></p>
+      <p class="dlg-text">Prénoms, noms et photos seront effacés pour de bon. <strong>Impossible de revenir en arrière.</strong></p>
+      <label class="field"><span class="label">Pour confirmer, tapez « supprimer »</span><input name="confirm" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+      <p class="notice is-error" id="dlg-delete-msg" hidden></p>
+      <div class="form-actions">
+        <button class="btn btn-danger" type="submit" value="ok">Supprimer définitivement</button>
+        <button class="btn" type="submit" value="cancel" formnovalidate>Annuler</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Confirmation simple (archiver) -->
+  <dialog id="dlg-confirm" class="dlg">
+    <form method="dialog">
+      <h2 class="dlg-title" id="dlg-confirm-title"></h2>
+      <p class="dlg-text" id="dlg-confirm-text"></p>
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit" value="ok" id="dlg-confirm-ok"></button>
+        <button class="btn" type="submit" value="cancel">Annuler</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <script src="/admin/PjDaZmwTaAeANTAn/admin.js"></script>
+</body>
+</html>

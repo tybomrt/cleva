@@ -73,12 +73,26 @@ Paiement externe via Stripe (lien existant, ne pas recréer de logique de paieme
 - Serveur : `api/dossier.mjs` (reconnaissance, 10 essais / 10 min / IP) et `api/photo.mjs` ; toute
   la logique dans `api/_lib/` (testée : `npm test`). Données dans Neon (projet `cleva-dossiers`),
   **jamais dans le dépôt** (il est public et Vercel sert toute la racine). Variables d'env. :
-  `DATABASE_URL`, `DOSSIER_SALT` (Vercel + `.env` local, ignoré par Git).
-- Ajouter un mariage : `npm run add-wedding -- --date … --m1-prenom … --m1-nom … --m1-photo …`
-  (détail en tête de `scripts/weddings/add-wedding.mjs`). Purger (date + 30 jours) :
-  `npm run purge-weddings` (`-- --dry-run` pour voir). Mariage de test : Camille Dupont & Alex
-  Martin, témoins Sam et Léo.
-- Tester en local avec l'API : `npm run dev:dossiers` (http://localhost:4176/m/…).
+  `DATABASE_URL`, `DOSSIER_SALT`, `ADMIN_PASSWORD`, `CRON_SECRET` (Vercel + `.env` local, ignoré par
+  Git ; en local, mots de passe de test seulement). Les fonctions de `api/` restent en `.mjs`
+  (en `.js`, Vercel les convertit en CommonJS et elles plantent au chargement).
+- Cycle de vie (règles : `api/_lib/admin-core.mjs`) : un mariage est **actif** jusqu'au soir de son
+  échéance (`expires_at`, par défaut mariage + 30 jours, heure de Paris), puis **archivé** : plus
+  reconnu (même réponse qu'un inconnu), photos plus servies (404 ; `dossier.js` remet alors la photo
+  par défaut). Archives **supprimées définitivement 1 an après l'archivage**, photos comprises.
+  Tâche quotidienne : `api/cron-weddings.mjs` (Vercel Cron, 3 h UTC, `crons` dans `vercel.json`,
+  protégée par `CRON_SECRET`). Schéma : `scripts/weddings/schema.sql` (relançable sans risque).
+- **Administration** (la voie normale) : `/admin/PjDaZmwTaAeANTAn/` — adresse secrète, jamais liée,
+  ni dans sitemap / `llms.txt` / `robots.txt`, `noindex` (meta + en-tête). Mot de passe
+  `ADMIN_PASSWORD`, session 7 jours (cookie HttpOnly, 5 essais / 15 min / IP). Ajouter, modifier,
+  prolonger, archiver, restaurer, supprimer définitivement (depuis les archives seulement). Photos
+  recadrées en 144 px JPEG dans le navigateur. Une seule fonction : `api/admin.mjs`
+  (logique : `api/_lib/admin-handlers.mjs`).
+- Solution de secours en ligne de commande : `npm run add-wedding -- --date … --m1-prenom … --m1-nom …
+  --m1-photo … [--echeance AAAA-MM-JJ]` (détail en tête de `scripts/weddings/add-wedding.mjs`) et
+  `npm run purge-weddings` (= la tâche quotidienne ; `-- --dry-run` pour voir). Mariage de test :
+  Camille Dupont & Alex Martin, témoins Sam et Léo.
+- Tester en local avec l'API : `npm run dev:dossiers` (http://localhost:4176/m/… et /admin/…).
 
 ## Conventions
 - Classes Tailwind directement dans le HTML (des templates) pour le style. `main.css`

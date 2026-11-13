@@ -52,10 +52,37 @@
   }
 
   function start(choice) {
-    personalize(choice);
-    var s = document.createElement('script');
-    s.src = APP;
-    document.body.appendChild(s);
+    // Photos des mariés : chacune est vérifiée avant l'affichage. Si le mariage a été archivé
+    // entre-temps (le serveur ne la sert plus), la photo par défaut reste : jamais d'image cassée.
+    checkPhotos(choice, function () {
+      personalize(choice);
+      var s = document.createElement('script');
+      s.src = APP;
+      document.body.appendChild(s);
+    });
+  }
+  function checkPhotos(choice, done) {
+    var photos = choice && choice.mode === 'perso' && choice.photos;
+    var roles = photos ? Object.keys(photos) : [];
+    if (!roles.length) return done();
+    var loaded = {}, left = roles.length, finished = false;
+    function finish() {
+      if (finished) return;
+      finished = true;
+      clearTimeout(timer);
+      // On ne garde que les photos réellement chargées (le choix enregistré, lui, ne change pas :
+      // si le mariage est restauré, ses photos reviennent).
+      roles.forEach(function (r) { if (!loaded[r]) delete photos[r]; });
+      done();
+    }
+    // Au pire 4 s d'attente (réseau lent) : les photos pas encore chargées sont laissées de côté.
+    var timer = setTimeout(finish, 4000);
+    roles.forEach(function (r) {
+      var img = new Image();
+      img.onload = function () { loaded[r] = true; if (!--left) finish(); };
+      img.onerror = function () { if (!--left) finish(); };
+      img.src = String(photos[r]);
+    });
   }
 
   var saved = load();

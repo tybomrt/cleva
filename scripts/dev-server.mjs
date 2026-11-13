@@ -4,12 +4,14 @@
 //
 //   npm run dev:dossiers   → http://localhost:4176/m/yPIJmt0brVePOdo8/
 //
-// Lit DATABASE_URL et DOSSIER_SALT dans .env (même base que la production).
+// Administration : http://localhost:4176/admin/<adresse secrète>/ (voir CLAUDE.md).
+//
+// Lit DATABASE_URL, DOSSIER_SALT, ADMIN_PASSWORD et CRON_SECRET dans .env (même base que la production).
 import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import { join, extname, normalize, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { dossierHandler, photoHandler } from '../api/_lib/live.mjs';
+import { dossierHandler, photoHandler, adminHandler, cronHandler } from '../api/_lib/live.mjs';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const PORT = Number(process.env.PORT) || 4176;
@@ -24,6 +26,8 @@ createServer(async (req, res) => {
   const path = decodeURIComponent(new URL(req.url, 'http://x').pathname);
   if (path === '/api/dossier') return dossierHandler(req, res);
   if (path === '/api/photo') return photoHandler(req, res);
+  if (path === '/api/admin') return adminHandler(req, res);
+  if (path === '/api/cron-weddings') return cronHandler(req, res);
 
   // Fichiers statiques, jamais de fichier caché (.env…) ni de sortie de la racine.
   let file = normalize(join(ROOT, path));
@@ -39,6 +43,7 @@ createServer(async (req, res) => {
     const body = await readFile(file);
     res.setHeader('Content-Type', TYPES[extname(file)] || 'application/octet-stream');
     res.setHeader('Cache-Control', 'no-store');
+    if (/^\/(m|q|admin)\//.test(path)) res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive'); // comme vercel.json
     res.end(body);
   } catch (e) {
     res.statusCode = 404; res.end('404');

@@ -1,22 +1,35 @@
 #!/usr/bin/env node
-// Supprime les mariages dont la date est dépassée de plus de 30 jours (photos comprises),
-// et les traces d'essais de plus d'un jour.
+// SOLUTION DE SECOURS : la même chose est faite chaque nuit par la tâche quotidienne Vercel
+// (api/cron-weddings.mjs). Ce script ne sert que si elle ne tourne plus, ou pour vérifier.
 //
-//   npm run purge-weddings              → supprime
-//   npm run purge-weddings -- --dry-run → affiche seulement ce qui serait supprimé
+// Applique les règles des dossiers (api/_lib/admin-core.mjs) :
+//   - archive les mariages dont l'échéance est passée (plus reconnus, photos plus servies) ;
+//   - supprime définitivement (photos comprises) ceux archivés depuis plus d'un an ;
+//   - efface les sessions d'administration expirées et les traces d'essais de plus d'un jour.
+//
+//   npm run purge-weddings              → applique
+//   npm run purge-weddings -- --dry-run → affiche seulement ce qui serait fait
 //
 // Lit DATABASE_URL dans .env.
-import { sql } from '../../api/_lib/db.mjs';
+import { adminStore } from '../../api/_lib/db.mjs';
+import { todayParis, dailyPlan, coupleName } from '../../api/_lib/admin-core.mjs';
+import { runDaily } from '../../api/_lib/admin-handlers.mjs';
 
 const dry = process.argv.includes('--dry-run');
-const db = sql();
-const WHERE = "wedding_date < current_date - interval '30 days'";
+const today = todayParis();
+const all = await adminStore.listWeddings();
+const byId = new Map(all.map((w) => [w.id, w]));
+const plan = dailyPlan(all, today);
 
-const rows = dry
-  ? await db(`SELECT marie1_prenom, marie1_nom, marie2_prenom, marie2_nom, wedding_date::text AS d FROM weddings WHERE ${WHERE} ORDER BY wedding_date`)
-  : await db(`DELETE FROM weddings WHERE ${WHERE} RETURNING marie1_prenom, marie1_nom, marie2_prenom, marie2_nom, wedding_date::text AS d`);
-if (!dry) await db("DELETE FROM dossier_attempts WHERE at < now() - interval '1 day'");
+const say = (verb, ids, extra) => {
+  for (const id of ids) {
+    const w = byId.get(id);
+    console.log('  ' + verb + ' : ' + coupleName(w) + ' (' + extra(w) + ')');
+  }
+};
+say(dry ? 'serait archivé' : 'archivé', plan.archive, (w) => 'échéance ' + w.expires_at);
+say(dry ? 'serait supprimé' : 'supprimé', plan.remove, (w) => 'archivé le ' + w.archived_on);
 
-const verb = dry ? 'serait supprimé' : 'supprimé';
-for (const r of rows) console.log('  ' + verb + ' : ' + r.marie1_prenom + ' ' + r.marie1_nom + ' & ' + r.marie2_prenom + ' ' + r.marie2_nom + ' (' + r.d + ')');
-console.log((dry ? '(essai) ' : '✓ ') + rows.length + ' mariage(s) ' + (dry ? 'à supprimer' : 'supprimé(s)') + '.');
+if (!dry) await runDaily(adminStore, today);
+console.log((dry ? '(essai) ' : '✓ ') + plan.archive.length + ' mariage(s) ' + (dry ? 'à archiver' : 'archivé(s)') + ', ' +
+  plan.remove.length + ' ' + (dry ? 'à supprimer définitivement' : 'supprimé(s) définitivement') + '.');

@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+// SOLUTION DE SECOURS : d'habitude, on ajoute un mariage depuis la page d'administration
+// (/admin/<adresse secrète>/, voir CLAUDE.md). Ce script fait la même chose en ligne de commande.
+//
 // Ajoute un mariage (« dossier ») à la base des pages d'énigme.
 //
 //   npm run add-wedding -- \
@@ -6,12 +9,14 @@
 //     --m1-prenom Camille --m1-nom Dupont --m1-photo ~/photos/camille.jpg \
 //     --m2-prenom Alex    --m2-nom Martin --m2-photo ~/photos/alex.jpg \
 //     --t1-prenom Sam     --t1-photo ~/photos/sam.jpg \
-//     --t2-prenom Léo     --t2-photo ~/photos/leo.jpg
+//     --t2-prenom Léo     --t2-photo ~/photos/leo.jpg \
+//     --echeance 2027-01-10            (facultatif ; par défaut : date du mariage + 30 jours)
 //
 // marie1 = Lucas dans les SMS · marie2 = Sacha dans les mails · temoin1 = Clara · temoin2 = Julien.
 // Les photos sont recadrées au carré en 144 px (outil `sips` de macOS) et stockées dans la base,
 // sans métadonnées (ni GPS, ni appareil). Les photos sont facultatives : sans photo, la page
-// garde la photo par défaut. Lit DATABASE_URL dans .env.
+// garde la photo par défaut. À l'échéance, le mariage passe aux archives (purge-weddings ou la
+// tâche quotidienne Vercel). Lit DATABASE_URL dans .env.
 import { parseArgs } from 'node:util';
 import { randomBytes } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
@@ -19,10 +24,13 @@ import { readFileSync, mkdtempSync, rmSync, existsSync } from 'node:fs';
 import { tmpdir, homedir } from 'node:os';
 import { join, resolve as resolvePath } from 'node:path';
 import { sql } from '../../api/_lib/db.mjs';
-import { weddingKeys, matchScore } from '../../api/_lib/dossier-core.mjs';
+import { weddingKeys } from '../../api/_lib/dossier-core.mjs';
+import { todayParis, isDate, defaultExpiry, findClashes, coupleName } from '../../api/_lib/admin-core.mjs';
+import { stripMetadata as strip } from '../../api/_lib/jpeg.mjs';
 
 const opts = {
   date: { type: 'string' },
+  echeance: { type: 'string' },
   'm1-prenom': { type: 'string' }, 'm1-nom': { type: 'string' }, 'm1-photo': { type: 'string' },
   'm2-prenom': { type: 'string' }, 'm2-nom': { type: 'string' }, 'm2-photo': { type: 'string' },
   't1-prenom': { type: 'string' }, 't1-photo': { type: 'string' },
@@ -49,7 +57,10 @@ const w = {
   marie2_prenom: need('m2-prenom'), marie2_nom: need('m2-nom'),
   temoin1_prenom: need('t1-prenom'), temoin2_prenom: need('t2-prenom'),
 };
-if (!/^\d{4}-\d{2}-\d{2}$/.test(w.wedding_date) || isNaN(Date.parse(w.wedding_date))) fail('--date au format AAAA-MM-JJ');
+if (!isDate(w.wedding_date)) fail('--date au format AAAA-MM-JJ');
+w.expires_at = (a.echeance || '').trim() || defaultExpiry(w.wedding_date);
+if (!isDate(w.expires_at)) fail('--echeance au format AAAA-MM-JJ');
+if (w.expires_at < todayParis()) fail('l’échéance (' + w.expires_at + ') est déjà passée : ajouter --echeance AAAA-MM-JJ');
 w.cles = weddingKeys(w);
 if (w.cles.some((k) => !k)) fail('un prénom ou un nom est vide une fois normalisé');
 
@@ -72,21 +83,11 @@ function toJpeg144(src) {
     rmSync(dir, { recursive: true, force: true });
   }
 }
-// Retire les segments APP1…APP15 et COM d'un JPEG (EXIF, GPS, XMP, ICC…).
+// Retire les segments APP1…APP15 et COM d'un JPEG (EXIF, GPS, XMP, ICC…) : code partagé, api/_lib/jpeg.mjs.
 function stripMetadata(buf) {
-  if (buf[0] !== 0xff || buf[1] !== 0xd8) fail('conversion JPEG ratée');
-  const parts = [buf.subarray(0, 2)];
-  let i = 2;
-  while (i < buf.length) {
-    if (buf[i] !== 0xff) break;
-    const marker = buf[i + 1];
-    if (marker === 0xda) { parts.push(buf.subarray(i)); break; } // début de l'image : on garde tout le reste
-    const len = buf.readUInt16BE(i + 2);
-    const keep = !((marker >= 0xe1 && marker <= 0xef) || marker === 0xfe);
-    if (keep) parts.push(buf.subarray(i, i + 2 + len));
-    i += 2 + len;
-  }
-  return Buffer.concat(parts);
+  const out = strip(buf);
+  if (!out) fail('conversion JPEG ratée');
+  return out;
 }
 
 const photos = {};
@@ -94,28 +95,32 @@ for (const role in PHOTO_FLAGS) {
   if (a[PHOTO_FLAGS[role]]) photos[role] = toJpeg144(a[PHOTO_FLAGS[role]]);
 }
 
-// Garde-fou : un autre mariage déjà en base partage-t-il 2 valeurs ? (les deux deviendraient ambigus)
+// Garde-fou : un autre mariage actif partage-t-il 2 valeurs ? (les deux deviendraient ambigus)
 const db = sql();
-const others = await db('SELECT id, marie1_prenom, marie1_nom, marie2_prenom, marie2_nom, cles FROM weddings WHERE cles && $1::text[]', [w.cles]);
-const clash = others.filter((o) => matchScore([...new Set(w.cles)], o.cles) >= 2);
+const others = await db(
+  `SELECT id, marie1_prenom, marie1_nom, marie2_prenom, marie2_nom, cles, expires_at::text AS expires_at,
+          ((archived_at AT TIME ZONE 'Europe/Paris')::date)::text AS archived_on
+     FROM weddings WHERE archived_at IS NULL AND cles && $1::text[]`,
+  [w.cles],
+);
+const clash = findClashes(w.cles, others, todayParis());
 if (clash.length && !a.force) {
   console.error('⚠ Ces mariages partagent déjà au moins deux valeurs avec le nouveau :');
-  for (const o of clash) console.error('   ' + o.marie1_prenom + ' ' + o.marie1_nom + ' & ' + o.marie2_prenom + ' ' + o.marie2_nom);
+  for (const o of clash) console.error('   ' + coupleName(o));
   fail('ces mariages risquent de répondre « Encore un nom » sans fin, faute de pouvoir les départager. Relancer avec --force pour ajouter quand même.');
 }
 
 const id = randomBytes(16).toString('base64url'); // 22 caractères, 128 bits
 await db(
-  `INSERT INTO weddings (id, wedding_date, marie1_prenom, marie1_nom, marie2_prenom, marie2_nom, temoin1_prenom, temoin2_prenom, cles)
-   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9::text[])`,
-  [id, w.wedding_date, w.marie1_prenom, w.marie1_nom, w.marie2_prenom, w.marie2_nom, w.temoin1_prenom, w.temoin2_prenom, w.cles],
+  `INSERT INTO weddings (id, wedding_date, expires_at, marie1_prenom, marie1_nom, marie2_prenom, marie2_nom, temoin1_prenom, temoin2_prenom, cles)
+   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10::text[])`,
+  [id, w.wedding_date, w.expires_at, w.marie1_prenom, w.marie1_nom, w.marie2_prenom, w.marie2_nom, w.temoin1_prenom, w.temoin2_prenom, w.cles],
 );
 for (const role in photos) {
   await db("INSERT INTO wedding_photos (wedding_id, role, jpeg) VALUES ($1, $2, decode($3, 'base64'))", [id, role, photos[role].toString('base64')]);
 }
 
-const purge = new Date(Date.parse(w.wedding_date) + 30 * 864e5).toISOString().slice(0, 10);
 console.log('✓ Mariage ajouté : ' + w.marie1_prenom + ' ' + w.marie1_nom + ' & ' + w.marie2_prenom + ' ' + w.marie2_nom +
   ' (témoins ' + w.temoin1_prenom + ', ' + w.temoin2_prenom + ')');
-console.log('  date ' + w.wedding_date + ' · supprimé par purge-weddings à partir du ' + purge);
+console.log('  date ' + w.wedding_date + ' · reconnu jusqu’au ' + w.expires_at + ' au soir, puis archivé');
 console.log('  photos : ' + (Object.keys(photos).map((r) => r + ' ' + Math.round(photos[r].length / 1024) + ' ko').join(', ') || 'aucune'));
