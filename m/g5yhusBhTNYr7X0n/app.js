@@ -38,7 +38,7 @@
   function shortName(id) {
     if (id === 'me') return 'moi';
     var p = person(id);
-    if (p.short) return p.short;   // ex. « Ma témoin 💍 », « Tonton Patrick »
+    if (p.short) return p.short;   // ex. « Raphaël », « Léa »
     return p.initials ? p.name : p.name.split(' ')[0];
   }
   function initialsOf(p) {
@@ -177,7 +177,7 @@
   var byId = {};
   threads.forEach(function (t) { byId[t.id] = t; });
 
-  // « moi, Ma témoin 💍  2 » : participants dans l'ordre d'apparition.
+  // « Sacha, moi  2 » : participants dans l'ordre d'apparition.
   function senders(t) {
     var seen = [], ids = [];
     t.messages.forEach(function (m) { if (seen.indexOf(m.from) === -1) { seen.push(m.from); ids.push(m.from); } });
@@ -242,6 +242,12 @@
       var a = el('a', 'mail-item' + (isUnread(t) ? ' unread' : ''));
       a.href = '#' + t.id;
 
+      if (isUnread(t)) {
+        // Pastille bleue « non lu » dans la marge, à gauche de la photo (comme dans les applis mail)
+        var dot = el('span', 'unread-dot');
+        dot.setAttribute('aria-label', 'Non lu');
+        a.appendChild(dot);
+      }
       a.appendChild(avatar(mainSender(t), 'avatar-lg'));
 
       var body = el('div', 'mail-body');

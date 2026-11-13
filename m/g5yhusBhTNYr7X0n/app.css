@@ -145,7 +145,7 @@ mark { background: var(--mark); color: inherit; border-radius: 2px; padding: 0 1
 .mail-item {
   display: flex;
   gap: 12px;
-  padding: 12px 16px;
+  padding: 12px 16px 12px 26px; /* marge gauche élargie : place pour la pastille « non lu » */
   color: inherit;
   text-decoration: none;
 }
@@ -175,7 +175,20 @@ mark { background: var(--mark); color: inherit; border-radius: 2px; padding: 0 1
 .mail-snippet { flex: 1; font-size: 14px; color: var(--ink-soft); }
 
 .unread .mail-from, .unread .mail-subject { font-weight: 700; }
-.unread .mail-date { font-weight: 700; color: var(--ink); }
+.unread .mail-date { font-weight: 700; color: var(--accent); }
+
+/* Pastille bleue des conversations non lues : dans la marge gauche, centrée sur la photo
+   (positionnée en absolu pour ne pas décaler la photo par rapport aux autres lignes) */
+.mail-item { position: relative; }
+.unread-dot {
+  position: absolute;
+  left: 7px;               /* 10px d'écart avec la photo */
+  top: 33px;             /* 12px de marge haute + moitié de la photo (42px) */
+  width: 9px; height: 9px;
+  margin-top: -4.5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
 
 .star { color: var(--ink-soft); opacity: .55; }
 .star.on { color: var(--star); fill: var(--star); opacity: 1; }
