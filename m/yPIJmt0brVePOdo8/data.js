@@ -211,7 +211,7 @@ window.MESSAGES_DATA = {
       with: 'emma',
       messages: [
         { day: 'Hier' },
-        { from: 'emma', time: '18:10', text: "Bonjour Raphaël, nous avons découvert votre agence sur votre site. Nous nous marions l'été prochain : seriez-vous disponible pour un premier rendez-vous ?" },
+        { from: 'emma', time: '18:10', text: "Bonjour Raphaël, c'est Emma Lefèvre, je vous ai écrit par mail il y a quelques jours. Seriez-vous disponible pour un premier rendez-vous ?" },
         { from: 'me',   time: '18:24', text: 'Bonjour Emma, avec grand plaisir ! Je suis sur un mariage ce week-end, je vous appelle lundi en fin de matinée ?' },
         { from: 'emma', time: '18:26', text: 'Parfait, merci beaucoup ! 😊' },
       ],
