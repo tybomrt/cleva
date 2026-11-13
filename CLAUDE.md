@@ -70,7 +70,7 @@ Paiement externe via Stripe (lien existant, ne pas recréer de logique de paieme
   (sans dossier : Lucas, Sacha, Clara, Julien). `roles` dit quelle personne prend prénom + photo :
   SMS man = marie1, woman = temoin1, julien = temoin2 ; mail sacha = marie2. Ne jamais réécrire
   ces prénoms en dur.
-- Serveur : `api/dossier.js` (reconnaissance, 10 essais / 10 min / IP) et `api/photo.js` ; toute
+- Serveur : `api/dossier.mjs` (reconnaissance, 10 essais / 10 min / IP) et `api/photo.mjs` ; toute
   la logique dans `api/_lib/` (testée : `npm test`). Données dans Neon (projet `cleva-dossiers`),
   **jamais dans le dépôt** (il est public et Vercel sert toute la racine). Variables d'env. :
   `DATABASE_URL`, `DOSSIER_SALT` (Vercel + `.env` local, ignoré par Git).

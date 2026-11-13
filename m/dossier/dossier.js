@@ -1,7 +1,7 @@
 /* Écran « Retrouver le dossier », commun aux deux pages d'énigme (messagerie et boîte mail).
 
    À la première ouverture sur un téléphone, Raphaël demande qui se marie. Le serveur
-   (api/dossier.js) reconnaît le mariage et renvoie les prénoms + les URL des photos ; la page
+   (api/dossier.mjs) reconnaît le mariage et renvoie les prénoms + les URL des photos ; la page
    remplace alors les jetons {marie1} {marie2} {temoin1} {temoin2} de data.js et les photos des
    personnes listées dans data.roles. Sans dossier : Lucas, Sacha, Clara, Julien et les photos actuelles.
 

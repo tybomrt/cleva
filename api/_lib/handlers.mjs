@@ -1,5 +1,5 @@
 // Fonctions « Retrouver le dossier » et « photo », écrites pour tourner à l'identique
-// sur Vercel (api/dossier.js, api/photo.js) et sur le serveur local (scripts/dev-server.mjs).
+// sur Vercel (api/dossier.mjs, api/photo.mjs) et sur le serveur local (scripts/dev-server.mjs).
 // N'utilisent que res.statusCode / res.setHeader / res.end : compatibles avec les deux.
 import { prepareInputs, resolve, publicDossier, createRateLimiter } from './dossier-core.mjs';
 

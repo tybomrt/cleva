@@ -1,5 +1,5 @@
 // Cœur de l'écran « Retrouver le dossier » (pages d'énigme /m/) — code pur, sans base de données,
-// pour pouvoir le tester (tests/dossier.test.mjs). Utilisé par api/dossier.js et les scripts.
+// pour pouvoir le tester (tests/dossier.test.mjs). Utilisé par api/dossier.mjs et les scripts.
 
 export const ROLES = ['marie1', 'marie2', 'temoin1', 'temoin2'];
 export const ID_RE = /^[A-Za-z0-9_-]{22}$/;
