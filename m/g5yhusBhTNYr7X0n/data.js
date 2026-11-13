@@ -89,11 +89,11 @@ Sacha`,
           from: 'me', to: ['sacha'], date: 'J-1 22:15',
           body: `Sacha, respire.
 
-Je rappellerai demain, promis. Mais pour ce soir, occupe-toi les mains. Moi, quand je n'arrive pas à me vider la tête, je fais de l'origami : on plie, on déplie, on se concentre, et tout le reste s'efface.
+Ne lâche rien : essaye d'appeler à nouveau.
+
+Et pour ce soir, occupe-toi les mains. Moi, quand je n'arrive pas à me vider la tête, je fais de l'origami : on plie, on déplie, on se concentre, et tout le reste s'efface.
 
 D'ailleurs, as-tu fait la figure que je t'ai envoyée dans un autre mail, il y a une dizaine de jours ?
-
-Pour le remboursement, on s'en occupe après le mariage. Ton seul job demain : profiter.
 
 Raphaël`,
         },
