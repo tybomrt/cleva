@@ -96,7 +96,7 @@ Je ne comprends pas. Il y a un mois, le prestataire m'a promis un remboursement 
           from: 'me', to: ['sacha'], date: 'J-1 22:15',
           body: `{marie2}, respire.
 
-Ne lâche rien : essaye d'appeler à nouveau.
+Ne lâche rien : essaye d'appeler à nouveau. Et note bien le montant exact qu'il doit te rendre, je ne l'ai même pas en tête.
 
 Et pour ce soir, occupe-toi les mains. Moi, quand je n'arrive pas à me vider la tête, je fais de l'origami : on plie, on déplie, on se concentre, et tout le reste s'efface.
 
