@@ -37,6 +37,8 @@ window.MESSAGES_DATA = {
     code: '1730',
     time: '15:52',          // heure affichée (juste après le dernier message reçu)
     date: 'samedi',
+    // « Code oublié ? » donne deux indices, l'un après l'autre (chacun après confirmation) :
+    hintIcon: '/m/yPIJmt0brVePOdo8/img/indice-telephone.svg',   // 1er indice : un dessin
     hint: 'À quelle heure {couple:les mariés|les mariées}\nse disent-{couple:ils|elles} « oui » ?',   // \n = retour à la ligne
   },
 

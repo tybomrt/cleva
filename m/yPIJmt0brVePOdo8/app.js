@@ -548,7 +548,35 @@
     var forgot = document.getElementById('lock-forgot');
     var del = document.getElementById('lock-delete');
     var dialog = document.getElementById('lock-dialog');
+    var dialogText = document.getElementById('lock-dialog-text');
     var entry = '', fails = 0, busy = false;
+    // Indices : 0 = aucun, 1 = le dessin (LOCK.hintIcon), 2 = le texte (LOCK.hint).
+    var hintLevel = 0;
+    function showHint(level) {
+      hintLevel = level;
+      hint.textContent = '';
+      if (level === 1 && LOCK.hintIcon) {
+        // Le dessin, avec « Autre indice ? » juste à côté (le bouton du bas disparaît).
+        var row = document.createElement('span');
+        row.className = 'lock-hint-row';
+        var img = document.createElement('img');
+        img.className = 'lock-hint-icon';
+        img.src = LOCK.hintIcon;
+        img.alt = 'Indice';
+        row.appendChild(img);
+        var more = document.createElement('button');
+        more.type = 'button';
+        more.className = 'lock-link lock-hint-more';
+        more.textContent = 'Autre indice ?';
+        more.addEventListener('click', askHint);
+        row.appendChild(more);
+        hint.appendChild(row);
+      } else if (level >= 1) {
+        hint.textContent = LOCK.hint;
+        hintLevel = 2;
+      }
+      forgot.hidden = true;
+    }
 
     function paint() {
       for (var i = 0; i < dots.length; i++) dots[i].classList.toggle('on', i < entry.length);
@@ -559,7 +587,7 @@
     function openPad() {
       if (!pad.hidden) return;
       entry = ''; fails = 0;
-      error.textContent = ''; hint.textContent = '';
+      error.textContent = ''; hint.textContent = ''; hintLevel = 0;
       forgot.hidden = false; dialog.hidden = true;
       paint();
       home.hidden = true; pad.hidden = false;
@@ -596,11 +624,20 @@
     });
     del.addEventListener('click', function () { entry = entry.slice(0, -1); paint(); });
     document.getElementById('lock-cancel').addEventListener('click', closePad);
-    // « Code oublié ? » (toujours visible, en bas à gauche) : on demande confirmation avant l'indice.
-    forgot.addEventListener('click', function () { dialog.hidden = false; document.getElementById('lock-dialog-yes').focus(); });
+    // « Code oublié ? » (en bas à gauche) : confirmation, puis 1er indice (le dessin) ;
+    // « Autre indice ? » (à côté du dessin) : confirmation, puis 2e indice (le texte).
+    function askHint() {
+      dialogText.textContent = hintLevel === 0
+        ? 'Êtes-vous sûr de vouloir afficher un indice ?'
+        : 'Êtes-vous sûr de vouloir afficher un deuxième indice ?';
+      dialog.hidden = false;
+      document.getElementById('lock-dialog-yes').focus();
+    }
+    forgot.addEventListener('click', askHint);
     document.getElementById('lock-dialog-no').addEventListener('click', function () { dialog.hidden = true; });
     document.getElementById('lock-dialog-yes').addEventListener('click', function () {
-      dialog.hidden = true; hint.textContent = LOCK.hint; forgot.hidden = true;
+      dialog.hidden = true;
+      showHint(hintLevel + 1);
     });
     document.addEventListener('keydown', function (e) {
       if (!locked) return;

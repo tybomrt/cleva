@@ -737,6 +737,10 @@ button.conv-item { width: 100%; text-align: left; font: inherit; color: inherit;
   text-align: center;
 }
 .lock-hint { white-space: pre-line; margin-top: 4px; }
+/* 1er indice : le dessin (trait noir passé en blanc pour le fond sombre), « Autre indice ? » à côté */
+.lock-hint-row { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; }
+.lock-hint-icon { width: 64px; height: 77px; filter: invert(1); pointer-events: none; }
+.lock-hint-more { font-size: 15px; text-decoration: underline; text-underline-offset: 3px; }
 
 /* Notification avec l'icône de la conversation + marge basse de l'écran verrouillé */
 .lock-notif { flex-direction: row; align-items: center; gap: 12px; }
