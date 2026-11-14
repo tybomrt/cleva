@@ -146,7 +146,9 @@
     return frag;
   }
 
-  function oneLine(s) { return String(s || '').replace(/\s+/g, ' ').trim(); }
+  // **texte** dans data.js = texte en gras ; les marqueurs sont retirés des aperçus et de la recherche.
+  function plain(s) { return String(s || '').replace(/\*\*/g, ''); }
+  function oneLine(s) { return plain(s).replace(/\s+/g, ' ').trim(); }
 
   // Tout ce qui est cherchable dans une conversation.
   function haystack(t) {
@@ -157,7 +159,7 @@
         bits.push(p.name, p.email);
         if (id === 'me') bits.push('moi');
       });
-      bits.push(m.body);
+      bits.push(plain(m.body));
       (m.attachments || []).forEach(function (a) { bits.push(a.name, 'pièce jointe'); });
     });
     return norm(bits.join(' \n '));
@@ -345,7 +347,17 @@
     var content = el('div', 'msg-content');
     String(m.body).split(/\n\s*\n/).forEach(function (para) {
       var pEl = el('p');
-      pEl.appendChild(highlight(para.trim(), terms));
+      // Les morceaux entre ** s'affichent en gras.
+      para.trim().split('**').forEach(function (chunk, i) {
+        if (!chunk) return;
+        if (i % 2) {
+          var b = el('strong');
+          b.appendChild(highlight(chunk, terms));
+          pEl.appendChild(b);
+        } else {
+          pEl.appendChild(highlight(chunk, terms));
+        }
+      });
       content.appendChild(pEl);
     });
 
@@ -413,7 +425,7 @@
     t.messages.forEach(function (m, i) {
       var isLast = i === t.messages.length - 1;
       // Ouverts : le dernier e-mail, ceux avec une pièce jointe, et ceux qui contiennent la recherche.
-      var matches = terms.length && terms.some(function (term) { return norm(m.body).indexOf(term) !== -1; });
+      var matches = terms.length && terms.some(function (term) { return norm(plain(m.body)).indexOf(term) !== -1; });
       var hasAtt = !!(m.attachments && m.attachments.length);
       thread.appendChild(buildMessage(m, t.expanded || isLast || hasAtt || matches || t.messages.length <= 1, terms));
     });

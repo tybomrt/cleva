@@ -9,8 +9,10 @@
      {marie1} {marie2} {temoin1} {temoin2} dans un texte → prénom du vrai mariage,
      ou Lucas / Sacha / Clara / Julien sans dossier. Ne jamais écrire ces prénoms en dur.
      roles : quelle personne reçoit le prénom ET la photo de quel rôle.
-   Le prestataire à rembourser n'est jamais nommé, et le montant du trop-perçu
-   n'apparaît nulle part dans la boîte (il se trouve ailleurs dans le jeu).
+   Le prestataire à rembourser est « le couturier » (métier seulement, jamais de nom) ;
+   aucun autre e-mail ne doit venir d'un couturier ou y ressembler (atelier, retouches,
+   robe, costume…). Le montant du trop-perçu n'apparaît nulle part dans la boîte
+   (il se trouve ailleurs dans le jeu).
 
    people : tous les expéditeurs/destinataires.
      { name, email, avatar }            → photo
@@ -32,7 +34,7 @@
        from    : id dans people
        to      : liste d'ids (par défaut ['me'])
        date    : 'J-N HH:MM' (N jours avant le jour d'ouverture ; 'J HH:MM' = aujourd'hui)
-       body    : texte ; une ligne vide = nouveau paragraphe
+       body    : texte ; une ligne vide = nouveau paragraphe ; **texte** = en gras
        attachments : [{ name, src, size }] ; une image (jpg/png/webp/svg) s'affiche en aperçu
                      [{ name, youtube: 'id', size }] → vidéo YouTube lue dans la page (muette, plein écran)
 
@@ -70,9 +72,9 @@ window.MAIL_DATA = {
 
   threads: [
     /* =====================================================================
-       ÉNIGME 1/2 — Sacha (deuxième marié) se plaint à Raphaël : le prestataire
+       ÉNIGME 1/2 — Sacha (deuxième marié) se plaint à Raphaël : le couturier
        n'a toujours pas remboursé le trop-perçu. Raphaël le renvoie vers l'origami.
-       Règles : ne JAMAIS nommer le prestataire ni écrire le montant.
+       Règles : le couturier n'a jamais de nom, et le montant n'est jamais écrit.
        Non lu en permanence : on le voit en arrivant.
        ===================================================================== */
     {
@@ -86,7 +88,7 @@ window.MAIL_DATA = {
           from: 'sacha', to: ['me'], date: 'J-2 21:47',
           body: `Salut Raphaël,
 
-Je ne comprends pas. Il y a un mois, le prestataire m'a promis un remboursement « dans la semaine » pour le trop-perçu. Rien depuis. Je l'ai appelé 4 fois, et je tombe à chaque fois sur sa secrétaire, jamais sur lui.
+Je ne comprends pas. Il y a un mois, le couturier m'a promis un remboursement « dans la semaine » pour le trop-perçu. Rien depuis. Je l'ai appelé 4 fois, et je tombe à chaque fois sur sa secrétaire, jamais sur lui.
 
 {marie1} me dit de laisser tomber, mais je n'y arrive pas. Tu peux faire quelque chose ?
 
@@ -96,11 +98,11 @@ Je ne comprends pas. Il y a un mois, le prestataire m'a promis un remboursement 
           from: 'me', to: ['sacha'], date: 'J-1 22:15',
           body: `{marie2}, respire.
 
-Ne lâche rien : essaye d'appeler à nouveau. Et note bien le montant exact qu'il doit te rendre, je ne l'ai même pas en tête.
+Ne lâche rien : essaye d'appeler à nouveau. Tu peux me rappeler quel est le montant qu'il te doit ?
 
 Et pour ce soir, occupe-toi les mains. Moi, quand je n'arrive pas à me vider la tête, je fais de l'origami : on plie, on déplie, on se concentre, et tout le reste s'efface.
 
-D'ailleurs, as-tu fait la figure que je t'ai envoyée dans un autre mail, il y a une dizaine de jours ?
+**D'ailleurs, as-tu fait la figure que je t'ai envoyée dans un autre mail, il y a une dizaine de jours ?**
 
 Raphaël`,
         },
